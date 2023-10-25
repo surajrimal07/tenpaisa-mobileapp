@@ -10,7 +10,7 @@ packages:
     source: hosted
     version: "3.1.2"
   api_cache_manager:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: api_cache_manager
       sha256: "675dee8d3e8d6ec690f4d443b25bb398f1b31c1c1cb219c7c19531c62d20aed9"
@@ -406,7 +406,7 @@ packages:
     source: hosted
     version: "1.1.0"
   snippet_coder_utils:
-    dependency: "direct main"
+    dependency: "direct dev"
     description:
       name: snippet_coder_utils
       sha256: "516314c3d23071e4590597fa35e4c98fb86abc42d9fd6a1bb60cbee5e3f65c20"

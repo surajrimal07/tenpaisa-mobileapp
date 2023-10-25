@@ -1,6 +1,6 @@
-import 'package:Paisa/utils/colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:paisa/utils/colors.dart';
 
 class MainHome extends StatefulWidget {
   const MainHome({super.key});
