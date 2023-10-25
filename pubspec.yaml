@@ -34,6 +34,8 @@ dependencies:
   # capped_progress_indicator: ^0.0.2
 
   animate_do: any
+  api_cache_manager: ^1.0.1
+  snippet_coder_utils: ^1.0.14
 
   #--------------- ./ PACKAGES END ------------------#
 

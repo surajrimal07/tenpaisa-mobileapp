@@ -103,7 +103,7 @@ class _HomePageState extends State<HomePage> {
                         Text(
                           listOfItems[index].subTitle,
                           textAlign: TextAlign.center,
-                          style: textTheme.displayMedium,
+                          style: textTheme.displaySmall,
                         ),
                       ),
                     ],
@@ -125,9 +125,9 @@ class _HomePageState extends State<HomePage> {
                   count: listOfItems.length,
                   effect: const ExpandingDotsEffect(
                     spacing: 6.0,
-                    radius: 10.0,
-                    dotWidth: 10.0,
-                    dotHeight: 10.0,
+                    radius: 4.0,
+                    dotWidth: 4.0,
+                    dotHeight: 4.0,
                     expansionFactor: 3.8,
                     dotColor: Colors.grey,
                     activeDotColor: MyColors.btnColor,
