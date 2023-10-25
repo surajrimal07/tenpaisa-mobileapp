@@ -1,6 +1,6 @@
 # 10paisa
 
-
+![Alt Text](assets/logos/logo.png)
 
 A Smart Investment App made for Softwarica College of IT & E-Commerce, Coventry University
 
