@@ -1,6 +1,8 @@
 # 10paisa
 
-A Smart Investment App
+
+
+A Smart Investment App made for Softwarica College of IT & E-Commerce, Coventry University
 
 ## Overview
 
