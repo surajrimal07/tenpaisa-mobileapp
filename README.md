@@ -1,6 +1,6 @@
 # 10paisa
 
-![Alt Text](assets/logos/logo.png)
+<img src="assets/logos/logo.png" width="50%"/>
 
 A Smart Investment App made for Softwarica College of IT & E-Commerce, Coventry University
 
@@ -37,6 +37,8 @@ The Smart Investment Application is a state-of-the-art application that gives us
 - Demo buy sell: The app facilitates easy buying and selling of available asset classes and listed securities for learning purposes.
  
 - Stock search and sorting: The app facilitates users looking up stocks and investment opportunities.
+
+## Screenshots
 
 
 ## Prerequisites
