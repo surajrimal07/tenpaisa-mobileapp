@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'utils/colors.dart';
-import 'view/auth.dart';
+import 'view/signin.dart';
 
 class GetStartBtn extends StatefulWidget {
   const GetStartBtn({
@@ -27,7 +27,7 @@ class _GetStartBtnState extends State<GetStartBtn> {
       Future.delayed(const Duration(seconds: 2)).then((value) {
         isLoading = false;
         Navigator.pushReplacement(
-            context, CupertinoPageRoute(builder: (_) => const MainHome()));
+            context, CupertinoPageRoute(builder: (_) => const Signin()));
       });
     });
   }
