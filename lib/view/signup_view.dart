@@ -1,49 +1,53 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:paisa/view/mainhome.dart';
-import 'package:paisa/view/signup.dart';
-import 'package:paisa/view/user.dart';
+import 'package:paisa/view/signin_view.dart';
+import 'package:paisa/view/user_view.dart';
 
-import '../utils/colors.dart';
+import '../utils/colors_utils.dart';
 
-class Signin extends StatefulWidget {
-  const Signin({super.key});
+class Signup extends StatefulWidget {
+  const Signup({super.key});
 
   @override
-  _SigninState createState() => _SigninState();
+  _SignupState createState() => _SignupState();
 }
 
-class _SigninState extends State<Signin> {
+class _SignupState extends State<Signup> {
   final _formKey = GlobalKey<FormState>();
-  String errorMessage = ''; // Variable to store error message.
 
-  Future save() async {
-    var url = Uri.parse("http://10.0.2.2:8080/signin");
-    var res = await http.post(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
+  Future<void> save() async {
+    try {
+      var url = Uri.parse("http://10.0.2.2:8080/signup");
+
+      // Create a map for the request body
+      var requestBody = {
         'email': user.email,
         'password': user.password,
-      }),
-    );
+      };
 
-    if (res.statusCode == 200) {
-      // Sign-in was successful, navigate to the Dashboard.
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const MainHome()));
-    } else {
-      // Sign-in failed, display an error message.
-      setState(() {
-        errorMessage =
-            'Email or password is incorrect'; // Set the error message.
-      });
+      var response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        // Successfully signed up, navigate to the login screen.
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const Signin()));
+      } else {
+        // Handle server response errors here.
+        print("Server error: ${response.statusCode}");
+        print(response.body);
+      }
+    } catch (e) {
+      // Handle network errors here.
+      print("Network error: $e");
     }
   }
 
@@ -55,12 +59,10 @@ class _SigninState extends State<Signin> {
       body: Stack(
         children: [
           Positioned(
+            left: 0,
+            right: 0,
             top: 0,
-            child: SvgPicture.asset(
-              'assets/top.svg',
-              width: 400,
-              height: 150,
-            ),
+            child: Image.asset('assets/images/blite.png', fit: BoxFit.cover),
           ),
           Container(
             alignment: Alignment.center,
@@ -74,7 +76,7 @@ class _SigninState extends State<Signin> {
                     height: 230,
                   ),
                   Text(
-                    "Login to 10Paisa",
+                    "Sign Up to 10Paisa",
                     style: GoogleFonts.openSans(
                       fontWeight: FontWeight.bold,
                       fontSize: 28,
@@ -82,7 +84,7 @@ class _SigninState extends State<Signin> {
                     ),
                   ),
                   Text(
-                    "Please enter your Email and Password",
+                    "Create a new 10Paisa account",
                     style: GoogleFonts.openSans(
                       fontWeight: FontWeight.normal,
                       fontSize: 14,
@@ -91,17 +93,6 @@ class _SigninState extends State<Signin> {
                   ),
                   const SizedBox(
                     height: 25,
-                  ),
-                  Text(
-                    errorMessage, // Display the error message here.
-                    style: const TextStyle(
-                      color: Colors
-                          .red, // Set the color to red for error messages.
-                      fontSize: 16, // Set the font size.
-                      fontWeight: FontWeight.bold, // Make it bold.
-                      fontStyle:
-                          FontStyle.italic, // Italicize the error message.
-                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -126,7 +117,7 @@ class _SigninState extends State<Signin> {
                           Icons.email,
                           color: MyColors.btnColor,
                         ),
-                        hintText: 'Email',
+                        hintText: 'Enter Email',
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
                           borderSide:
@@ -167,7 +158,7 @@ class _SigninState extends State<Signin> {
                           Icons.vpn_key,
                           color: MyColors.btnColor,
                         ),
-                        hintText: 'Password',
+                        hintText: 'Enter Password',
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
                           borderSide:
@@ -194,8 +185,8 @@ class _SigninState extends State<Signin> {
                     child: SizedBox(
                       height: 50,
                       width: 400,
-                      child: TextButton(
-                        style: TextButton.styleFrom(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
                           backgroundColor: MyColors.btnColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16.0),
@@ -209,8 +200,11 @@ class _SigninState extends State<Signin> {
                           }
                         },
                         child: const Text(
-                          "Sign In",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
+                          "Sign Up",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                          ),
                         ),
                       ),
                     ),
@@ -229,12 +223,14 @@ class _SigninState extends State<Signin> {
                         InkWell(
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Signup()));
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Signin(),
+                              ),
+                            );
                           },
                           child: const Text(
-                            "Sign Up",
+                            "Sign In",
                             style: TextStyle(
                               color: MyColors.btnColor,
                               fontWeight: FontWeight.bold,

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'utils/colors.dart';
-import 'view/on_boarding.dart';
+import 'utils/colors_utils.dart';
+import 'view/onboarding_view.dart';
 
 void main() {
   runApp(const MyApp());

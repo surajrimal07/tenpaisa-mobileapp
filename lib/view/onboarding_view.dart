@@ -6,7 +6,7 @@ import '../components.dart';
 
 ///
 import '../model/items_model.dart';
-import '../utils/colors.dart';
+import '../utils/colors_utils.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
