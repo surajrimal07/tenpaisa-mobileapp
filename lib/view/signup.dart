@@ -7,6 +7,8 @@ import 'package:http/http.dart' as http;
 import 'package:paisa/view/signin.dart';
 import 'package:paisa/view/user.dart';
 
+import '../utils/colors.dart';
+
 class Signup extends StatefulWidget {
   const Signup({super.key});
 
@@ -74,14 +76,22 @@ class _SignupState extends State<Signup> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    height: 150,
+                    height: 230,
                   ),
                   Text(
-                    "Signup",
-                    style: GoogleFonts.pacifico(
+                    "Sign Up to 10Paisa",
+                    style: GoogleFonts.openSans(
                       fontWeight: FontWeight.bold,
-                      fontSize: 50,
-                      color: Colors.blue,
+                      fontSize: 28,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    "Create a new 10Paisa account",
+                    style: GoogleFonts.openSans(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14,
+                      color: MyColors.subTextColor,
                     ),
                   ),
                   const SizedBox(
@@ -96,7 +106,7 @@ class _SignupState extends State<Signup> {
                       },
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
-                          return 'Enter something';
+                          return 'Email cannot be empty';
                         } else if (RegExp(
                                 r"^[a-zA-Z0-9.a-zA-Z0.9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                             .hasMatch(value!)) {
@@ -108,16 +118,18 @@ class _SignupState extends State<Signup> {
                       decoration: InputDecoration(
                         icon: const Icon(
                           Icons.email,
-                          color: Colors.blue,
+                          color: MyColors.btnColor,
                         ),
                         hintText: 'Enter Email',
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: Colors.blue),
+                          borderSide:
+                              const BorderSide(color: MyColors.btnColor),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: Colors.blue),
+                          borderSide:
+                              const BorderSide(color: MyColors.btnColor),
                         ),
                         errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
@@ -139,7 +151,7 @@ class _SignupState extends State<Signup> {
                       },
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
-                          return 'Enter something';
+                          return 'Password cannot be empty';
                         }
                         return null;
                       },
@@ -147,16 +159,18 @@ class _SignupState extends State<Signup> {
                       decoration: InputDecoration(
                         icon: const Icon(
                           Icons.vpn_key,
-                          color: Colors.blue,
+                          color: MyColors.btnColor,
                         ),
                         hintText: 'Enter Password',
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: Colors.blue),
+                          borderSide:
+                              const BorderSide(color: MyColors.btnColor),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: Colors.blue),
+                          borderSide:
+                              const BorderSide(color: MyColors.btnColor),
                         ),
                         errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
@@ -176,7 +190,7 @@ class _SignupState extends State<Signup> {
                       width: 400,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue,
+                          backgroundColor: MyColors.btnColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16.0),
                           ),
@@ -189,10 +203,10 @@ class _SignupState extends State<Signup> {
                           }
                         },
                         child: const Text(
-                          "Signup",
+                          "Sign Up",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 20,
+                            fontSize: 18,
                           ),
                         ),
                       ),
@@ -203,10 +217,10 @@ class _SignupState extends State<Signup> {
                     child: Row(
                       children: [
                         const Text(
-                          "Already have an Account ? ",
+                          "Already have an account ? ",
                           style: TextStyle(
                             color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.normal,
                           ),
                         ),
                         InkWell(
@@ -219,9 +233,9 @@ class _SignupState extends State<Signup> {
                             );
                           },
                           child: const Text(
-                            "Signin",
+                            "Sign In",
                             style: TextStyle(
-                              color: Colors.blue,
+                              color: MyColors.btnColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),

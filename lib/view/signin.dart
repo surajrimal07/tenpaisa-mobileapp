@@ -8,6 +8,8 @@ import 'package:paisa/view/mainhome.dart';
 import 'package:paisa/view/signup.dart';
 import 'package:paisa/view/user.dart';
 
+import '../utils/colors.dart';
+
 class Signin extends StatefulWidget {
   const Signin({super.key});
 
@@ -69,14 +71,22 @@ class _SigninState extends State<Signin> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const SizedBox(
-                    height: 150,
+                    height: 230,
                   ),
                   Text(
                     "Login to 10Paisa",
-                    style: GoogleFonts.lato(
+                    style: GoogleFonts.openSans(
                       fontWeight: FontWeight.bold,
-                      fontSize: 34,
+                      fontSize: 28,
                       color: Colors.black,
+                    ),
+                  ),
+                  Text(
+                    "Please enter your Email and Password",
+                    style: GoogleFonts.openSans(
+                      fontWeight: FontWeight.normal,
+                      fontSize: 14,
+                      color: MyColors.subTextColor,
                     ),
                   ),
                   const SizedBox(
@@ -102,7 +112,7 @@ class _SigninState extends State<Signin> {
                       },
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
-                          return 'Enter Email';
+                          return 'Email cannot be empty';
                         } else if (RegExp(
                                 r"^[a-zA-Z0-9.a-zA-Z0.9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
                             .hasMatch(value!)) {
@@ -114,16 +124,18 @@ class _SigninState extends State<Signin> {
                       decoration: InputDecoration(
                         icon: const Icon(
                           Icons.email,
-                          color: Colors.blue,
+                          color: MyColors.btnColor,
                         ),
-                        hintText: 'Enter Email',
+                        hintText: 'Email',
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: Colors.blue),
+                          borderSide:
+                              const BorderSide(color: MyColors.btnColor),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: Colors.blue),
+                          borderSide:
+                              const BorderSide(color: MyColors.btnColor),
                         ),
                         errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
@@ -145,7 +157,7 @@ class _SigninState extends State<Signin> {
                       },
                       validator: (value) {
                         if (value?.isEmpty ?? true) {
-                          return 'Enter Password';
+                          return 'Password cannot be empty';
                         }
                         return null;
                       },
@@ -153,16 +165,18 @@ class _SigninState extends State<Signin> {
                       decoration: InputDecoration(
                         icon: const Icon(
                           Icons.vpn_key,
-                          color: Colors.blue,
+                          color: MyColors.btnColor,
                         ),
-                        hintText: 'Enter Password',
+                        hintText: 'Password',
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: Colors.blue),
+                          borderSide:
+                              const BorderSide(color: MyColors.btnColor),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: Colors.blue),
+                          borderSide:
+                              const BorderSide(color: MyColors.btnColor),
                         ),
                         errorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
@@ -182,7 +196,7 @@ class _SigninState extends State<Signin> {
                       width: 400,
                       child: TextButton(
                         style: TextButton.styleFrom(
-                          backgroundColor: Colors.blue,
+                          backgroundColor: MyColors.btnColor,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16.0),
                           ),
@@ -195,8 +209,8 @@ class _SigninState extends State<Signin> {
                           }
                         },
                         child: const Text(
-                          "Signin",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
+                          "Sign In",
+                          style: TextStyle(color: Colors.white, fontSize: 18),
                         ),
                       ),
                     ),
@@ -209,7 +223,7 @@ class _SigninState extends State<Signin> {
                           "Already have an account ? ",
                           style: TextStyle(
                             color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.normal,
                           ),
                         ),
                         InkWell(
@@ -220,9 +234,9 @@ class _SigninState extends State<Signin> {
                                     builder: (context) => const Signup()));
                           },
                           child: const Text(
-                            "Signup",
+                            "Sign Up",
                             style: TextStyle(
-                              color: Colors.blue,
+                              color: MyColors.btnColor,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
