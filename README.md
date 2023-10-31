@@ -1,6 +1,9 @@
 # 10paisa
 
-<img src="assets/logos/logo.png?raw=true" alt="app logo" width="40%"/>
+<p align="center">
+  <img width="300" height="300" src="assets/logos/logo.png?raw=true">
+</p>
+
 
 A Smart Investment App made for Softwarica College of IT & E-Commerce, Coventry University
 
@@ -39,6 +42,10 @@ The Smart Investment Application is a state-of-the-art application that gives us
 - Stock search and sorting: The app facilitates users looking up stocks and investment opportunities.
 
 ## Screenshots
+<img src="assets/figma/grid/1.jpg?raw=true" width="400"/> <img src="assets/figma/grid/2.jpg?raw=true" width="400"/>
+<img src="assets/figma/grid/3.jpg?raw=true" width="400"/> <img src="assets/figma/grid/4.jpg?raw=true" width="400"/>
+<img src="assets/figma/grid/5.jpg?raw=true" width="400"/> <img src="assets/figma/grid/6.jpg?raw=true" width="400"/>
+<img src="assets/figma/grid/7.jpg?raw=true" width="400"/> <img src="assets/figma/grid/8.jpg?raw=true" width="400"/>
 
 
 ## Prerequisites
