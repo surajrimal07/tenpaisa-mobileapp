@@ -26,6 +26,7 @@ class _GetStartBtnState extends State<GetStartBtn> {
       Future.delayed(const Duration(seconds: 2)).then((value) {
         isLoading = false;
         Navigator.pushReplacementNamed(context, AppRoute.signinRoute);
+        
       });
     });
   }
