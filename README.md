@@ -45,6 +45,10 @@ The Smart Investment Application is a state-of-the-art application that gives us
 <p align="center">
   <img width="400" height="400" src="assets/figma/grid/1.jpg?raw=true">
 </p>
+
+<img src="assets/figma/grid/1.jpg?raw=true" width="200"/> <img src="assets/figma/grid/2.jpg?raw=true" width="300"/>
+
+
 <img src="assets/figma/grid/1.jpg?raw=true" alt="screenshot 1" width="40%"/>
 <img src="assets/figma/grid/2.jpg?raw=true" alt="screenshot 1" width="40%"/>
 <img src="assets/figma/grid/3.jpg?raw=true" alt="screenshot 1" width="40%"/>
