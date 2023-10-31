@@ -39,7 +39,7 @@ The Smart Investment Application is a state-of-the-art application that gives us
 - Stock search and sorting: The app facilitates users looking up stocks and investment opportunities.
 
 ## Screenshots
-
+<img src="assets/figma/grid/1.jpg?raw=true" alt="app logo" width="40%"/>
 
 ## Prerequisites
 
