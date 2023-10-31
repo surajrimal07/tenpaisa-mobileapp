@@ -2,20 +2,18 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-import '../components.dart';
-
-///
 import '../model/items_model.dart';
 import '../utils/colors_utils.dart';
+import '../utils/components_utils.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class OnboardingView extends StatefulWidget {
+  const OnboardingView({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<OnboardingView> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<OnboardingView> {
   PageController pageController = PageController(initialPage: 0);
   int currentIndex = 0;
 
@@ -32,12 +30,12 @@ class _HomePageState extends State<HomePage> {
     Widget child,
   ) {
     if (index == 1) {
-      return FadeInDown(
+      return FadeOutRight(
         delay: Duration(milliseconds: delay),
         child: child,
       );
     }
-    return FadeInUp(
+    return FadeOutRight(
       delay: Duration(milliseconds: delay),
       child: child,
     );
@@ -89,22 +87,28 @@ class _HomePageState extends State<HomePage> {
                           child: animationDo(
                             index,
                             300,
-                            Text(
-                              listOfItems[index].title,
-                              textAlign: TextAlign.center,
-                              style: textTheme.displayLarge,
-                            ),
+                            Text(listOfItems[index].title,
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                  color: MyColors.titleTextColor,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Poppins',
+                                )),
                           )),
 
                       /// SUBTITLE TEXT
                       animationDo(
                         index,
                         500,
-                        Text(
-                          listOfItems[index].subTitle,
-                          textAlign: TextAlign.center,
-                          style: textTheme.displaySmall,
-                        ),
+                        Text(listOfItems[index].subTitle,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: MyColors.subTextColor,
+                              fontFamily: 'Poppins',
+                              //fontWeight: FontWeight.bold,
+                            )),
                       ),
                     ],
                   ),

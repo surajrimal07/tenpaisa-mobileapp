@@ -3,19 +3,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:paisa/view/signin_view.dart';
+import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/view/user_view.dart';
 
 import '../utils/colors_utils.dart';
 
-class Signup extends StatefulWidget {
-  const Signup({super.key});
+class SignupView extends StatefulWidget {
+  const SignupView({super.key});
 
   @override
   _SignupState createState() => _SignupState();
 }
 
-class _SignupState extends State<Signup> {
+class _SignupState extends State<SignupView> {
   final _formKey = GlobalKey<FormState>();
 
   Future<void> save() async {
@@ -38,8 +38,7 @@ class _SignupState extends State<Signup> {
 
       if (response.statusCode == 200) {
         // Successfully signed up, navigate to the login screen.
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const Signin()));
+        Navigator.pushNamed(context, AppRoute.signinRoute); //error
       } else {
         // Handle server response errors here.
         print("Server error: ${response.statusCode}");
@@ -77,22 +76,22 @@ class _SignupState extends State<Signup> {
                   ),
                   Text(
                     "Sign Up to 10Paisa",
-                    style: GoogleFonts.openSans(
-                      fontWeight: FontWeight.bold,
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.normal,
                       fontSize: 28,
                       color: Colors.black,
                     ),
                   ),
                   Text(
                     "Create a new 10Paisa account",
-                    style: GoogleFonts.openSans(
+                    style: GoogleFonts.poppins(
                       fontWeight: FontWeight.normal,
                       fontSize: 14,
                       color: MyColors.subTextColor,
                     ),
                   ),
                   const SizedBox(
-                    height: 25,
+                    height: 5,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
@@ -222,12 +221,7 @@ class _SignupState extends State<Signup> {
                         ),
                         InkWell(
                           onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Signin(),
-                              ),
-                            );
+                            Navigator.pushNamed(context, AppRoute.signinRoute);
                           },
                           child: const Text(
                             "Sign In",

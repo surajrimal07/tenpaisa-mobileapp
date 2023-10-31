@@ -3,20 +3,19 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:paisa/view/dashboard_view.dart';
-import 'package:paisa/view/signup_view.dart';
+import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/view/user_view.dart';
 
 import '../utils/colors_utils.dart';
 
-class Signin extends StatefulWidget {
-  const Signin({super.key});
+class SigninView extends StatefulWidget {
+  const SigninView({super.key});
 
   @override
   _SigninState createState() => _SigninState();
 }
 
-class _SigninState extends State<Signin> {
+class _SigninState extends State<SigninView> {
   final _formKey = GlobalKey<FormState>();
   String errorMessage = ''; // Variable to store error message.
 
@@ -35,8 +34,7 @@ class _SigninState extends State<Signin> {
 
     if (res.statusCode == 200) {
       // Sign-in was successful, navigate to the Dashboard.
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const MainHome()));
+      Navigator.pushNamed(context, AppRoute.dashboardRoute); //error
     } else {
       // Sign-in failed, display an error message.
       setState(() {
@@ -57,8 +55,7 @@ class _SigninState extends State<Signin> {
             left: 0,
             right: 0,
             top: 0,
-            child: Image.asset('assets/images/blite.png', fit: BoxFit.cover
-                ),
+            child: Image.asset('assets/images/blite.png', fit: BoxFit.cover),
           ),
           Container(
             alignment: Alignment.center,
@@ -73,29 +70,30 @@ class _SigninState extends State<Signin> {
                   ),
                   Text(
                     "Login to 10Paisa",
-                    style: GoogleFonts.openSans(
-                      fontWeight: FontWeight.bold,
+                    style: GoogleFonts.poppins(
+                      fontWeight: FontWeight.normal,
                       fontSize: 28,
                       color: Colors.black,
                     ),
                   ),
                   Text(
                     "Please enter your Email and Password",
-                    style: GoogleFonts.openSans(
+                    style: GoogleFonts.poppins(
                       fontWeight: FontWeight.normal,
                       fontSize: 14,
                       color: MyColors.subTextColor,
                     ),
                   ),
                   const SizedBox(
-                    height: 25,
+                    height: 0,
                   ),
                   Text(
-                    errorMessage, // Display the error message here.
+                    errorMessage,
+                    //errorMessage, // Display the error message here.
                     style: const TextStyle(
                       color: Colors
                           .red, // Set the color to red for error messages.
-                      fontSize: 16, // Set the font size.
+                      fontSize: 14, // Set the font size.
                       fontWeight: FontWeight.bold, // Make it bold.
                       fontStyle:
                           FontStyle.italic, // Italicize the error message.
@@ -226,10 +224,8 @@ class _SigninState extends State<Signin> {
                         ),
                         InkWell(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Signup()));
+                            Navigator.pushNamed(
+                                context, AppRoute.signupRoute); //error
                           },
                           child: const Text(
                             "Sign Up",

@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:paisa/app/routes/approutes.dart';
 
-import 'utils/colors_utils.dart';
-import 'view/signin_view.dart';
+import 'colors_utils.dart';
 
 class GetStartBtn extends StatefulWidget {
   const GetStartBtn({
@@ -26,8 +25,7 @@ class _GetStartBtnState extends State<GetStartBtn> {
       isLoading = true;
       Future.delayed(const Duration(seconds: 2)).then((value) {
         isLoading = false;
-        Navigator.pushReplacement(
-            context, CupertinoPageRoute(builder: (_) => const Signin()));
+        Navigator.pushReplacementNamed(context, AppRoute.signinRoute);
       });
     });
   }
@@ -53,7 +51,15 @@ class _GetStartBtnState extends State<GetStartBtn> {
                     ),
                   ),
                 )
-              : Text("Get Started now", style: widget.textTheme.headlineMedium),
+              : const Text(
+                  "Get Started now",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins',
+                  ),
+                ),
         ),
       ),
     );
@@ -88,8 +94,14 @@ class SkipBtn extends StatelessWidget {
         borderRadius: BorderRadius.circular(15.0),
         onTap: onTap,
         splashColor: MyColors.btnBorderColor,
-        child: Center(
-          child: Text("Skip", style: textTheme.displaySmall),
+        child: const Center(
+          child: Text("Skip",
+              style: TextStyle(
+                fontSize: 14,
+                color: MyColors.subTextColor,
+                fontFamily: 'Poppins',
+                //fontWeight: FontWeight.bold,
+              )),
         ),
       ),
     );
