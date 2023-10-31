@@ -20,7 +20,8 @@ class _SigninState extends State<SigninView> {
   String errorMessage = ''; // Variable to store error message.
 
   Future save() async {
-    var url = Uri.parse("http://localhost:5000/signin");
+    var url = Uri.parse(
+        "http://192.168.101.9:5000/signin"); //replace this with localhost ip address
     var res = await http.post(
       url,
       headers: <String, String>{

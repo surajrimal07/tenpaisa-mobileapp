@@ -20,7 +20,7 @@ class _SignupState extends State<SignupView> {
 
   Future<void> save() async {
     try {
-      var url = Uri.parse("http://localhost:5000/signup");
+      var url = Uri.parse("http://192.168.101.9:5000/signup");
 
       // Create a map for the request body
       var requestBody = {
@@ -106,13 +106,15 @@ class _SignupState extends State<SignupView> {
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
                             return 'Name cannot be empty';
-                          } else if (RegExp(
-                                  r"^[a-zA-Z0-9.a-zA-Z0.9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                              .hasMatch(value!)) {
-                            return null;
-                          } else {
-                            return 'Enter valid Name';
                           }
+                          return null; //if error delete this
+                          // else if (RegExp(
+                          //         r"^[a-zA-Z0-9.a-zA-Z0.9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                          //     .hasMatch(value!)) {
+                          //   return null;
+                          // } else {
+                          //   return 'Enter valid Name';
+                          // }
                         },
                         decoration: InputDecoration(
                           icon: const Icon(
