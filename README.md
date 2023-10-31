@@ -1,7 +1,7 @@
 # 10paisa
 
 <p align="center">
-  <img width="400" height="400" src="assets/logos/logo.png?raw=true">
+  <img width="300" height="300" src="assets/logos/logo.png?raw=true">
 </p>
 
 
