@@ -20,7 +20,7 @@ class _SigninState extends State<SigninView> {
   String errorMessage = ''; // Variable to store error message.
 
   Future save() async {
-    var url = Uri.parse("http://10.0.2.2:8080/signin");
+    var url = Uri.parse("http://localhost:5000/signin");
     var res = await http.post(
       url,
       headers: <String, String>{
@@ -34,7 +34,7 @@ class _SigninState extends State<SigninView> {
 
     if (res.statusCode == 200) {
       // Sign-in was successful, navigate to the Dashboard.
-      Navigator.pushNamed(context, AppRoute.dashboardRoute); //error
+      Navigator.pushReplacementNamed(context, AppRoute.dashboardRoute); //error
     } else {
       // Sign-in failed, display an error message.
       setState(() {
@@ -44,7 +44,7 @@ class _SigninState extends State<SigninView> {
     }
   }
 
-  User user = User('', '');
+  User user = User('', '', '');
 
   @override
   Widget build(BuildContext context) {

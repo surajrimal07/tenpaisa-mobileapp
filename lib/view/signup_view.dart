@@ -20,10 +20,11 @@ class _SignupState extends State<SignupView> {
 
   Future<void> save() async {
     try {
-      var url = Uri.parse("http://10.0.2.2:8080/signup");
+      var url = Uri.parse("http://localhost:5000/signup");
 
       // Create a map for the request body
       var requestBody = {
+        'name': user.name,
         'email': user.email,
         'password': user.password,
       };
@@ -38,7 +39,7 @@ class _SignupState extends State<SignupView> {
 
       if (response.statusCode == 200) {
         // Successfully signed up, navigate to the login screen.
-        Navigator.pushNamed(context, AppRoute.signinRoute); //error
+        Navigator.pushNamed(context, AppRoute.signinRoute); // error
       } else {
         // Handle server response errors here.
         print("Server error: ${response.statusCode}");
@@ -50,195 +51,256 @@ class _SignupState extends State<SignupView> {
     }
   }
 
-  User user = User('', '');
+  User user = User('', '', '');
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned(
-            left: 0,
-            right: 0,
-            top: 0,
-            child: Image.asset('assets/images/blite.png', fit: BoxFit.cover),
-          ),
-          Container(
-            alignment: Alignment.center,
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(
-                    height: 230,
-                  ),
-                  Text(
-                    "Sign Up to 10Paisa",
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 28,
-                      color: Colors.black,
+      body: SingleChildScrollView(
+        // Wrap the Stack in a SingleChildScrollView
+        child: Stack(
+          children: [
+            Positioned(
+              left: 0,
+              right: 0,
+              top: 0,
+              child: Image.asset('assets/images/blite.png', fit: BoxFit.cover),
+            ),
+            Container(
+              alignment: Alignment.center,
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 230,
                     ),
-                  ),
-                  Text(
-                    "Create a new 10Paisa account",
-                    style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.normal,
-                      fontSize: 14,
-                      color: MyColors.subTextColor,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      controller: TextEditingController(text: user.email),
-                      onChanged: (value) {
-                        user.email = value;
-                      },
-                      validator: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return 'Email cannot be empty';
-                        } else if (RegExp(
-                                r"^[a-zA-Z0-9.a-zA-Z0.9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                            .hasMatch(value!)) {
-                          return null;
-                        } else {
-                          return 'Enter valid email';
-                        }
-                      },
-                      decoration: InputDecoration(
-                        icon: const Icon(
-                          Icons.email,
-                          color: MyColors.btnColor,
-                        ),
-                        hintText: 'Enter Email',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide:
-                              const BorderSide(color: MyColors.btnColor),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide:
-                              const BorderSide(color: MyColors.btnColor),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: Colors.red),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: Colors.red),
-                        ),
+                    Text(
+                      "Sign Up to 10Paisa",
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 28,
+                        color: Colors.black,
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: TextFormField(
-                      controller: TextEditingController(text: user.password),
-                      onChanged: (value) {
-                        user.password = value;
-                      },
-                      validator: (value) {
-                        if (value?.isEmpty ?? true) {
-                          return 'Password cannot be empty';
-                        }
-                        return null;
-                      },
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        icon: const Icon(
-                          Icons.vpn_key,
-                          color: MyColors.btnColor,
-                        ),
-                        hintText: 'Enter Password',
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide:
-                              const BorderSide(color: MyColors.btnColor),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide:
-                              const BorderSide(color: MyColors.btnColor),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: Colors.red),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(16),
-                          borderSide: const BorderSide(color: Colors.red),
-                        ),
+                    Text(
+                      "Create a new 10Paisa account",
+                      style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14,
+                        color: MyColors.subTextColor,
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(55, 16, 16, 0),
-                    child: SizedBox(
-                      height: 50,
-                      width: 400,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: MyColors.btnColor,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16.0),
-                          ),
-                        ),
-                        onPressed: () {
-                          if (_formKey.currentState?.validate() ?? false) {
-                            save();
+                    const SizedBox(
+                      height: 0,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        controller: TextEditingController(text: user.name),
+                        onChanged: (value) {
+                          user.name = value;
+                        },
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Name cannot be empty';
+                          } else if (RegExp(
+                                  r"^[a-zA-Z0-9.a-zA-Z0.9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(value!)) {
+                            return null;
                           } else {
-                            print("not ok");
+                            return 'Enter valid Name';
                           }
                         },
-                        child: const Text(
-                          "Sign Up",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 18,
+                        decoration: InputDecoration(
+                          icon: const Icon(
+                            Icons.account_circle_rounded,
+                            color: MyColors.btnColor,
+                          ),
+                          hintText: 'Enter Name',
+                          // contentPadding: const EdgeInsets.symmetric(
+                          //     horizontal: 15,
+                          //     vertical:
+                          //         5), // Adjust padding to make the text field shorter
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide:
+                                const BorderSide(color: MyColors.btnColor),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide:
+                                const BorderSide(color: MyColors.btnColor),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(95, 20, 0, 0),
-                    child: Row(
-                      children: [
-                        const Text(
-                          "Already have an account ? ",
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.normal,
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        controller: TextEditingController(text: user.email),
+                        onChanged: (value) {
+                          user.email = value;
+                        },
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Email cannot be empty';
+                          } else if (RegExp(
+                                  r"^[a-zA-Z0.9]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                              .hasMatch(value!)) {
+                            return null;
+                          } else {
+                            return 'Enter valid email';
+                          }
+                        },
+                        decoration: InputDecoration(
+                          icon: const Icon(
+                            Icons.email,
+                            color: MyColors.btnColor,
+                          ),
+                          hintText: 'Enter Email',
+                          // contentPadding: const EdgeInsets.symmetric(
+                          //     horizontal: 15,
+                          //     vertical:
+                          //         5), // Adjust padding to make the text field shorter
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide:
+                                const BorderSide(color: MyColors.btnColor),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide:
+                                const BorderSide(color: MyColors.btnColor),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
                           ),
                         ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.pushNamed(context, AppRoute.signinRoute);
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        controller: TextEditingController(text: user.password),
+                        onChanged: (value) {
+                          user.password = value;
+                        },
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Password cannot be empty';
+                          }
+                          return null;
+                        },
+                        obscureText: true,
+                        decoration: InputDecoration(
+                          icon: const Icon(
+                            Icons.vpn_key,
+                            color: MyColors.btnColor,
+                          ),
+                          hintText: 'Enter Password',
+                          // contentPadding: const EdgeInsets.symmetric(
+                          //     horizontal: 15,
+                          //     vertical:
+                          //         5), // Adjust padding to make the text field shorter
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide:
+                                const BorderSide(color: MyColors.btnColor),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide:
+                                const BorderSide(color: MyColors.btnColor),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(55, 16, 16, 0),
+                      child: SizedBox(
+                        height: 50,
+                        width: 400,
+                        child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: MyColors.btnColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16.0),
+                            ),
+                          ),
+                          onPressed: () {
+                            if (_formKey.currentState?.validate() ?? false) {
+                              save();
+                            } else {
+                              print("not ok");
+                            }
                           },
                           child: const Text(
-                            "Sign In",
+                            "Sign Up",
                             style: TextStyle(
-                              color: MyColors.btnColor,
-                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 18,
                             ),
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(95, 20, 0, 0),
+                      child: Row(
+                        children: [
+                          const Text(
+                            "Already have an account ? ",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                          InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                  context, AppRoute.signinRoute);
+                            },
+                            child: const Text(
+                              "Sign In",
+                              style: TextStyle(
+                                color: MyColors.btnColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
