@@ -24,7 +24,10 @@ class _MyVerifyState extends State<OtpView> {
       var url = Uri.parse("http://192.168.101.9:5000/api/otp-verify");
 
       // Create a map for the request body
+
       var requestBody = {'email': otp.email, 'hash': otp.hash, 'otp': otp.otp};
+
+      //print(requestBody);
 
       var response = await http.post(
         url,
@@ -98,9 +101,6 @@ class _MyVerifyState extends State<OtpView> {
           textColor: Colors.white,
           fontSize: 14.0,
         );
-
-        // ignore: use_build_context_synchronously
-        //Navigator.pushNamed(context, AppRoute.signinRoute);
         // ignore: use_build_context_synchronously
         Navigator.pushNamed(context, AppRoute.signinRoute); // error
       } else if (response.statusCode == 400) {
@@ -146,8 +146,14 @@ class _MyVerifyState extends State<OtpView> {
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
     user.name = receivedData['name'];
+    otp.email = receivedData['email'];
+    otp.hash = receivedData['hash'];
     user.email = receivedData['email'];
     user.password = receivedData['password'];
+
+    // print(user.name);
+    // print(user.email);
+    // print(user.password);
 
     final defaultPinTheme = PinTheme(
       width: 56,
@@ -225,12 +231,9 @@ class _MyVerifyState extends State<OtpView> {
                   ),
                   Pinput(
                     length: 4,
-                    // defaultPinTheme: defaultPinTheme,
-                    // focusedPinTheme: focusedPinTheme,
-                    // submittedPinTheme: submittedPinTheme,
-
                     showCursor: true,
-                    onCompleted: (pin) => print(pin),
+                    onCompleted: (pin) => otp.otp = pin, //print(pin),
+                    //otp.otp = pin,
                   ),
                   const SizedBox(
                     height: 20,
@@ -244,26 +247,10 @@ class _MyVerifyState extends State<OtpView> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10))),
                         onPressed: () {
-                          save();
+                          verify();
                         },
                         child: const Text("Verify Email")),
                   ),
-                  // Row(
-                  //   children: [
-                  //     TextButton(
-                  //         onPressed: () {
-                  //           Navigator.pushNamedAndRemoveUntil(
-                  //             context,
-                  //             'phone',
-                  //             (route) => false,
-                  //           );
-                  //         },
-                  //         child: const Text(
-                  //           "Edit Phone Number ?",
-                  //           style: TextStyle(color: Colors.black),
-                  //         ))
-                  //   ],
-                  // )
                 ],
               ),
             ),

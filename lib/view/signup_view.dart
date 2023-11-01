@@ -28,16 +28,11 @@ class _SignupState extends State<SignupView> {
       // Create a map for the request body
       var requestBody = {'email': otp.email};
 
-      // var datatootp = {
-      //   'name': user.name,
-      //   'email': user.email,
-      //   'password': user.password,
-      // };
-
       Map<String, dynamic> dataToPass = {
         'name': user.name,
         'email': user.email,
         'password': user.password,
+        'hash': '',
       };
 
       var response = await http.post(
@@ -49,6 +44,11 @@ class _SignupState extends State<SignupView> {
       );
 
       if (response.statusCode == 200) {
+        var result = response.body;
+        Map<String, dynamic> parsedResponse = json.decode(result);
+        String dataValue = parsedResponse['data'];
+        dataToPass['hash'] = dataValue;
+
         Fluttertoast.showToast(
           msg: "Please verify your Email",
           toastLength: Toast.LENGTH_SHORT,
@@ -151,14 +151,7 @@ class _SignupState extends State<SignupView> {
                           if (value?.isEmpty ?? true) {
                             return 'Name cannot be empty';
                           }
-                          return null; //if error delete this
-                          // else if (RegExp(
-                          //         r"^[a-zA-Z0-9.a-zA-Z0.9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                          //     .hasMatch(value!)) {
-                          //   return null;
-                          // } else {
-                          //   return 'Enter valid Name';
-                          // }
+                          return null; //if error delete thiss
                         },
                         decoration: InputDecoration(
                           icon: const Icon(
@@ -216,10 +209,6 @@ class _SignupState extends State<SignupView> {
                             color: MyColors.btnColor,
                           ),
                           hintText: 'Enter Email',
-                          // contentPadding: const EdgeInsets.symmetric(
-                          //     horizontal: 15,
-                          //     vertical:
-                          //         5), // Adjust padding to make the text field shorter
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                             borderSide:
