@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:paisa/app/routes/approutes.dart';
+import 'package:paisa/model/otp_model.dart';
 import 'package:paisa/model/user_model.dart';
 
 import '../utils/colors_utils.dart';
@@ -20,16 +21,20 @@ class SignupView extends StatefulWidget {
 class _SignupState extends State<SignupView> {
   final _formKey = GlobalKey<FormState>();
 
-  
-
-
-
   Future<void> save() async {
     try {
-      var url = Uri.parse("http://192.168.101.9:5000/api/create");
+      var url = Uri.parse("http://192.168.101.9:5000/api/otp-login"); //create
 
       // Create a map for the request body
-      var requestBody = {
+      var requestBody = {'email': otp.email};
+
+      // var datatootp = {
+      //   'name': user.name,
+      //   'email': user.email,
+      //   'password': user.password,
+      // };
+
+      Map<String, dynamic> dataToPass = {
         'name': user.name,
         'email': user.email,
         'password': user.password,
@@ -54,9 +59,8 @@ class _SignupState extends State<SignupView> {
         );
 
         // ignore: use_build_context_synchronously
-        //Navigator.pushNamed(context, AppRoute.signinRoute);
-        // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, AppRoute.otpRoute); // error
+        Navigator.pushNamed(context, AppRoute.otpRoute,
+            arguments: dataToPass); // error
       } else if (response.statusCode == 400) {
         Fluttertoast.showToast(
           msg: "Email Exists : ${response.statusCode}",
@@ -90,6 +94,7 @@ class _SignupState extends State<SignupView> {
     }
   }
 
+  Otp otp = Otp('', '', '');
   User user = User('', '', '');
 
   @override
@@ -192,6 +197,7 @@ class _SignupState extends State<SignupView> {
                         controller: TextEditingController(text: user.email),
                         onChanged: (value) {
                           user.email = value;
+                          otp.email = value;
                         },
                         validator: (value) {
                           if (value?.isEmpty ?? true) {

@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/model/otp_model.dart';
+import 'package:paisa/model/user_model.dart';
 import 'package:pinput/pinput.dart';
 
 import '../utils/colors_utils.dart';
@@ -13,13 +18,13 @@ class OtpView extends StatefulWidget {
 }
 
 class _MyVerifyState extends State<OtpView> {
-  //
-  Future<void> save() async {
+  //verify otp
+  Future<void> verify() async {
     try {
-      var url = Uri.parse("http://192.168.101.9:5000/api/otp-login");
+      var url = Uri.parse("http://192.168.101.9:5000/api/otp-verify");
 
       // Create a map for the request body
-      var requestBody = {'otp': Otp.otps};
+      var requestBody = {'email': otp.email, 'hash': otp.hash, 'otp': otp.otp};
 
       var response = await http.post(
         url,
@@ -31,7 +36,62 @@ class _MyVerifyState extends State<OtpView> {
 
       if (response.statusCode == 200) {
         Fluttertoast.showToast(
-          msg: "Please verify your Email",
+          msg: "OTP Verified successfully",
+          toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+
+        // ignore: use_build_context_synchronously
+        save();
+        //Navigator.pushNamed(context, AppRoute.otpRoute); // error
+      } else {
+        Fluttertoast.showToast(
+          msg: "OTP error: ${response.statusCode}",
+          toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Network error: $e",
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+    }
+  }
+
+  //now do data entry
+  Future<void> save() async {
+    try {
+      var url = Uri.parse("http://192.168.101.9:5000/api/create");
+
+      // Create a map for the request body
+      var requestBody = {
+        'name': user.name,
+        'email': user.email,
+        'password': user.password,
+      };
+
+      var response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        Fluttertoast.showToast(
+          msg: "User Created, proceed to login",
           toastLength: Toast.LENGTH_SHORT,
           timeInSecForIosWeb: 1,
           backgroundColor: Colors.black,
@@ -42,7 +102,7 @@ class _MyVerifyState extends State<OtpView> {
         // ignore: use_build_context_synchronously
         //Navigator.pushNamed(context, AppRoute.signinRoute);
         // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, AppRoute.otpRoute); // error
+        Navigator.pushNamed(context, AppRoute.signinRoute); // error
       } else if (response.statusCode == 400) {
         Fluttertoast.showToast(
           msg: "Email Exists : ${response.statusCode}",
@@ -76,9 +136,19 @@ class _MyVerifyState extends State<OtpView> {
     }
   }
 
+  User user = User('', '', '');
+  Otp otp = Otp('', '', '');
+
   //
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> receivedData =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+    user.name = receivedData['name'];
+    user.email = receivedData['email'];
+    user.password = receivedData['password'];
+
     final defaultPinTheme = PinTheme(
       width: 56,
       height: 56,
@@ -154,7 +224,7 @@ class _MyVerifyState extends State<OtpView> {
                     height: 30,
                   ),
                   Pinput(
-                    length: 6,
+                    length: 4,
                     // defaultPinTheme: defaultPinTheme,
                     // focusedPinTheme: focusedPinTheme,
                     // submittedPinTheme: submittedPinTheme,
@@ -173,7 +243,9 @@ class _MyVerifyState extends State<OtpView> {
                             backgroundColor: MyColors.btnColor,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10))),
-                        onPressed: () {},
+                        onPressed: () {
+                          save();
+                        },
                         child: const Text("Verify Email")),
                   ),
                   // Row(

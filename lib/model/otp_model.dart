@@ -1,5 +1,6 @@
 class Otp {
-  int otps;
-  int hash;
-  Otp(this.otps, this.hash);
+  String email;
+  String hash;
+  String otp;
+  Otp(this.email, this.hash, this.otp);
 }
