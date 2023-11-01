@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:paisa/app/routes/approutes.dart';
-import 'package:paisa/view/user_view.dart';
+import 'package:paisa/model/user_model.dart';
 
 import '../utils/colors_utils.dart';
 
@@ -12,15 +13,20 @@ class SignupView extends StatefulWidget {
   const SignupView({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SignupState createState() => _SignupState();
 }
 
 class _SignupState extends State<SignupView> {
   final _formKey = GlobalKey<FormState>();
 
+  
+
+
+
   Future<void> save() async {
     try {
-      var url = Uri.parse("http://192.168.101.9:5000/signup");
+      var url = Uri.parse("http://192.168.101.9:5000/api/create");
 
       // Create a map for the request body
       var requestBody = {
@@ -38,16 +44,49 @@ class _SignupState extends State<SignupView> {
       );
 
       if (response.statusCode == 200) {
-        // Successfully signed up, navigate to the login screen.
-        Navigator.pushNamed(context, AppRoute.signinRoute); // error
+        Fluttertoast.showToast(
+          msg: "Please verify your Email",
+          toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+
+        // ignore: use_build_context_synchronously
+        //Navigator.pushNamed(context, AppRoute.signinRoute);
+        // ignore: use_build_context_synchronously
+        Navigator.pushNamed(context, AppRoute.otpRoute); // error
+      } else if (response.statusCode == 400) {
+        Fluttertoast.showToast(
+          msg: "Email Exists : ${response.statusCode}",
+          toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
       } else {
-        // Handle server response errors here.
-        print("Server error: ${response.statusCode}");
-        print(response.body);
+        Fluttertoast.showToast(
+          msg: "Server error: ${response.statusCode}",
+          toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
       }
     } catch (e) {
-      // Handle network errors here.
-      print("Network error: $e");
+      Fluttertoast.showToast(
+        msg: "Network error: $e",
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+
+      //print("Network error: $e");
     }
   }
 

@@ -1,0 +1,203 @@
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:paisa/model/otp_model.dart';
+import 'package:pinput/pinput.dart';
+
+import '../utils/colors_utils.dart';
+
+class OtpView extends StatefulWidget {
+  const OtpView({super.key});
+
+  @override
+  State<OtpView> createState() => _MyVerifyState();
+}
+
+class _MyVerifyState extends State<OtpView> {
+  //
+  Future<void> save() async {
+    try {
+      var url = Uri.parse("http://192.168.101.9:5000/api/otp-login");
+
+      // Create a map for the request body
+      var requestBody = {'otp': Otp.otps};
+
+      var response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        Fluttertoast.showToast(
+          msg: "Please verify your Email",
+          toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+
+        // ignore: use_build_context_synchronously
+        //Navigator.pushNamed(context, AppRoute.signinRoute);
+        // ignore: use_build_context_synchronously
+        Navigator.pushNamed(context, AppRoute.otpRoute); // error
+      } else if (response.statusCode == 400) {
+        Fluttertoast.showToast(
+          msg: "Email Exists : ${response.statusCode}",
+          toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: "Server error: ${response.statusCode}",
+          toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Network error: $e",
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+
+      //print("Network error: $e");
+    }
+  }
+
+  //
+  @override
+  Widget build(BuildContext context) {
+    final defaultPinTheme = PinTheme(
+      width: 56,
+      height: 56,
+      textStyle: const TextStyle(
+          fontSize: 20,
+          color: Color.fromRGBO(30, 60, 87, 1),
+          fontWeight: FontWeight.w600),
+      decoration: BoxDecoration(
+        border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
+        borderRadius: BorderRadius.circular(20),
+      ),
+    );
+
+    final focusedPinTheme = defaultPinTheme.copyDecorationWith(
+      border: Border.all(color: const Color.fromRGBO(114, 178, 238, 1)),
+      borderRadius: BorderRadius.circular(8),
+    );
+
+    final submittedPinTheme = defaultPinTheme.copyWith(
+      decoration: defaultPinTheme.decoration?.copyWith(
+        color: const Color.fromRGBO(234, 239, 243, 1),
+      ),
+    );
+
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Colors.white,
+          ),
+        ),
+        elevation: 0,
+      ),
+      body: Stack(
+        children: [
+          Positioned(
+            left: 0,
+            right: 0,
+            top: 0,
+            child: Image.asset('assets/images/blite.png', fit: BoxFit.cover),
+          ),
+          Container(
+            margin: const EdgeInsets.only(left: 25, right: 25),
+            alignment: Alignment.center,
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 140,
+                  ),
+                  const Text(
+                    "10Paisa Email Verification",
+                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Text(
+                    "Please use otp you got in your Email",
+                    style: TextStyle(
+                      fontSize: 16,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Pinput(
+                    length: 6,
+                    // defaultPinTheme: defaultPinTheme,
+                    // focusedPinTheme: focusedPinTheme,
+                    // submittedPinTheme: submittedPinTheme,
+
+                    showCursor: true,
+                    onCompleted: (pin) => print(pin),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 45,
+                    child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: MyColors.btnColor,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10))),
+                        onPressed: () {},
+                        child: const Text("Verify Email")),
+                  ),
+                  // Row(
+                  //   children: [
+                  //     TextButton(
+                  //         onPressed: () {
+                  //           Navigator.pushNamedAndRemoveUntil(
+                  //             context,
+                  //             'phone',
+                  //             (route) => false,
+                  //           );
+                  //         },
+                  //         child: const Text(
+                  //           "Edit Phone Number ?",
+                  //           style: TextStyle(color: Colors.black),
+                  //         ))
+                  //   ],
+                  // )
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

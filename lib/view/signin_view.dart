@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:paisa/app/routes/approutes.dart';
-import 'package:paisa/view/user_view.dart';
+import 'package:paisa/model/user_model.dart';
 
 import '../utils/colors_utils.dart';
 
@@ -12,16 +13,17 @@ class SigninView extends StatefulWidget {
   const SigninView({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _SigninState createState() => _SigninState();
 }
 
 class _SigninState extends State<SigninView> {
   final _formKey = GlobalKey<FormState>();
-  String errorMessage = ''; // Variable to store error message.
+  //String errorMessage = ''; // Variable to store error message.
 
   Future save() async {
     var url = Uri.parse(
-        "http://192.168.101.9:5000/signin"); //replace this with localhost ip address
+        "http://192.168.101.9:5000/api/login"); //replace this with localhost ip address
     var res = await http.post(
       url,
       headers: <String, String>{
@@ -34,14 +36,31 @@ class _SigninState extends State<SigninView> {
     );
 
     if (res.statusCode == 200) {
-      // Sign-in was successful, navigate to the Dashboard.
+      Fluttertoast.showToast(
+        msg: "Signin Successful",
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      // ignore: use_build_context_synchronously
       Navigator.pushReplacementNamed(context, AppRoute.dashboardRoute); //error
     } else {
+      Fluttertoast.showToast(
+        msg: "Email or password is incorrect",
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIosWeb: 3,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
       // Sign-in failed, display an error message.
-      setState(() {
-        errorMessage =
-            'Email or password is incorrect'; // Set the error message.
-      });
+      // setState(() {
+      //   errorMessage =
+      //       'Email or password is incorrect'; // Set the error message.
+
+      // });
     }
   }
 
@@ -88,18 +107,18 @@ class _SigninState extends State<SigninView> {
                   const SizedBox(
                     height: 0,
                   ),
-                  Text(
-                    errorMessage,
-                    //errorMessage, // Display the error message here.
-                    style: const TextStyle(
-                      color: Colors
-                          .red, // Set the color to red for error messages.
-                      fontSize: 14, // Set the font size.
-                      fontWeight: FontWeight.bold, // Make it bold.
-                      fontStyle:
-                          FontStyle.italic, // Italicize the error message.
-                    ),
-                  ),
+                  // Text(
+                  //   errorMessage,
+                  //   //errorMessage, // Display the error message here.
+                  //   style: const TextStyle(
+                  //     color: Colors
+                  //         .red, // Set the color to red for error messages.
+                  //     fontSize: 14, // Set the font size.
+                  //     fontWeight: FontWeight.bold, // Make it bold.
+                  //     fontStyle:
+                  //         FontStyle.italic, // Italicize the error message.
+                  //   ),
+                  // ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextFormField(
@@ -202,7 +221,15 @@ class _SigninState extends State<SigninView> {
                           if (_formKey.currentState?.validate() ?? false) {
                             save();
                           } else {
-                            print("not ok");
+                            //print("Empty Credentials passed");
+                            Fluttertoast.showToast(
+                              msg: "Error Occured",
+                              toastLength: Toast.LENGTH_SHORT,
+                              timeInSecForIosWeb: 3,
+                              backgroundColor: Colors.black,
+                              textColor: Colors.white,
+                              fontSize: 14.0,
+                            );
                           }
                         },
                         child: const Text(
