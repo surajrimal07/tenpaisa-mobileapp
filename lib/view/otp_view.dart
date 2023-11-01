@@ -168,11 +168,13 @@ class _MyVerifyState extends State<OtpView> {
       ),
     );
 
+    // ignore: unused_local_variable
     final focusedPinTheme = defaultPinTheme.copyDecorationWith(
       border: Border.all(color: const Color.fromRGBO(114, 178, 238, 1)),
       borderRadius: BorderRadius.circular(8),
     );
 
+    // ignore: unused_local_variable
     final submittedPinTheme = defaultPinTheme.copyWith(
       decoration: defaultPinTheme.decoration?.copyWith(
         color: const Color.fromRGBO(234, 239, 243, 1),

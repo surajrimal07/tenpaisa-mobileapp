@@ -15,6 +15,7 @@ class AppRoute {
 
   static getApplicationRoute() {
     return {
+      
       onboardRoute: (context) => const OnboardingView(),
       signinRoute: (context) => const SigninView(),
       signupRoute: (context) => const SignupView(),
