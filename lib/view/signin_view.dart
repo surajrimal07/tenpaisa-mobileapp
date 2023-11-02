@@ -259,7 +259,7 @@ class _SigninState extends State<SigninView> {
                     child: Row(
                       children: [
                         const Text(
-                          "Already have an account ? ",
+                          "Don't have an account ? ",
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.normal,

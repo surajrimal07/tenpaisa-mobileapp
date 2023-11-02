@@ -72,6 +72,79 @@ class _MyVerifyState extends State<OtpView> {
     }
   }
 
+//resend otp
+  Future<void> resend() async {
+    try {
+      var url = Uri.parse("http://192.168.101.9:5000/api/otp-login"); //create
+
+      // Create a map for the request body
+      var requestBody = {'email': otp.email};
+
+      Map<String, dynamic> dataToPass = {
+        'name': user.name,
+        'email': user.email,
+        'password': user.password,
+        'hash': '',
+      };
+
+      var response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        var result = response.body;
+        Map<String, dynamic> parsedResponse = json.decode(result);
+        String dataValue = parsedResponse['data'];
+        dataToPass['hash'] = dataValue;
+
+        Fluttertoast.showToast(
+          msg: "Please Enter Email OTP",
+          toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 1,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+
+        // ignore: use_build_context_synchronously
+        Navigator.pushNamed(context, AppRoute.otpRoute,
+            arguments: dataToPass); // error
+      } else if (response.statusCode == 400) {
+        Fluttertoast.showToast(
+          msg: "Email Exists : ${response.statusCode}",
+          toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+      } else {
+        Fluttertoast.showToast(
+          msg: "Server error: ${response.statusCode}",
+          toastLength: Toast.LENGTH_SHORT,
+          timeInSecForIosWeb: 3,
+          backgroundColor: Colors.black,
+          textColor: Colors.white,
+          fontSize: 14.0,
+        );
+      }
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: "Network error: $e",
+        toastLength: Toast.LENGTH_SHORT,
+        timeInSecForIosWeb: 1,
+        backgroundColor: Colors.black,
+        textColor: Colors.white,
+        fontSize: 14.0,
+      );
+      //print("Network error: $e");
+    }
+  }
+
   //now do data entry
   Future<void> save() async {
     try {
@@ -252,6 +325,32 @@ class _MyVerifyState extends State<OtpView> {
                           verify();
                         },
                         child: const Text("Verify Email")),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(50, 20, 0, 0),
+                    child: Row(
+                      children: [
+                        const Text(
+                          "Did not recieve OTP? ",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            resend();
+                          },
+                          child: const Text(
+                            "Resend OTP",
+                            style: TextStyle(
+                              color: MyColors.btnColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),

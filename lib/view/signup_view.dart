@@ -101,6 +101,20 @@ class _SignupState extends State<SignupView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(
+            Icons.arrow_back_ios_rounded,
+            color: Colors.white,
+          ),
+        ),
+        elevation: 0,
+      ),
       body: SingleChildScrollView(
         // Wrap the Stack in a SingleChildScrollView
         child: Stack(
