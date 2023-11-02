@@ -47,7 +47,13 @@ class _SigninState extends State<SigninView> {
         fontSize: 14.0,
       );
       // ignore: use_build_context_synchronously
-      Navigator.pushReplacementNamed(context, AppRoute.dashboardRoute); //error
+      //Navigator.pushReplacementNamed(context, AppRoute.dashboardRoute); //error
+      // ignore: use_build_context_synchronously
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        AppRoute.dashboardRoute,
+        (route) => false,
+      );
     } else {
       Fluttertoast.showToast(
         msg: "Email or password is incorrect",
@@ -237,7 +243,7 @@ class _SigninState extends State<SigninView> {
                               "Remember me",
                               style: GoogleFonts.poppins(
                                 color: Colors.black,
-                                fontSize: 14,
+                                fontSize: 13,
                               ),
                             ),
                           ],
@@ -252,7 +258,7 @@ class _SigninState extends State<SigninView> {
                             "Forgot Password",
                             style: GoogleFonts.poppins(
                               color: MyColors.btnColor,
-                              fontWeight: FontWeight.bold,
+                              fontSize: 13,
                             ),
                           ),
                         ),

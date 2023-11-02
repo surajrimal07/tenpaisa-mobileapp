@@ -176,7 +176,11 @@ class _MyVerifyState extends State<OtpView> {
           fontSize: 14.0,
         );
         // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, AppRoute.signinRoute); // error
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoute.signinRoute,
+          (route) => false,
+        );
       } else if (response.statusCode == 400) {
         Fluttertoast.showToast(
           msg: "Email Exists : ${response.statusCode}",
