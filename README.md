@@ -56,7 +56,7 @@ Before you start, make sure you have the following installed:
 - Flutter: The mobile app is developed using Flutter. Install Flutter by following the official [installation guide](https://flutter.dev/docs/get-started/install).
 - Node.js: The backend server is built with Node.js. Install Node.js from the [official website](https://nodejs.org/).
 - Android Studio or VS Code : To run the app on an Android emulator or device, you'll need Android Studio or VS Code with the Flutter plugin installed [official website](https://code.visualstudio.com/download).
-- Database: You'll need a MongoDB database system, to store user and financial data. Make sure it's properly configured and running. make sure you have 'paisa' database with 'users' collection [official website](https://www.mongodb.com/try/download/community).
+- Database: You'll need a MongoDB database system or MongoDB Atlas, to store user and financial data. Make sure it's properly configured and running. make sure you have 'paisa' database with 'users' collection [official website](https://www.mongodb.com/try/download/community).
 
 ## TODO
 - Screen: Add screens in dashboard. Currently only dashboard screen exists.
