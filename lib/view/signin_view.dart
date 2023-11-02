@@ -19,6 +19,7 @@ class SigninView extends StatefulWidget {
 
 class _SigninState extends State<SigninView> {
   final _formKey = GlobalKey<FormState>();
+  bool _obscureText = true;
   //String errorMessage = ''; // Variable to store error message.
 
   Future save() async {
@@ -177,7 +178,7 @@ class _SigninState extends State<SigninView> {
                         }
                         return null;
                       },
-                      obscureText: true,
+                      obscureText: _obscureText,
                       decoration: InputDecoration(
                         icon: const Icon(
                           Icons.vpn_key,
@@ -201,6 +202,20 @@ class _SigninState extends State<SigninView> {
                         focusedErrorBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
                           borderSide: const BorderSide(color: Colors.red),
+                        ),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _obscureText
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: MyColors
+                                .btnColor, // Change the color to your preference
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _obscureText = !_obscureText;
+                            });
+                          },
                         ),
                       ),
                     ),

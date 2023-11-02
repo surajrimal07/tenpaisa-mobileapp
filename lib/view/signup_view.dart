@@ -20,6 +20,7 @@ class SignupView extends StatefulWidget {
 
 class _SignupState extends State<SignupView> {
   final _formKey = GlobalKey<FormState>();
+  bool _obscureText = true;
 
   Future<void> save() async {
     try {
@@ -159,10 +160,6 @@ class _SignupState extends State<SignupView> {
                             color: MyColors.btnColor,
                           ),
                           hintText: 'Enter Name',
-                          // contentPadding: const EdgeInsets.symmetric(
-                          //     horizontal: 15,
-                          //     vertical:
-                          //         5), // Adjust padding to make the text field shorter
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                             borderSide:
@@ -243,17 +240,14 @@ class _SignupState extends State<SignupView> {
                           }
                           return null;
                         },
-                        obscureText: true,
+                        //obscureText: true,
+                        obscureText: _obscureText,
                         decoration: InputDecoration(
                           icon: const Icon(
                             Icons.vpn_key,
                             color: MyColors.btnColor,
                           ),
                           hintText: 'Enter Password',
-                          // contentPadding: const EdgeInsets.symmetric(
-                          //     horizontal: 15,
-                          //     vertical:
-                          //         5), // Adjust padding to make the text field shorter
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                             borderSide:
@@ -271,6 +265,20 @@ class _SignupState extends State<SignupView> {
                           focusedErrorBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                             borderSide: const BorderSide(color: Colors.red),
+                          ),
+                          suffixIcon: IconButton(
+                            icon: Icon(
+                              _obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off,
+                              color: MyColors
+                                  .btnColor, // Change the color to your preference
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _obscureText = !_obscureText;
+                              });
+                            },
                           ),
                         ),
                       ),
@@ -291,7 +299,7 @@ class _SignupState extends State<SignupView> {
                             if (_formKey.currentState?.validate() ?? false) {
                               save();
                             } else {
-                              print("not ok");
+                              //print("not ok");
                             }
                           },
                           child: const Text(
