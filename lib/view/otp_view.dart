@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/model/otp_model.dart';
@@ -287,16 +288,17 @@ class _MyVerifyState extends State<OtpView> {
                   const SizedBox(
                     height: 140,
                   ),
-                  const Text(
+                  Text(
                     "10Paisa Email Verification",
-                    style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+                    style: GoogleFonts.poppins(
+                        fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text(
+                  Text(
                     "Please use otp you got in your Email",
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 16,
                     ),
                     textAlign: TextAlign.center,
@@ -330,9 +332,9 @@ class _MyVerifyState extends State<OtpView> {
                     padding: const EdgeInsets.fromLTRB(50, 20, 0, 0),
                     child: Row(
                       children: [
-                        const Text(
+                        Text(
                           "Did not recieve OTP? ",
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             color: Colors.black,
                             fontWeight: FontWeight.normal,
                           ),
@@ -341,9 +343,9 @@ class _MyVerifyState extends State<OtpView> {
                           onTap: () {
                             resend();
                           },
-                          child: const Text(
+                          child: Text(
                             "Resend OTP",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               color: MyColors.btnColor,
                               fontWeight: FontWeight.bold,
                             ),

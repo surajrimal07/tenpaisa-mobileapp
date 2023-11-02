@@ -170,10 +170,14 @@ class _SignupState extends State<SignupView> {
                         },
                         decoration: InputDecoration(
                           icon: const Icon(
-                            Icons.account_circle_rounded,
+                            Icons.account_circle_outlined,
                             color: MyColors.btnColor,
                           ),
                           hintText: 'Enter Name',
+                          hintStyle: GoogleFonts.poppins(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400,
+                          ),
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 16),
                           enabledBorder: OutlineInputBorder(
@@ -218,10 +222,14 @@ class _SignupState extends State<SignupView> {
                         },
                         decoration: InputDecoration(
                           icon: const Icon(
-                            Icons.email,
+                            Icons.alternate_email_outlined,
                             color: MyColors.btnColor,
                           ),
                           hintText: 'Enter Email',
+                          hintStyle: GoogleFonts.poppins(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400,
+                          ),
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 16),
                           enabledBorder: OutlineInputBorder(
@@ -262,10 +270,14 @@ class _SignupState extends State<SignupView> {
                         obscureText: _obscureText,
                         decoration: InputDecoration(
                           icon: const Icon(
-                            Icons.vpn_key,
+                            Icons.password_outlined,
                             color: MyColors.btnColor,
                           ),
                           hintText: 'Enter Password',
+                          hintStyle: GoogleFonts.poppins(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400,
+                          ),
                           contentPadding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 16),
                           enabledBorder: OutlineInputBorder(
@@ -322,9 +334,9 @@ class _SignupState extends State<SignupView> {
                               //print("not ok");
                             }
                           },
-                          child: const Text(
+                          child: Text(
                             "Sign Up",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               color: Colors.white,
                               fontSize: 18,
                             ),
@@ -333,12 +345,12 @@ class _SignupState extends State<SignupView> {
                       ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(95, 20, 0, 0),
+                      padding: const EdgeInsets.fromLTRB(70, 20, 0, 0),
                       child: Row(
                         children: [
-                          const Text(
+                          Text(
                             "Already have an account ? ",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               color: Colors.black,
                               fontWeight: FontWeight.normal,
                             ),
@@ -348,9 +360,9 @@ class _SignupState extends State<SignupView> {
                               Navigator.pushNamed(
                                   context, AppRoute.signinRoute);
                             },
-                            child: const Text(
+                            child: Text(
                               "Sign In",
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 color: MyColors.btnColor,
                                 fontWeight: FontWeight.bold,
                               ),

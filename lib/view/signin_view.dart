@@ -124,10 +124,14 @@ class _SigninState extends State<SigninView> {
                       },
                       decoration: InputDecoration(
                         icon: const Icon(
-                          Icons.email,
+                          Icons.alternate_email_outlined,
                           color: MyColors.btnColor,
                         ),
                         hintText: 'Email',
+                        hintStyle: GoogleFonts.poppins(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                        ),
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 16),
                         enabledBorder: OutlineInputBorder(
@@ -167,10 +171,14 @@ class _SigninState extends State<SigninView> {
                       obscureText: _obscureText,
                       decoration: InputDecoration(
                         icon: const Icon(
-                          Icons.vpn_key,
+                          Icons.password_outlined,
                           color: MyColors.btnColor,
                         ),
                         hintText: 'Password',
+                        hintStyle: GoogleFonts.poppins(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.w400,
+                        ),
                         contentPadding: const EdgeInsets.symmetric(
                             horizontal: 15, vertical: 16),
                         enabledBorder: OutlineInputBorder(
@@ -225,9 +233,9 @@ class _SigninState extends State<SigninView> {
                                 });
                               },
                             ),
-                            const Text(
+                            Text(
                               "Remember me",
-                              style: TextStyle(
+                              style: GoogleFonts.poppins(
                                 color: Colors.black,
                                 fontSize: 14,
                               ),
@@ -240,9 +248,9 @@ class _SigninState extends State<SigninView> {
                             Navigator.pushNamed(
                                 context, AppRoute.signupRoute); // error
                           },
-                          child: const Text(
+                          child: Text(
                             "Forgot Password",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               color: MyColors.btnColor,
                               fontWeight: FontWeight.bold,
                             ),
@@ -281,9 +289,10 @@ class _SigninState extends State<SigninView> {
                             );
                           }
                         },
-                        child: const Text(
+                        child: Text(
                           "Sign In",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
+                          style: GoogleFonts.poppins(
+                              color: Colors.white, fontSize: 18),
                         ),
                       ),
                     ),
@@ -291,12 +300,12 @@ class _SigninState extends State<SigninView> {
 
                   //
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(95, 15, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(85, 15, 0, 0),
                     child: Row(
                       children: [
-                        const Text(
+                        Text(
                           "Don't have an account ? ",
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
                             color: Colors.black,
                             fontWeight: FontWeight.normal,
                           ),
@@ -306,9 +315,9 @@ class _SigninState extends State<SigninView> {
                             Navigator.pushNamed(
                                 context, AppRoute.signupRoute); //error
                           },
-                          child: const Text(
+                          child: Text(
                             "Sign Up",
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
                               color: MyColors.btnColor,
                               fontWeight: FontWeight.bold,
                             ),
