@@ -51,11 +51,12 @@ The Smart Investment Application is a state-of-the-art application that gives us
 ## Prerequisites
 
 Before you start, make sure you have the following installed:
-
+- Java: The mobile app requires JDK 20. Install JDK 20 from here [Java JDK link](https://www.oracle.com/java/technologies/downloads/).
+- Gradle: The mobile app is developed using gradle 8.3. Build using gradle 8.3 in your system. [Gradle releases](https://gradle.org/releases/).
 - Flutter: The mobile app is developed using Flutter. Install Flutter by following the official [installation guide](https://flutter.dev/docs/get-started/install).
 - Node.js: The backend server is built with Node.js. Install Node.js from the [official website](https://nodejs.org/).
 - Android Studio or VS Code : To run the app on an Android emulator or device, you'll need Android Studio or VS Code with the Flutter plugin installed.
-- Database: You'll need a MongoDB database system, to store user and financial data. Make sure it's properly configured and running. make sure you have 'Paisa' database with 'users' collection.
+- Database: You'll need a MongoDB database system, to store user and financial data. Make sure it's properly configured and running. make sure you have 'paisa' database with 'users' collection.
 
 ## TODO
 - Screen: Add screens in dashboard. Currently only dashboard screen exists.
