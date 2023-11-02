@@ -174,6 +174,8 @@ class _SignupState extends State<SignupView> {
                             color: MyColors.btnColor,
                           ),
                           hintText: 'Enter Name',
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 16),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                             borderSide:
@@ -220,6 +222,8 @@ class _SignupState extends State<SignupView> {
                             color: MyColors.btnColor,
                           ),
                           hintText: 'Enter Email',
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 16),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                             borderSide:
@@ -262,6 +266,8 @@ class _SignupState extends State<SignupView> {
                             color: MyColors.btnColor,
                           ),
                           hintText: 'Enter Password',
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 16),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(16),
                             borderSide:

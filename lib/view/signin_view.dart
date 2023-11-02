@@ -20,6 +20,7 @@ class SigninView extends StatefulWidget {
 class _SigninState extends State<SigninView> {
   final _formKey = GlobalKey<FormState>();
   bool _obscureText = true;
+  bool rememberMe = false;
   //String errorMessage = ''; // Variable to store error message.
 
   Future save() async {
@@ -56,12 +57,6 @@ class _SigninState extends State<SigninView> {
         textColor: Colors.white,
         fontSize: 14.0,
       );
-      // Sign-in failed, display an error message.
-      // setState(() {
-      //   errorMessage =
-      //       'Email or password is incorrect'; // Set the error message.
-
-      // });
     }
   }
 
@@ -70,7 +65,8 @@ class _SigninState extends State<SigninView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+        body: SingleChildScrollView(
+      child: Stack(
         children: [
           Positioned(
             left: 0,
@@ -108,18 +104,6 @@ class _SigninState extends State<SigninView> {
                   const SizedBox(
                     height: 0,
                   ),
-                  // Text(
-                  //   errorMessage,
-                  //   //errorMessage, // Display the error message here.
-                  //   style: const TextStyle(
-                  //     color: Colors
-                  //         .red, // Set the color to red for error messages.
-                  //     fontSize: 14, // Set the font size.
-                  //     fontWeight: FontWeight.bold, // Make it bold.
-                  //     fontStyle:
-                  //         FontStyle.italic, // Italicize the error message.
-                  //   ),
-                  // ),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: TextFormField(
@@ -144,6 +128,8 @@ class _SigninState extends State<SigninView> {
                           color: MyColors.btnColor,
                         ),
                         hintText: 'Email',
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 16),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
                           borderSide:
@@ -185,6 +171,8 @@ class _SigninState extends State<SigninView> {
                           color: MyColors.btnColor,
                         ),
                         hintText: 'Password',
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 15, vertical: 16),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(16),
                           borderSide:
@@ -220,6 +208,52 @@ class _SigninState extends State<SigninView> {
                       ),
                     ),
                   ),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    //padding: const EdgeInsets.fromLTRB(40, 0, 35, 0),
+                    child: Row(
+                      children: [
+                        Row(
+                          children: [
+                            Checkbox(
+                              activeColor: MyColors.btnColor,
+                              value: rememberMe,
+                              onChanged: (newValue) {
+                                setState(() {
+                                  rememberMe = newValue ?? false;
+                                });
+                              },
+                            ),
+                            const Text(
+                              "Remember me",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const Spacer(), // Adds spacing between Remember me and Forgot Password
+                        InkWell(
+                          onTap: () {
+                            Navigator.pushNamed(
+                                context, AppRoute.signupRoute); // error
+                          },
+                          child: const Text(
+                            "Forgot Password",
+                            style: TextStyle(
+                              color: MyColors.btnColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  //new code
+
                   Padding(
                     padding: const EdgeInsets.fromLTRB(55, 16, 16, 0),
                     child: SizedBox(
@@ -254,8 +288,10 @@ class _SigninState extends State<SigninView> {
                       ),
                     ),
                   ),
+
+                  //
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(95, 20, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(95, 15, 0, 0),
                     child: Row(
                       children: [
                         const Text(
@@ -287,6 +323,6 @@ class _SigninState extends State<SigninView> {
           ),
         ],
       ),
-    );
+    ));
   }
 }
