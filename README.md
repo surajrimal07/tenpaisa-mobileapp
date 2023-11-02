@@ -51,11 +51,24 @@ The Smart Investment Application is a state-of-the-art application that gives us
 ## Prerequisites
 
 Before you start, make sure you have the following installed:
-
+- Java: The mobile app requires JDK 20. Install JDK 20 from here [Java JDK link](https://www.oracle.com/java/technologies/downloads/).
+- Gradle: The mobile app is developed using gradle 8.3. Build using gradle 8.3 in your system. [Gradle releases](https://gradle.org/releases/).
 - Flutter: The mobile app is developed using Flutter. Install Flutter by following the official [installation guide](https://flutter.dev/docs/get-started/install).
 - Node.js: The backend server is built with Node.js. Install Node.js from the [official website](https://nodejs.org/).
-- Android Studio: To run the app on an Android emulator or device, you'll need Android Studio with the Flutter plugin installed.
-- Database: You'll need a MongoDB database system, to store user and financial data. Make sure it's properly configured and running.
+- Android Studio or VS Code : To run the app on an Android emulator or device, you'll need Android Studio or VS Code with the Flutter plugin installed [official website](https://code.visualstudio.com/download).
+- Database: You'll need a MongoDB database system or MongoDB Atlas, to store user and financial data. Make sure you have 'paisa' database with 'users' collection [official website](https://www.mongodb.com/try/download/community).
+
+## TODO
+- Screen: Add screens in dashboard. Currently only dashboard screen exists.
+- Database: Connect dashboard data to mongoDB. Currently data is hardcoded.
+- Database: Add CRUD logic.
+
+## What Works?
+- Splash Screen
+- Onboarding Screen With Onboarding logic (Showing Onboarding only first time)
+- Login Screen (connected to MongoDB)
+- Signup Screen (connected to MongoDB)
+- OTP Screen (EMail OTP, uses [ethereal.email](ethereal.email) service)
 
 ## Getting Started
 
