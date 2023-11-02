@@ -57,6 +57,18 @@ Before you start, make sure you have the following installed:
 - Android Studio: To run the app on an Android emulator or device, you'll need Android Studio with the Flutter plugin installed.
 - Database: You'll need a MongoDB database system, to store user and financial data. Make sure it's properly configured and running.
 
+## TODO
+- Screen: Add screens in dashboard. Currently only dashboard screen exists.
+- Database: Connect dashboard data to mongoDB. Currently data is hardcoded.
+- Database: Add CRUD logic.
+
+## What Works?
+- Splash Screen
+- Onboarding Screen With Onboarding logic (Showing Onboarding only first time)
+- Login Screen (connected to MongoDB)
+- Signup Screen (connected to MongoDB)
+- OTP Screen (EMail OTP)
+
 ## Getting Started
 
 1. Clone the repository:
