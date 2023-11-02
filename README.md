@@ -68,7 +68,7 @@ Before you start, make sure you have the following installed:
 - Onboarding Screen With Onboarding logic (Showing Onboarding only first time)
 - Login Screen (connected to MongoDB)
 - Signup Screen (connected to MongoDB)
-- OTP Screen (EMail OTP)
+- OTP Screen (EMail OTP, uses ethereal.email service)
 
 ## Getting Started
 
