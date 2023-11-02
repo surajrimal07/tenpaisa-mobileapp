@@ -6,18 +6,16 @@ import 'package:paisa/view/signup_view.dart';
 
 class AppRoute {
   AppRoute._();
-
-  static const String onboardRoute = '/';
   static const String signinRoute = '/signin';
+  static const String onboardRoute = '/onboard';
   static const String signupRoute = '/signup';
   static const String dashboardRoute = '/dashboard';
   static const String otpRoute = '/otp';
 
   static getApplicationRoute() {
     return {
-      
-      onboardRoute: (context) => const OnboardingView(),
       signinRoute: (context) => const SigninView(),
+      onboardRoute: (context) => const OnboardingView(),
       signupRoute: (context) => const SignupView(),
       dashboardRoute: (context) => const DashboardView(),
       otpRoute: (context) => const OtpView()

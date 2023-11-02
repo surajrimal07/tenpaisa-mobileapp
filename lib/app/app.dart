@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:paisa/view/splash_view.dart';
 
 import 'routes/approutes.dart';
 
 class App extends StatelessWidget {
-  final bool isFirstTime;
-
-  const App({super.key, required this.isFirstTime});
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
+    //print("we aare at app $isFirstTime");
     return MaterialApp(
       title: '10Paisa',
       debugShowCheckedModeBanner: false,
-      initialRoute: isFirstTime ? AppRoute.onboardRoute : AppRoute.signinRoute,
+      home: const SplashScreen(),
+      //initialRoute: isFirstTime ? AppRoute.onboardRoute : AppRoute.signinRoute,
       routes: AppRoute.getApplicationRoute(),
     );
   }
