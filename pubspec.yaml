@@ -26,6 +26,7 @@ dependencies:
   shared_preferences: ^2.2.2
   fluttertoast: ^8.2.2
   pinput: ^3.0.1
+  flutter_snake_navigationbar: ^0.6.1
 
 dev_dependencies:
   flutter_test:
@@ -37,15 +38,15 @@ dev_dependencies:
   api_cache_manager: ^1.0.1
   snippet_coder_utils: ^1.0.14
 
-flutter_native_splash:
-  background_image: "assets/images/appsplash.png"
-  android: true
-  ios: true
-  android_gravity: center
-  ios_content_mode: center
-  fullscreen: true
+# flutter_native_splash:
+#   background_image: "assets/images/appsplash.png"
+#   android: true
+#   ios: true
+#   android_gravity: center
+#   ios_content_mode: center
+#   fullscreen: true
 
-  #--------------- ./ PACKAGES END ------------------#
+#--------------- ./ PACKAGES END ------------------#
 
 flutter:
   uses-material-design: true

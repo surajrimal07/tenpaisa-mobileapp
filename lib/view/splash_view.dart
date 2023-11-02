@@ -5,15 +5,15 @@ import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/utils/colors_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+class SplashView extends StatefulWidget {
+  const SplashView({super.key});
 
   @override
   // ignore: library_private_types_in_public_api
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashView> {
   @override
   void initState() {
     super.initState();

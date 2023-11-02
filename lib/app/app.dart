@@ -12,7 +12,7 @@ class App extends StatelessWidget {
     return MaterialApp(
       title: '10Paisa',
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen(),
+      home: const SplashView(),
       //initialRoute: isFirstTime ? AppRoute.onboardRoute : AppRoute.signinRoute,
       routes: AppRoute.getApplicationRoute(),
     );
