@@ -252,7 +252,7 @@ class _SigninState extends State<SigninView> {
                         InkWell(
                           onTap: () {
                             Navigator.pushNamed(
-                                context, AppRoute.signupRoute); // error
+                                context, AppRoute.forgotRoute); // error
                           },
                           child: Text(
                             "Forgot Password",
