@@ -24,7 +24,7 @@ class _SignupState extends State<SignupView> {
 
   Future<void> save() async {
     try {
-      var url = Uri.parse("http://192.168.101.9:5000/api/otp-login"); //create
+      var url = Uri.parse("http://192.168.101.6:5000/api/otp-login"); //create
 
       // Create a map for the request body
       var requestBody = {'email': otp.email};

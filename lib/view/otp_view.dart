@@ -22,7 +22,7 @@ class _MyVerifyState extends State<OtpView> {
   //verify otp
   Future<void> verify() async {
     try {
-      var url = Uri.parse("http://192.168.101.9:5000/api/otp-verify");
+      var url = Uri.parse("http://192.168.101.6:5000/api/otp-verify");
 
       // Create a map for the request body
 
@@ -76,7 +76,7 @@ class _MyVerifyState extends State<OtpView> {
 //resend otp
   Future<void> resend() async {
     try {
-      var url = Uri.parse("http://192.168.101.9:5000/api/otp-login"); //create
+      var url = Uri.parse("http://192.168.101.6:5000/api/otp-login"); //create
 
       // Create a map for the request body
       var requestBody = {'email': otp.email};
@@ -149,7 +149,7 @@ class _MyVerifyState extends State<OtpView> {
   //now do data entry
   Future<void> save() async {
     try {
-      var url = Uri.parse("http://192.168.101.9:5000/api/create");
+      var url = Uri.parse("http://192.168.101.6:5000/api/create");
 
       // Create a map for the request body
       var requestBody = {

@@ -46,8 +46,10 @@ class _ForgotState extends State<ForgotView> {
 
   Future verifymail() async {
     var url = Uri.parse(
-        "http://192.168.101.9:5000/api/login"); //replace this with localhost ip address
+        "http://192.168.101.6:5000/api/forget"); //replace this with localhost ip address
 
+    // print("We are here at verify mail");
+    // print(mailverified);
     var res = await http.post(
       url,
       headers: <String, String>{
@@ -59,10 +61,7 @@ class _ForgotState extends State<ForgotView> {
     );
 
     if (res.statusCode == 200) {
-      var result = res.body;
-      Map<String, dynamic> parsedResponse = json.decode(result);
-      String dataValue = parsedResponse['data'];
-      otp.hash = dataValue;
+      //print("enabling otp button 64");
 
       Fluttertoast.showToast(
         msg: "Check Email for OTP",
@@ -73,10 +72,20 @@ class _ForgotState extends State<ForgotView> {
         fontSize: 14.0,
       );
 
-      mailverified = true;
-    } else {
+      setState(() {
+        mailverified = true; // This will show the OTP field
+      });
+
+      var result = res.body;
+
+      Map<String, dynamic> parsedResponse = json.decode(result);
+      String dataValue = parsedResponse['hash'];
+      otp.hash = dataValue;
+
+      //print("enabling otp button");
+    } else if (res.statusCode == 404) {
       Fluttertoast.showToast(
-        msg: "Email Not Found : VM",
+        msg: "Email Not Found",
         toastLength: Toast.LENGTH_SHORT,
         timeInSecForIosWeb: 3,
         backgroundColor: Colors.black,
@@ -87,8 +96,13 @@ class _ForgotState extends State<ForgotView> {
   }
 
   Future verifyotp() async {
+    // print(otp.email);
+    // print(otp.otp);
+    // print(otp.hash);
+
+    //print(mailverified);
     var url = Uri.parse(
-        "http://192.168.101.9:5000/api/login"); //replace this with localhost ip address
+        "http://192.168.101.6:5000/api/otp-verify"); //replace this with localhost ip address
 
     var res = await http.post(
       url,
@@ -103,6 +117,10 @@ class _ForgotState extends State<ForgotView> {
     );
 
     if (res.statusCode == 200) {
+      setState(() {
+        otpverified = true; // This will show the OTP field
+      });
+
       Fluttertoast.showToast(
         msg: "OTP Verified",
         toastLength: Toast.LENGTH_SHORT,
@@ -111,7 +129,6 @@ class _ForgotState extends State<ForgotView> {
         textColor: Colors.white,
         fontSize: 14.0,
       );
-      otpverified = true;
     } else {
       Fluttertoast.showToast(
         msg: "OTP Error : VO",
@@ -126,7 +143,7 @@ class _ForgotState extends State<ForgotView> {
 
   Future updatepassword() async {
     var url = Uri.parse(
-        "http://192.168.101.9:5000/api/login"); //replace this with localhost ip address
+        "http://192.168.101.6:5000/api/updatepasswd"); //replace this with localhost ip address
     var res = await http.post(
       url,
       headers: <String, String>{
@@ -134,7 +151,7 @@ class _ForgotState extends State<ForgotView> {
       },
       body: jsonEncode(<String, String>{
         'email': otp.email,
-        'password': user.password,
+        'newpass': user.password,
       }),
     );
 
@@ -170,6 +187,8 @@ class _ForgotState extends State<ForgotView> {
 
   @override
   Widget build(BuildContext context) {
+    print("inside 117");
+    print(mailverified);
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -228,9 +247,8 @@ class _ForgotState extends State<ForgotView> {
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: TextFormField(
-                          controller: TextEditingController(text: user.email),
+                          controller: TextEditingController(text: otp.email),
                           onChanged: (value) {
-                            //user.email = value;
                             otp.email = value;
                           },
                           validator: (value) {
@@ -413,14 +431,16 @@ class _ForgotState extends State<ForgotView> {
                             ),
                             onPressed: () {
                               if (_formKey.currentState?.validate() ?? false) {
-                                if (mailverified = false) {
+                                if (mailverified == false) {
                                   verifymail();
-                                } else if (mailverified = true) {
+                                } else if (mailverified == true &&
+                                    otpverified == false) {
                                   verifyotp();
                                 } else if (mailverified == true &&
                                     otpverified == true) {
                                   updatepassword();
                                 }
+                                // }
                               } else {
                                 //print("Empty Credentials passed");
                                 Fluttertoast.showToast(
@@ -434,14 +454,15 @@ class _ForgotState extends State<ForgotView> {
                               }
                             },
                             child: Text(
-                              // if (mailverified==true){
-                              //   btntetxt = "Verify OTP"
-                              //   } else if (otpverified == true) {
-                              //     btntext = "Save Password"
-                              //   } else {
-                              //     btntext = "Verify Email"
-                              //   }
-                              btntext,
+                              // mailverified == true? "Verify OTP"
+                              //     : otpverified == true? "Save Password": "Verify Email",
+
+                              otpverified
+                                  ? "Update Password"
+                                  : (mailverified
+                                      ? "Verify OTP"
+                                      : "Verify Email"),
+                              // btntext,
                               //"Verify Email",
                               style: GoogleFonts.poppins(
                                   color: Colors.white, fontSize: 18),

@@ -41,23 +41,6 @@ class _SplashScreenState extends State<SplashView> {
     });
   }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//         body: Container(
-//       color: MyColors.btnColor,
-//       child: Center(
-//         child: SizedBox(
-//           width: 250, // Set the desired width
-//           height: 250, // Set the desired height
-//           //child: FlutterLogo(size: MediaQuery.of(context).size.height)),
-//           child: Image.asset('assets/logos/logo.png'),
-//         ),
-//       ),
-//     ));
-//   }
-// }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
