@@ -14,58 +14,63 @@ class DashboardView extends StatefulWidget {
 
 class _MainPageState extends State<DashboardView> {
   int indexBottomBar = 0;
+  DateTime? currentBackPressTime;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              _header(),
-              _card(),
-              _menu(),
-              _portfolio(),
-              _watchlist(),
+    return WillPopScope(
+        onWillPop: _onBackPressed,
+        child: Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _header(),
+                  _card(),
+                  _menu(),
+                  _portfolio(),
+                  _watchlist(),
+                ],
+              ),
+            ),
+          ),
+          bottomNavigationBar: SnakeNavigationBar.color(
+            behaviour: SnakeBarBehaviour.floating,
+            snakeShape: SnakeShape.circle,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+            padding: const EdgeInsets.all(16),
+            currentIndex: indexBottomBar,
+            backgroundColor: MyColors.secondaryColor,
+            selectedItemColor: Colors.white,
+            unselectedItemColor: Colors.white,
+            height: 72,
+            snakeViewColor: MyColors.primaryColor,
+            onTap: (index) => setState(() => indexBottomBar = index),
+            items: const [
+              BottomNavigationBarItem(
+                  icon: Icon(Iconsax.home),
+                  activeIcon: Icon(Iconsax.home5),
+                  label: 'home'),
+              BottomNavigationBarItem(
+                  icon: Icon(Iconsax.document),
+                  activeIcon: Icon(Iconsax.document5),
+                  label: 'transaction'),
+              BottomNavigationBarItem(
+                  icon: Icon(Iconsax.transaction_minus),
+                  activeIcon: Icon(Iconsax.transaction_minus5),
+                  label: 'buy/sell'),
+              BottomNavigationBarItem(
+                  icon: Icon(Iconsax.clock),
+                  activeIcon: Icon(Iconsax.clock5),
+                  label: 'clock'),
+              BottomNavigationBarItem(
+                  icon: Icon(Iconsax.profile_add),
+                  activeIcon: Icon(Iconsax.profile_add5),
+                  label: 'user')
             ],
           ),
-        ),
-      ),
-      bottomNavigationBar: SnakeNavigationBar.color(
-        behaviour: SnakeBarBehaviour.floating,
-        snakeShape: SnakeShape.circle,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-        padding: const EdgeInsets.all(16),
-        currentIndex: indexBottomBar,
-        backgroundColor: MyColors.secondaryColor,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white,
-        height: 72,
-        snakeViewColor: MyColors.primaryColor,
-        onTap: (index) => setState(() => indexBottomBar = index),
-        items: const [
-          BottomNavigationBarItem(
-              icon: Icon(Iconsax.home),
-              activeIcon: Icon(Iconsax.home5),
-              label: 'home'),
-          BottomNavigationBarItem(
-              icon: Icon(Iconsax.document),
-              activeIcon: Icon(Iconsax.document5),
-              label: 'transaction'),
-          BottomNavigationBarItem(
-              icon: Icon(Iconsax.transaction_minus),
-              activeIcon: Icon(Iconsax.transaction_minus5),
-              label: 'buy/sell'),
-          BottomNavigationBarItem(
-              icon: Icon(Iconsax.clock),
-              activeIcon: Icon(Iconsax.clock5),
-              label: 'clock'),
-          BottomNavigationBarItem(
-              icon: Icon(Iconsax.profile_add),
-              activeIcon: Icon(Iconsax.profile_add5),
-              label: 'user')
-        ],
-      ),
-    );
+        ));
   }
 
   Container _watchlist() {
@@ -403,5 +408,23 @@ class _MainPageState extends State<DashboardView> {
         ],
       ),
     );
+  }
+//}
+
+  Future<bool> _onBackPressed() async {
+    DateTime now = DateTime.now();
+
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Press back again to exit'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return false;
+    }
+    return true;
   }
 }
