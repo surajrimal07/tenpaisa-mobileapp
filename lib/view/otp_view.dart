@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:paisa/app/routes/approutes.dart';
+import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/model/otp_model.dart';
 import 'package:paisa/model/user_model.dart';
 import 'package:pinput/pinput.dart';
@@ -39,37 +39,16 @@ class _MyVerifyState extends State<OtpView> {
       );
 
       if (response.statusCode == 200) {
-        Fluttertoast.showToast(
-          msg: "OTP Verified successfully",
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 14.0,
-        );
+        CustomToast.showToast("OTP Verified successfully");
 
         // ignore: use_build_context_synchronously
         save();
         //Navigator.pushNamed(context, AppRoute.otpRoute); // error
       } else {
-        Fluttertoast.showToast(
-          msg: "OTP error: ${response.statusCode}",
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 14.0,
-        );
+        CustomToast.showToast("OTP error: ${response.statusCode}");
       }
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Network error: $e",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      CustomToast.showToast("Network error: $e");
     }
   }
 
@@ -102,46 +81,18 @@ class _MyVerifyState extends State<OtpView> {
         String dataValue = parsedResponse['data'];
         dataToPass['hash'] = dataValue;
 
-        Fluttertoast.showToast(
-          msg: "Please Enter Email OTP",
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 14.0,
-        );
+        CustomToast.showToast("Please Enter Email OTP");
 
         // ignore: use_build_context_synchronously
         Navigator.pushNamed(context, AppRoute.otpRoute,
             arguments: dataToPass); // error
       } else if (response.statusCode == 400) {
-        Fluttertoast.showToast(
-          msg: "Email Exists : ${response.statusCode}",
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 14.0,
-        );
+        CustomToast.showToast("Email Exists : ${response.statusCode}");
       } else {
-        Fluttertoast.showToast(
-          msg: "Server error: ${response.statusCode}",
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 14.0,
-        );
+        CustomToast.showToast("Server error: ${response.statusCode}");
       }
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Network error: $e",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      CustomToast.showToast("Network error: $e");
       //print("Network error: $e");
     }
   }
@@ -167,14 +118,8 @@ class _MyVerifyState extends State<OtpView> {
       );
 
       if (response.statusCode == 200) {
-        Fluttertoast.showToast(
-          msg: "User Created, proceed to login",
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 14.0,
-        );
+        CustomToast.showToast("User Created, proceed to login");
+
         // ignore: use_build_context_synchronously
         Navigator.pushNamedAndRemoveUntil(
           context,
@@ -182,33 +127,12 @@ class _MyVerifyState extends State<OtpView> {
           (route) => false,
         );
       } else if (response.statusCode == 400) {
-        Fluttertoast.showToast(
-          msg: "Email Exists : ${response.statusCode}",
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 14.0,
-        );
+        CustomToast.showToast("Email Exists : ${response.statusCode}");
       } else {
-        Fluttertoast.showToast(
-          msg: "Server error: ${response.statusCode}",
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 14.0,
-        );
+        CustomToast.showToast("Server error: ${response.statusCode}");
       }
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Network error: $e",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      CustomToast.showToast("Network error: $e");
 
       //print("Network error: $e");
     }

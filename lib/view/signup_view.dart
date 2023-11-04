@@ -1,10 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:paisa/app/routes/approutes.dart';
+import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/model/otp_model.dart';
 import 'package:paisa/model/user_model.dart';
 
@@ -50,46 +50,18 @@ class _SignupState extends State<SignupView> {
         String dataValue = parsedResponse['data'];
         dataToPass['hash'] = dataValue;
 
-        Fluttertoast.showToast(
-          msg: "Please verify your Email",
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 1,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 14.0,
-        );
+        CustomToast.showToast("Error Occured");
 
         // ignore: use_build_context_synchronously
         Navigator.pushNamed(context, AppRoute.otpRoute,
             arguments: dataToPass); // error
       } else if (response.statusCode == 400) {
-        Fluttertoast.showToast(
-          msg: "Email Exists : ${response.statusCode}",
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 14.0,
-        );
+        CustomToast.showToast("Email Exists : ${response.statusCode}");
       } else {
-        Fluttertoast.showToast(
-          msg: "Server error: ${response.statusCode}",
-          toastLength: Toast.LENGTH_SHORT,
-          timeInSecForIosWeb: 3,
-          backgroundColor: Colors.black,
-          textColor: Colors.white,
-          fontSize: 14.0,
-        );
+        CustomToast.showToast("Server error: ${response.statusCode}");
       }
     } catch (e) {
-      Fluttertoast.showToast(
-        msg: "Network error: $e",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      CustomToast.showToast("Network error: $e");
 
       //print("Network error: $e");
     }

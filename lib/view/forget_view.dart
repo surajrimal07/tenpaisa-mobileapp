@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:paisa/app/routes/approutes.dart';
+import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/model/otp_model.dart';
 import 'package:paisa/model/user_model.dart';
 
@@ -62,15 +62,7 @@ class _ForgotState extends State<ForgotView> {
 
     if (res.statusCode == 200) {
       //print("enabling otp button 64");
-
-      Fluttertoast.showToast(
-        msg: "Check Email for OTP",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      CustomToast.showToast("Check Email for OTP");
 
       setState(() {
         mailverified = true; // This will show the OTP field
@@ -84,14 +76,7 @@ class _ForgotState extends State<ForgotView> {
 
       //print("enabling otp button");
     } else if (res.statusCode == 404) {
-      Fluttertoast.showToast(
-        msg: "Email Not Found",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      CustomToast.showToast("Email Not Found");
     }
   }
 
@@ -118,26 +103,12 @@ class _ForgotState extends State<ForgotView> {
 
     if (res.statusCode == 200) {
       setState(() {
-        otpverified = true; // This will show the OTP field
+        otpverified = true;
       });
 
-      Fluttertoast.showToast(
-        msg: "OTP Verified",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      CustomToast.showToast("OTP Verified");
     } else {
-      Fluttertoast.showToast(
-        msg: "OTP Error : VO",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      CustomToast.showToast("OTP Error : VO 112");
     }
   }
 
@@ -156,14 +127,8 @@ class _ForgotState extends State<ForgotView> {
     );
 
     if (res.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: "Password Updated",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      CustomToast.showToast("Password Updated");
+
       // ignore: use_build_context_synchronously
       Navigator.pushNamedAndRemoveUntil(
         context,
@@ -171,14 +136,7 @@ class _ForgotState extends State<ForgotView> {
         (route) => false,
       );
     } else {
-      Fluttertoast.showToast(
-        msg: "Error occured : UP",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      CustomToast.showToast("Error occured : UP");
     }
   }
 
@@ -433,6 +391,7 @@ class _ForgotState extends State<ForgotView> {
                               if (_formKey.currentState?.validate() ?? false) {
                                 if (mailverified == false) {
                                   verifymail();
+                                  CustomToast.showToast("Please Wait");
                                 } else if (mailverified == true &&
                                     otpverified == false) {
                                   verifyotp();
@@ -443,14 +402,7 @@ class _ForgotState extends State<ForgotView> {
                                 // }
                               } else {
                                 //print("Empty Credentials passed");
-                                Fluttertoast.showToast(
-                                  msg: "Error Occured",
-                                  toastLength: Toast.LENGTH_SHORT,
-                                  timeInSecForIosWeb: 3,
-                                  backgroundColor: Colors.black,
-                                  textColor: Colors.white,
-                                  fontSize: 14.0,
-                                );
+                                CustomToast.showToast("Error Occured");
                               }
                             },
                             child: Text(
@@ -462,8 +414,7 @@ class _ForgotState extends State<ForgotView> {
                                   : (mailverified
                                       ? "Verify OTP"
                                       : "Verify Email"),
-                              // btntext,
-                              //"Verify Email",
+
                               style: GoogleFonts.poppins(
                                   color: Colors.white, fontSize: 18),
                             ),

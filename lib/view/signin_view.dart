@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:paisa/app/routes/approutes.dart';
+import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/model/user_model.dart';
 
 import '../utils/colors_utils.dart';
@@ -54,14 +55,7 @@ class _SigninState extends State<SigninView> {
         (route) => false,
       );
     } else {
-      Fluttertoast.showToast(
-        msg: "Email or password is incorrect",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIosWeb: 3,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      CustomToast.showToast("Email or password is incorrect");
     }
   }
 
@@ -284,14 +278,7 @@ class _SigninState extends State<SigninView> {
                             save();
                           } else {
                             //print("Empty Credentials passed");
-                            Fluttertoast.showToast(
-                              msg: "Error Occured",
-                              toastLength: Toast.LENGTH_SHORT,
-                              timeInSecForIosWeb: 3,
-                              backgroundColor: Colors.black,
-                              textColor: Colors.white,
-                              fontSize: 14.0,
-                            );
+                            CustomToast.showToast("Error Occured");
                           }
                         },
                         child: Text(
