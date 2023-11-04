@@ -8,6 +8,7 @@ import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/model/user_model.dart';
 
+import '../app/snackbar/snackbar_snackbar.dart';
 import '../utils/colors_utils.dart';
 
 class SigninView extends StatefulWidget {
@@ -55,7 +56,9 @@ class _SigninState extends State<SigninView> {
         (route) => false,
       );
     } else {
-      CustomToast.showToast("Email or password is incorrect");
+      CustomSnackbar.showSnackbar(context, "Email or password is incorrect");
+
+      //CustomToast.showToast("Email or password is incorrect");
     }
   }
 
