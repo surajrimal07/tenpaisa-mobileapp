@@ -123,7 +123,7 @@ class _MyVerifyState extends State<OtpView> {
         // ignore: use_build_context_synchronously
         Navigator.pushNamedAndRemoveUntil(
           context,
-          AppRoute.signinRoute,
+          AppRoute.invStyle, //AppRoute.signinRoute,
           (route) => false,
         );
       } else if (response.statusCode == 400) {
@@ -138,7 +138,7 @@ class _MyVerifyState extends State<OtpView> {
     }
   }
 
-  User user = User('', '', '');
+  User user = User('', '', '', '');
   Otp otp = Otp('', '', '');
 
   //

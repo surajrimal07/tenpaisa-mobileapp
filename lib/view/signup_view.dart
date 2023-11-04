@@ -44,13 +44,14 @@ class _SignupState extends State<SignupView> {
         body: jsonEncode(requestBody),
       );
 
+      CustomToast.showToast("Please Wait");
       if (response.statusCode == 200) {
         var result = response.body;
         Map<String, dynamic> parsedResponse = json.decode(result);
         String dataValue = parsedResponse['data'];
         dataToPass['hash'] = dataValue;
 
-        CustomToast.showToast("Error Occured");
+        CustomToast.showToast("Please Check Email OTP");
 
         // ignore: use_build_context_synchronously
         Navigator.pushNamed(context, AppRoute.otpRoute,
@@ -68,7 +69,7 @@ class _SignupState extends State<SignupView> {
   }
 
   Otp otp = Otp('', '', '');
-  User user = User('', '', '');
+  User user = User('', '', '', '');
 
   @override
   Widget build(BuildContext context) {
@@ -319,6 +320,8 @@ class _SignupState extends State<SignupView> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(70, 20, 0, 0),
                       child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
                             "Already have an account ? ",

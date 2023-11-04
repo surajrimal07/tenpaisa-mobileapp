@@ -42,12 +42,6 @@ class _SigninState extends State<SigninView> {
     if (res.statusCode == 200) {
       CustomToast.showToast("Signin Successful");
 
-      // ignore: use_build_context_synchronously
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        AppRoute.dashboardRoute,
-        (route) => false,
-      );
       //save a user token after this.
       if (rememberMe == true) {
         final String dataToHash =
@@ -61,16 +55,24 @@ class _SigninState extends State<SigninView> {
         prefs.setString('userToken', userToken);
 
         //print("true sent, user token ");
-      } else {
-        //print("User didn't their password");
       }
+      // else {
+      //   //print("User didn't their password");
+      // }
+
+      // ignore: use_build_context_synchronously
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        AppRoute.dashboardRoute, //AppRoute.dashboardRoute,
+        (route) => false,
+      );
     } else {
       //CustomSnackbar.showSnackbar(context, "Email or password is incorrect");
       CustomToast.showToast("Email or password is incorrect");
     }
   }
 
-  User user = User('', '', '');
+  User user = User('', '', '', '');
 
   @override
   Widget build(BuildContext context) {
@@ -78,12 +80,32 @@ class _SigninState extends State<SigninView> {
         body: SingleChildScrollView(
       child: Stack(
         children: [
+          // OrientationBuilder(
+          //   builder: (context, orientation) {
+          //     return Positioned(
+          //       left: 0,
+          //       right: 0,
+          //       top: 0,
+          //       child: Image.asset(
+          //         'assets/images/blite.png',
+          //         fit: BoxFit.cover,
+          //         width: MediaQuery.of(context).size.width,
+          //       ),
+          //     );
+          //   },
+          // ),
+
           Positioned(
             left: 0,
             right: 0,
             top: 0,
-            child: Image.asset('assets/images/blite.png', fit: BoxFit.cover),
+            child: Image.asset(
+              'assets/images/blite.png',
+              fit: BoxFit.cover,
+              //width: MediaQuery.of(context).size.width,
+            ),
           ),
+
           Container(
             alignment: Alignment.center,
             child: Form(
@@ -305,6 +327,8 @@ class _SigninState extends State<SigninView> {
                   Padding(
                     padding: const EdgeInsets.fromLTRB(85, 15, 0, 0),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
                           "Don't have an account ? ",

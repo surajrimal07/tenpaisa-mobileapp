@@ -140,7 +140,7 @@ class _ForgotState extends State<ForgotView> {
     }
   }
 
-  User user = User('', '', '');
+  User user = User('', '', '', '');
   Otp otp = Otp('', '', '');
 
   @override
@@ -426,6 +426,8 @@ class _ForgotState extends State<ForgotView> {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(125, 15, 0, 0),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             InkWell(
                               onTap: () {

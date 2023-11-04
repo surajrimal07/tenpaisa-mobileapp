@@ -4,6 +4,7 @@ import 'package:paisa/view/onboarding_view.dart';
 import 'package:paisa/view/otp_view.dart';
 import 'package:paisa/view/signin_view.dart';
 import 'package:paisa/view/signup_view.dart';
+import 'package:paisa/view/style_view.dart';
 
 class AppRoute {
   AppRoute._();
@@ -13,6 +14,7 @@ class AppRoute {
   static const String dashboardRoute = '/dashboard';
   static const String otpRoute = '/otp';
   static const String forgotRoute = '/forgot';
+  static const String invStyle = '/invstyle';
 
   static getApplicationRoute() {
     return {
@@ -21,7 +23,8 @@ class AppRoute {
       signupRoute: (context) => const SignupView(),
       dashboardRoute: (context) => const DashboardView(),
       otpRoute: (context) => const OtpView(),
-      forgotRoute: (context) => const ForgotView()
+      forgotRoute: (context) => const ForgotView(),
+      invStyle: (context) => const StyleView()
     };
   }
 }
