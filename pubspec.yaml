@@ -27,6 +27,7 @@ dependencies:
   fluttertoast: ^8.2.2
   pinput: ^3.0.1
   flutter_snake_navigationbar: ^0.6.1
+  crypto: ^3.0.1
 
 dev_dependencies:
   flutter_test:

@@ -1,14 +1,14 @@
 import 'dart:convert';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/model/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-import '../app/snackbar/snackbar_snackbar.dart';
 import '../utils/colors_utils.dart';
 
 class SigninView extends StatefulWidget {
@@ -40,14 +40,7 @@ class _SigninState extends State<SigninView> {
     );
 
     if (res.statusCode == 200) {
-      Fluttertoast.showToast(
-        msg: "Signin Successful",
-        toastLength: Toast.LENGTH_SHORT,
-        timeInSecForIosWeb: 1,
-        backgroundColor: Colors.black,
-        textColor: Colors.white,
-        fontSize: 14.0,
-      );
+      CustomToast.showToast("Signin Successful");
 
       // ignore: use_build_context_synchronously
       Navigator.pushNamedAndRemoveUntil(
@@ -55,10 +48,25 @@ class _SigninState extends State<SigninView> {
         AppRoute.dashboardRoute,
         (route) => false,
       );
-    } else {
-      CustomSnackbar.showSnackbar(context, "Email or password is incorrect");
+      //save a user token after this.
+      if (rememberMe == true) {
+        final String dataToHash =
+            '$user.email+$user.password'; // Concatenate email and password
+        final userToken = sha256
+            .convert(dataToHash.codeUnits)
+            .toString(); // Generate the hash
 
-      //CustomToast.showToast("Email or password is incorrect");
+        SharedPreferences prefs =
+            await SharedPreferences.getInstance(); //error here
+        prefs.setString('userToken', userToken);
+
+        //print("true sent, user token ");
+      } else {
+        //print("User didn't their password");
+      }
+    } else {
+      //CustomSnackbar.showSnackbar(context, "Email or password is incorrect");
+      CustomToast.showToast("Email or password is incorrect");
     }
   }
 
