@@ -107,17 +107,15 @@ class _MyVerifyState extends State<OtpView> {
       var requestBody = {
         'name': user.name,
         'email': user.email,
-        'password': user.password,
+        'password': user.password
+        // 'phone': '',
+        // 'style': '',
       };
 
       final String dataToHash =
           '$user.email+$user.password'; // Concatenate email and password
       final hashtopass =
           sha256.convert(dataToHash.codeUnits).toString(); // Generate the hash
-
-      // SharedPreferences prefs =
-      //     await SharedPreferences.getInstance(); //error here
-      // prefs.setString('userToken', userToken);
 
       var response = await http.post(
         url,
@@ -135,7 +133,7 @@ class _MyVerifyState extends State<OtpView> {
             context,
             AppRoute.invStyle, //AppRoute.signinRoute,
             (route) => false,
-            arguments: {'hash': hashtopass});
+            arguments: {'hash': hashtopass, 'email': user.email});
 
         // Navigator.pushNamedAndRemoveUntil(context, AppRoute.invStyle,
         //     arguments: dataToPass);

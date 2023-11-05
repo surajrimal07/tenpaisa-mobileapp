@@ -303,6 +303,7 @@ class _SignupState extends State<SignupView> {
                           ),
                           onPressed: () {
                             if (_formKey.currentState?.validate() ?? false) {
+                              CustomToast.showToast("Please Wait");
                               save();
                             } else {
                               //print("not ok");

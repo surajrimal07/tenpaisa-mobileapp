@@ -114,7 +114,7 @@ class _ForgotState extends State<ForgotView> {
 
   Future updatepassword() async {
     var url = Uri.parse(
-        "http://192.168.101.6:5000/api/updatepasswd"); //replace this with localhost ip address
+        "http://192.168.101.6:5000/api/updateuser"); //replace this with localhost ip address
     var res = await http.post(
       url,
       headers: <String, String>{
@@ -122,7 +122,8 @@ class _ForgotState extends State<ForgotView> {
       },
       body: jsonEncode(<String, String>{
         'email': otp.email,
-        'newpass': user.password,
+        'field': 'password',
+        'value': user.password,
       }),
     );
 
@@ -136,7 +137,7 @@ class _ForgotState extends State<ForgotView> {
         (route) => false,
       );
     } else {
-      CustomToast.showToast("Error occured : UP");
+      CustomToast.showToast("Error occured${otp.email}${user.password}");
     }
   }
 
