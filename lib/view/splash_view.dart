@@ -60,7 +60,7 @@ class _SplashScreenState extends State<SplashView> {
             end: Alignment.bottomRight,
             colors: [
               MyColors.btnColor,
-              Colors.blue
+              MyColors.btnColor
             ], // Set your desired gradient colors
           ),
         ),

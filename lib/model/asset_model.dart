@@ -1,4 +1,4 @@
-class Stock {
+class Asset {
   String? iconUrl;
   String? symbol;
   String? name;
@@ -6,7 +6,7 @@ class Stock {
   String? change;
   String? color;
 
-  Stock(
+  Asset(
       {this.iconUrl,
       this.symbol,
       this.name,
@@ -14,7 +14,7 @@ class Stock {
       this.change,
       this.color});
 
-  Stock.fromJson(Map<String, dynamic> json) {
+  Asset.fromJson(Map<String, dynamic> json) {
     iconUrl = json['iconUrl'];
     symbol = json['symbol'];
     name = json['name'];

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -45,7 +46,7 @@ class _MyVerifyState extends State<OtpView> {
         save();
         //Navigator.pushNamed(context, AppRoute.otpRoute); // error
       } else {
-        CustomToast.showToast("OTP error: ${response.statusCode}");
+        CustomToast.showToast("OTP Expired: ${response.statusCode}");
       }
     } catch (e) {
       CustomToast.showToast("Network error: $e");
@@ -109,6 +110,15 @@ class _MyVerifyState extends State<OtpView> {
         'password': user.password,
       };
 
+      final String dataToHash =
+          '$user.email+$user.password'; // Concatenate email and password
+      final hashtopass =
+          sha256.convert(dataToHash.codeUnits).toString(); // Generate the hash
+
+      // SharedPreferences prefs =
+      //     await SharedPreferences.getInstance(); //error here
+      // prefs.setString('userToken', userToken);
+
       var response = await http.post(
         url,
         headers: <String, String>{
@@ -118,18 +128,21 @@ class _MyVerifyState extends State<OtpView> {
       );
 
       if (response.statusCode == 200) {
-        CustomToast.showToast("User Created, proceed to login");
+        CustomToast.showToast("User Created Successfully");
 
         // ignore: use_build_context_synchronously
         Navigator.pushNamedAndRemoveUntil(
-          context,
-          AppRoute.invStyle, //AppRoute.signinRoute,
-          (route) => false,
-        );
+            context,
+            AppRoute.invStyle, //AppRoute.signinRoute,
+            (route) => false,
+            arguments: {'hash': hashtopass});
+
+        // Navigator.pushNamedAndRemoveUntil(context, AppRoute.invStyle,
+        //     arguments: dataToPass);
       } else if (response.statusCode == 400) {
         CustomToast.showToast("Email Exists : ${response.statusCode}");
       } else {
-        CustomToast.showToast("Server error: ${response.statusCode}");
+        CustomToast.showToast("Server Error: ${response.statusCode}");
       }
     } catch (e) {
       CustomToast.showToast("Network error: $e");
@@ -152,10 +165,6 @@ class _MyVerifyState extends State<OtpView> {
     otp.hash = receivedData['hash'];
     user.email = receivedData['email'];
     user.password = receivedData['password'];
-
-    // print(user.name);
-    // print(user.email);
-    // print(user.password);
 
     final defaultPinTheme = PinTheme(
       width: 56,
@@ -244,18 +253,21 @@ class _MyVerifyState extends State<OtpView> {
                     height: 20,
                   ),
                   SizedBox(
-                    width: double.infinity,
-                    height: 45,
-                    child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: MyColors.btnColor,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10))),
-                        onPressed: () {
-                          verify();
-                        },
-                        child: const Text("Verify Email")),
-                  ),
+                      width: 200,
+                      height: 45,
+                      child: TextButton(
+                          style: TextButton.styleFrom(
+                              backgroundColor: MyColors.btnColor,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10))),
+                          onPressed: () {
+                            verify();
+                          },
+                          child: Text("Verify Email",
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontSize: 18,
+                              )))),
                   Padding(
                     padding: const EdgeInsets.fromLTRB(50, 20, 0, 0),
                     child: Row(

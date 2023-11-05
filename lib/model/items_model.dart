@@ -16,7 +16,7 @@ List<Items> listOfItems = [
     img: "assets/images/on_boarding_images/1.png",
     title: "Best app to transform\nsmall investment to big amount",
     subTitle:
-        "An investment in knowledge \npays the best interest.\n -Benjamin Franklin",
+        "An investment in knowledge \npays the best interest. -Benjamin Franklin",
   ),
   Items(
     img: "assets/images/on_boarding_images/1.png",

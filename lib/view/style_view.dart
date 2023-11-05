@@ -1,11 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
+import 'package:paisa/model/otp_model.dart';
 import 'package:paisa/model/user_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/colors_utils.dart';
 
@@ -22,34 +21,76 @@ class _StyleViewState extends State<StyleView> {
   User user = User('', '', '', '');
   int? _selectedValue; // Add this line
 
-  Future<void> save() async {
-    var url = Uri.parse("http://192.168.101.6:5000/api/login");
-    var res = await http.post(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'email': user.email,
-        'password': user.password,
-      }),
-    );
+  Future<void> continuesave() async {
+    // Map<String, dynamic> dataToPass = {
+    //   'name': user.name,
+    //   'email': user.email,
+    //   'password': user.password,
+    //   'hash': '',
+    // };
 
-    if (res.statusCode == 200) {
-      CustomToast.showToast("Signin Successful");
-      // ignore: use_build_context_synchronously
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        AppRoute.dashboardRoute,
-        (route) => false,
-      );
-    } else {
-      CustomToast.showToast("Email or password is incorrect");
-    }
+    // final String dataToHash =
+    //     '$user.email+$user.password'; // Concatenate email and password
+    // final userToken =
+    //     sha256.convert(dataToHash.codeUnits).toString(); // Generate the hash
   }
+
+  Future<void> savetokenskip() async {
+    //get username and pass here
+    //hash it
+    //pass it to shared preferenses
+    //and navigate to dashboard
+
+    print("hash saved in from style view on skip is ${otp.hash}");
+    SharedPreferences prefs =
+        await SharedPreferences.getInstance(); //error here
+    prefs.setString('userToken', otp.hash);
+
+    // ignore: use_build_context_synchronously
+    Navigator.pushNamedAndRemoveUntil(
+      context,
+      AppRoute.dashboardRoute,
+      (route) => false,
+    );
+  }
+
+  Future<void> save() async {
+    // var url = Uri.parse("http://192.168.101.6:5000/api/login");
+    // var res = await http.post(
+    //   url,
+    //   headers: <String, String>{
+    //     'Content-Type': 'application/json; charset=UTF-8',
+    //   },
+    //   body: jsonEncode(<String, String>{
+    //     'email': user.email,
+    //     'password': user.password,
+    //   }),
+    // );
+
+    // if (res.statusCode == 200) {
+    //   CustomToast.showToast("Signin Successful");
+    //   // ignore: use_build_context_synchronously
+    //   Navigator.pushNamedAndRemoveUntil(
+    //     context,
+    //     AppRoute.dashboardRoute,
+    //     (route) => false,
+    //   );
+    // } else {
+    //   CustomToast.showToast("Email or password is incorrect");
+    // }
+    CustomToast.showToast("In Development");
+  }
+
+  Otp otp = Otp('', '', '');
 
   @override
   Widget build(BuildContext context) {
+    final Map<String, dynamic> receivedData =
+        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+    otp.hash = receivedData['hash'];
+    print("Hash recieved from otp view is ${otp.hash}");
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -184,8 +225,8 @@ class _StyleViewState extends State<StyleView> {
                                 ),
                               ),
                               onPressed: () {
-                                Navigator.pushReplacementNamed(
-                                    context, AppRoute.dashboardRoute);
+                                //save user token, and open dashboard
+                                savetokenskip();
                               },
                               child: Text(
                                 "Skip",
@@ -208,8 +249,8 @@ class _StyleViewState extends State<StyleView> {
                                 ),
                               ),
                               onPressed: () {
-                                //save to db
-                                // Implement skip functionality here
+                                //save choice to database
+                                // save usertoken to shared preferenses
                               },
                               child: Text(
                                 "Continue",

@@ -1,7 +1,7 @@
-import 'package:paisa/model/stock_model.dart';
+import 'package:paisa/model/asset_model.dart';
 
-List<Stock> stockPortfolio = [
-  Stock(
+List<Asset> stockPortfolio = [
+  Asset(
       symbol: 'SBUX',
       name: 'Starbucks',
       price: '\$80.55',
@@ -9,7 +9,7 @@ List<Stock> stockPortfolio = [
       color: '#4c956c',
       iconUrl:
           'https://upload.wikimedia.org/wikipedia/en/thumb/d/d3/Starbucks_Corporation_Logo_2011.svg/800px-Starbucks_Corporation_Logo_2011.svg.png'),
-  Stock(
+  Asset(
       symbol: 'META',
       name: 'Facebook',
       price: '\$110.14',
@@ -17,7 +17,7 @@ List<Stock> stockPortfolio = [
       color: '#3a86ff',
       iconUrl:
           'https://upload.wikimedia.org/wikipedia/commons/0/05/Facebook_Logo_%282019%29.png'),
-  Stock(
+  Asset(
       symbol: 'MSFT',
       name: 'Microsoft',
       price: '\$175.66',

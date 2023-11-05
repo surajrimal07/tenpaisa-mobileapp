@@ -45,6 +45,7 @@ class _SignupState extends State<SignupView> {
       );
 
       CustomToast.showToast("Please Wait");
+
       if (response.statusCode == 200) {
         var result = response.body;
         Map<String, dynamic> parsedResponse = json.decode(result);
@@ -293,8 +294,8 @@ class _SignupState extends State<SignupView> {
                       child: SizedBox(
                         height: 50,
                         width: 400,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
+                        child: TextButton(
+                          style: TextButton.styleFrom(
                             backgroundColor: MyColors.btnColor,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(16.0),
