@@ -22,8 +22,8 @@ class StyleView extends StatefulWidget {
 class _StyleViewState extends State<StyleView> {
   final _formKey = GlobalKey<FormState>();
   User user = User('', '', '', '');
-  int _selectedValue =
-      0; // Add this line  // make it int? if we are passing model (like 1,2,3,)
+  int?
+      _selectedValue; // Add this line  // make it int? if we are passing model (like 1,2,3,)
 
   Future<void> savetokenskip() async {
     //print("hash saved in from style view on skip is ${otp.hash}");
@@ -245,7 +245,13 @@ class _StyleViewState extends State<StyleView> {
                                 ),
                               ),
                               onPressed: () {
-                                save();
+                                if (_selectedValue != null) {
+                                  save();
+                                } else {
+                                  CustomToast.showToast("Please select");
+                                }
+
+                                //save();
                                 //save choice to database
                                 // save usertoken to shared preferenses
                               },
