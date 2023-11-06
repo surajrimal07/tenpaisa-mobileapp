@@ -12,29 +12,18 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness:
-            Brightness.light, // Change this according to your needs
-        //systemNavigationBarColor: Colors.transparent,
+        statusBarColor: MyColors.btnColor, //Colors.transparent,
+        statusBarIconBrightness: Brightness.light,
         systemNavigationBarColor: MyColors.btnColor,
-        systemNavigationBarIconBrightness:
-            Brightness.light, // Change this according to your needs
+        systemNavigationBarIconBrightness: Brightness.light,
       ),
     );
 
     return MaterialApp(
       title: '10Paisa',
       debugShowCheckedModeBanner: false,
-
       theme: ThemeData(
-        primaryColor: MyColors.btnColor, // Set your preferred primary color
-        // appBarTheme: const AppBarTheme(
-        //     // textTheme: TextTheme(
-        //     //   // headline6: TextStyle(
-        //     //   //   color: Colors.white, // Set the app bar title text color
-        //     //   // ),
-        //     // ),
-        //     ),
+        primaryColor: MyColors.btnColor,
       ),
 
       home: const SplashView(),

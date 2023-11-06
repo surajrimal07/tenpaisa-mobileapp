@@ -1,8 +1,10 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/data/portfolio_data.dart';
 import 'package:paisa/utils/colors_utils.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
@@ -23,13 +25,13 @@ class _MainPageState extends State<DashboardView> {
   @override
   void initState() {
     super.initState();
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor:
-          Colors.blue[900]!, // Status bar color set to a dark blue shade
+          MyColors.btnColor, // Status bar color set to a dark blue shade
       statusBarIconBrightness:
           Brightness.light, // Adjust status bar icon colors
       systemNavigationBarColor:
-          Colors.blue[900]!, // Navigation bar color set to the same blue shade
+          MyColors.btnColor, // Navigation bar color set to the same blue shade
       systemNavigationBarIconBrightness:
           Brightness.light, // Adjust navigation bar icon colors
     ));
@@ -56,29 +58,58 @@ class _MainPageState extends State<DashboardView> {
             ),
             drawer: Drawer(
               child: ListView(
-                children: <Widget>[
-                  const DrawerHeader(
-                    child: Text('Menu Items'),
+                children: const [
+                  UserAccountsDrawerHeader(
+                    margin: EdgeInsets.all(0),
+                    decoration: BoxDecoration(color: MyColors.btnColor),
+                    accountName: Text('Suraj Rimal'),
+                    accountEmail: Text('test@test.com'),
+                    currentAccountPictureSize: Size(60, 60),
+                    currentAccountPicture: CircleAvatar(
+                      backgroundImage:
+                          AssetImage('assets/images/content/user1.jpg'),
+                    ),
                   ),
                   ListTile(
-                    title: const Text('Item 1'),
-                    onTap: () {
-                      // Add functionality for Item 1
-                    },
+                    title: Text('My Profile'),
+                    leading: Icon(CupertinoIcons.person),
                   ),
                   ListTile(
-                    title: const Text('Item 2'),
-                    onTap: () {
-                      // Add functionality for Item 2
-                    },
+                    title: Text('Themes'),
+                    leading: Icon(CupertinoIcons.color_filter),
                   ),
-                  // Add more list items as needed
+                  ListTile(
+                    title: Text('Fonts'),
+                    leading: Icon(Icons.font_download_outlined),
+                  ),
+                  ListTile(
+                    title: Text('Favorites'),
+                    leading: Icon(CupertinoIcons.heart),
+                  ),
+                  ListTile(
+                    title: Text('Settings'),
+                    leading: Icon(CupertinoIcons.settings),
+                  ),
+                  ListTile(
+                    title: Text('Exit'),
+                    leading: Icon(Icons.exit_to_app),
+                  )
                 ],
               ),
             ),
             bottomNavigationBar: SalomonBottomBar(
               currentIndex: indexBottomBar,
-              onTap: (i) => setState(() => indexBottomBar = i),
+              onTap: (i) {
+                if (i == 4) {
+                  // Index of the Profile icon
+                  Navigator.pushNamed(context, AppRoute.profileRoute);
+                } else {
+                  setState(() => indexBottomBar = i);
+                }
+              },
+
+              // currentIndex: indexBottomBar,
+              // onTap: (i) => setState(() => indexBottomBar = i),
               items: [
                 /// Home
                 SalomonBottomBarItem(
@@ -314,9 +345,9 @@ class _MainPageState extends State<DashboardView> {
     return Padding(
       padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 0),
       child: Container(
-        decoration: BoxDecoration(
-          color: Colors.blue[900], // Set to your desired navy blue color
-          borderRadius: const BorderRadius.only(
+        decoration: const BoxDecoration(
+          color: MyColors.btnColor, // Set to your desired navy blue color
+          borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(14),
             bottomRight: Radius.circular(14),
           ),
@@ -401,8 +432,8 @@ class _MainPageState extends State<DashboardView> {
   Container _card() {
     return Container(
       padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.blue[900], // Set to your desired navy blue color
+      decoration: const BoxDecoration(
+        color: MyColors.btnColor, // Set to your desired navy blue color
         //borderRadius: BorderRadius.circular(16),
       ),
       child: Row(
@@ -510,8 +541,8 @@ class _MainPageState extends State<DashboardView> {
   Container _header() {
     return Container(
         padding: const EdgeInsets.all(0),
-        decoration: BoxDecoration(
-          color: Colors.blue[900], // Set to your desired navy blue color
+        decoration: const BoxDecoration(
+          color: MyColors.btnColor, // Set to your desired navy blue color
         ),
         child: Builder(
           builder: (BuildContext context) {
