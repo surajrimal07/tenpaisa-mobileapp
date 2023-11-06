@@ -1,3 +1,4 @@
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,15 +17,21 @@ class DashboardView extends StatefulWidget {
 class _MainPageState extends State<DashboardView> {
   int indexBottomBar = 0;
   DateTime? currentBackPressTime;
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  //bool isDrawerOpen = false;
 
   @override
   void initState() {
     super.initState();
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      //statusBarColor: Colors.transparent,
-      statusBarColor: MyColors.btnColor, // Set status bar color to transparent
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor:
+          Colors.blue[900]!, // Status bar color set to a dark blue shade
       statusBarIconBrightness:
-          Brightness.light, // Adjust the status bar icons' color
+          Brightness.light, // Adjust status bar icon colors
+      systemNavigationBarColor:
+          Colors.blue[900]!, // Navigation bar color set to the same blue shade
+      systemNavigationBarIconBrightness:
+          Brightness.light, // Adjust navigation bar icon colors
     ));
   }
 
@@ -33,6 +40,7 @@ class _MainPageState extends State<DashboardView> {
     return WillPopScope(
         onWillPop: _onBackPressed,
         child: Scaffold(
+            key: _scaffoldKey,
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Column(
@@ -46,45 +54,28 @@ class _MainPageState extends State<DashboardView> {
                 ),
               ),
             ),
-            // bottomNavigationBar: SnakeNavigationBar.color(
-            //   behaviour: SnakeBarBehaviour.floating,
-            //   snakeShape: SnakeShape.indicator,
-            //   shape:
-            //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-            //   padding: const EdgeInsets.all(8),
-            //   currentIndex: indexBottomBar,
-            //   backgroundColor: const Color.fromARGB(156, 45, 51, 85),
-            //   selectedItemColor: Colors.white,
-            //   unselectedItemColor: Colors.white,
-            //   height: 52,
-            //   showSelectedLabels: true,
-            //   showUnselectedLabels: true,
-            //   snakeViewColor: MyColors.primaryColor,
-            //   onTap: (index) => setState(() => indexBottomBar = index),
-            //   items: const [
-            //     BottomNavigationBarItem(
-            //         icon: Icon(Iconsax.home),
-            //         activeIcon: Icon(Iconsax.home5),
-            //         label: 'home'),
-            //     BottomNavigationBarItem(
-            //         icon: Icon(Iconsax.document),
-            //         activeIcon: Icon(Iconsax.document5),
-            //         label: 'history'),
-            //     BottomNavigationBarItem(
-            //         icon: Icon(Iconsax.global_search),
-            //         activeIcon: Icon(Iconsax.global_search5),
-            //         label: 'search'),
-            //     BottomNavigationBarItem(
-            //         icon: Icon(Iconsax.wallet_1),
-            //         activeIcon: Icon(Iconsax.wallet),
-            //         label: 'Wallet'),
-            //     BottomNavigationBarItem(
-            //         icon: Icon(Iconsax.profile_add),
-            //         activeIcon: Icon(Iconsax.profile_add5),
-            //         label: 'user')
-            //   ],
-            // ),
-
+            drawer: Drawer(
+              child: ListView(
+                children: <Widget>[
+                  const DrawerHeader(
+                    child: Text('Menu Items'),
+                  ),
+                  ListTile(
+                    title: const Text('Item 1'),
+                    onTap: () {
+                      // Add functionality for Item 1
+                    },
+                  ),
+                  ListTile(
+                    title: const Text('Item 2'),
+                    onTap: () {
+                      // Add functionality for Item 2
+                    },
+                  ),
+                  // Add more list items as needed
+                ],
+              ),
+            ),
             bottomNavigationBar: SalomonBottomBar(
               currentIndex: indexBottomBar,
               onTap: (i) => setState(() => indexBottomBar = i),
@@ -253,7 +244,7 @@ class _MainPageState extends State<DashboardView> {
                   padding: const EdgeInsets.all(12),
                   margin: const EdgeInsets.only(right: 10),
                   height: 125,
-                  width: 200,
+                  width: 150,
                   decoration: BoxDecoration(
                       color: HexColor('${stockPortfolio[index].color}')
                           .withOpacity(0.12),
@@ -321,297 +312,300 @@ class _MainPageState extends State<DashboardView> {
 
   Padding _menu() {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16, top: 16, bottom: 8),
-      child: Row(
-        children: [
-          Expanded(
-            child: MaterialButton(
-              onPressed: () {},
-              color: Colors.white,
-              elevation: 0,
-              focusElevation: 0,
-              highlightElevation: 0,
-              height: 45,
-              shape: RoundedRectangleBorder(
+      padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.blue[900], // Set to your desired navy blue color
+          borderRadius: const BorderRadius.only(
+            bottomLeft: Radius.circular(14),
+            bottomRight: Radius.circular(14),
+          ),
+        ),
+        child: Row(
+          children: [
+            Expanded(
+              child: MaterialButton(
+                onPressed: () {},
+                color: Colors.white,
+                elevation: 0,
+                focusElevation: 0,
+                highlightElevation: 0,
+                height: 40,
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32),
-                  side: const BorderSide(color: MyColors.primaryColor)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.sell_outlined,
-                    color: MyColors.btnColor,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Buy',
-                    style: GoogleFonts.poppins(
+                  side: const BorderSide(color: MyColors.primaryColor),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.sell_outlined,
+                      size: 22,
+                      color: MyColors.btnColor,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Buy',
+                      style: GoogleFonts.poppins(
                         color: MyColors.btnColor,
                         fontSize: 15,
-                        fontWeight: FontWeight.w700),
-                  )
-                ],
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          const SizedBox(
-            width: 18,
-          ),
-          Expanded(
-            child: MaterialButton(
-              onPressed: () {},
-              color: Colors.white,
-              elevation: 0,
-              focusElevation: 0,
-              highlightElevation: 0,
-              height: 45,
-              shape: RoundedRectangleBorder(
+            const SizedBox(
+              width: 28,
+            ),
+            Expanded(
+              child: MaterialButton(
+                onPressed: () {},
+                color: Colors.white,
+                elevation: 0,
+                focusElevation: 0,
+                highlightElevation: 0,
+                height: 40,
+                shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32),
-                  side: const BorderSide(color: MyColors.primaryColor)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.sell_outlined,
-                    color: MyColors.primaryColor,
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Sell',
-                    style: GoogleFonts.poppins(
+                  side: const BorderSide(color: MyColors.primaryColor),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Icons.sell_outlined,
+                      size: 22,
+                      color: MyColors.primaryColor,
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      'Sell',
+                      style: GoogleFonts.poppins(
                         color: MyColors.primaryColor,
                         fontSize: 15,
-                        fontWeight: FontWeight.w700),
-                  )
-                ],
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          )
-        ],
+          ],
+        ),
       ),
     );
   }
 
   Container _card() {
     return Container(
-        padding: const EdgeInsets.all(8),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text(
-              'My Portfolio',
-              style: GoogleFonts.poppins(
-                  fontSize: 14, fontWeight: FontWeight.w400),
-              textAlign: TextAlign.left,
-            ),
-            Text(
-              '\$112,550.00',
-              style: GoogleFonts.poppins(
-                  fontSize: 24, fontWeight: FontWeight.w700),
-              textAlign: TextAlign.left,
-            ),
-            const SizedBox(height: 5),
-            RichText(
-              text: TextSpan(children: [
-                TextSpan(
-                  text: '\$110,000.52',
-                  style: GoogleFonts.poppins(
-                      color: Colors.black87,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400),
-                ),
-                TextSpan(
-                  text: ' +15',
-                  style: GoogleFonts.poppins(
-                      color: Colors.green,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400),
-                ),
-              ]),
-            )
-          ]),
-        ));
-  }
-
-  // Container _header() {
-  //   return Container(
-  //     padding: const EdgeInsets.all(0),
-  //     child: Row(
-  //       children: [
-  //         IconButton(
-  //           splashColor: Colors.transparent,
-  //           highlightColor: Colors.transparent,
-  //           onPressed: () {
-  //             // Add functionality for the hamburger menu button
-  //           },
-  //           icon: const Icon(Iconsax.menu_1),
-  //           color: Colors.black,
-  //         ),
-
-  //         const CircleAvatar(
-  //           radius: 22,
-  //           backgroundImage: AssetImage('assets/images/content/user1.jpg'),
-  //         ),
-  //         const SizedBox(width: 4),
-  //         Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             Text(
-  //               'Hello, welcome',
-  //               style: GoogleFonts.poppins(
-  //                   fontSize: 13, fontWeight: FontWeight.w400),
-  //             ),
-  //             Text(
-  //               'Suraj',
-  //               style: GoogleFonts.poppins(
-  //                   fontSize: 15, fontWeight: FontWeight.w600),
-  //             ),
-  //           ],
-  //         ),
-  //         const Spacer(),
-  //         //const SizedBox(width: 0),
-  //         MaterialButton(
-  //           onPressed: () {},
-  //           padding: const EdgeInsets.all(6),
-  //           shape: const CircleBorder(side: BorderSide(color: Colors.black12)),
-  //           child: const Icon(Iconsax.notification),
-  //         ),
-  //         MaterialButton(
-  //           onPressed: () {},
-  //           padding: const EdgeInsets.all(6),
-  //           shape: const CircleBorder(side: BorderSide(color: Colors.black12)),
-  //           child: const Icon(Iconsax.search_normal),
-  //         )
-  //       ],
-  //     ),
-  //   );
-  // }
-//}
-
-  // Container _header() {
-  //   return Container(
-  //     padding: const EdgeInsets.all(0),
-  //     child: Row(
-  //       mainAxisAlignment: MainAxisAlignment.start,
-  //       children: [
-  //         IconButton(
-  //           splashColor: Colors.transparent,
-  //           highlightColor: Colors.transparent,
-  //           onPressed: () {
-  //             // Add functionality for the hamburger menu button
-  //           },
-  //           icon: const Icon(Iconsax.menu_1),
-  //           color: Colors.black,
-  //         ),
-  //         const SizedBox(
-  //             width:
-  //                 0), // Add spacing between the hamburger menu and the CircleAvatar
-  //         const CircleAvatar(
-  //           radius: 22,
-  //           backgroundImage: AssetImage('assets/images/content/user1.jpg'),
-  //         ),
-  //         const SizedBox(width: 4),
-  //         Column(
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             Text(
-  //               'Hello,',
-  //               style: GoogleFonts.poppins(
-  //                 fontSize: 13,
-  //                 fontWeight: FontWeight.w400,
-  //               ),
-  //             ),
-  //             Text(
-  //               'Suraj',
-  //               style: GoogleFonts.poppins(
-  //                 fontSize: 15,
-  //                 fontWeight: FontWeight.w600,
-  //               ),
-  //             ),
-  //           ],
-  //         ),
-
-  //         MaterialButton(
-  //           onPressed: () {},
-  //           padding: const EdgeInsets.all(6),
-  //           shape: const CircleBorder(side: BorderSide(color: Colors.black12)),
-  //           child: const Icon(Iconsax.notification),
-  //         ),
-
-  //         MaterialButton(
-  //           onPressed: () {},
-  //           padding: const EdgeInsets.all(6),
-  //           shape: const CircleBorder(side: BorderSide(color: Colors.black12)),
-  //           child: const Icon(Iconsax.search_normal),
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }
-
-  Container _header() {
-    return Container(
-      padding: const EdgeInsets.all(0),
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: Colors.blue[900], // Set to your desired navy blue color
+        //borderRadius: BorderRadius.circular(16),
+      ),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Wrap(
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              IconButton(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onPressed: () {
-                  // Add functionality for the hamburger menu button
-                },
-                icon: const Icon(Iconsax.menu_1),
-                color: Colors.black,
-              ),
-              const SizedBox(width: 4),
-              const CircleAvatar(
-                radius: 22,
-                backgroundImage: AssetImage('assets/images/content/user1.jpg'),
-              ),
-              const SizedBox(width: 4),
-              Column(
+          Expanded(
+            flex: 3, // Allocate 3/4 of the space for the portfolio details
+            child: Container(
+              padding: const EdgeInsets.only(right: 16),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Hello',
+                    'My Portfolio',
                     style: GoogleFonts.poppins(
-                      fontSize: 13,
+                      fontSize: 14,
                       fontWeight: FontWeight.w400,
+                      color: Colors.white,
                     ),
+                    textAlign: TextAlign.left,
                   ),
                   Text(
-                    'Suraj',
+                    'Rs 112,550.00',
                     style: GoogleFonts.poppins(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w600,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.left,
+                  ),
+                  const SizedBox(height: 5),
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        const WidgetSpan(
+                          child: Padding(
+                            padding: EdgeInsets.only(right: 4),
+                            child: Icon(
+                              Iconsax.arrow_up_1,
+                              size: 18,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                        TextSpan(
+                          text: '+4.5% this week',
+                          style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
-            ],
+            ),
           ),
-          const SizedBox(width: 40),
-          MaterialButton(
-            onPressed: () {},
-            padding: const EdgeInsets.all(6),
-            shape: const CircleBorder(side: BorderSide(color: Colors.black12)),
-            child: const Icon(Iconsax.notification),
-          ),
-          const SizedBox(width: 0), // Reduced SizedBox width
-          MaterialButton(
-            onPressed: () {},
-            padding: const EdgeInsets.all(6),
-            shape: const CircleBorder(side: BorderSide(color: Colors.black12)),
-            child: const Icon(Iconsax.search_normal),
+          Expanded(
+            flex: 3, // Allocate 1/4 of the space for the line chart
+            child: SizedBox(
+              height: 75, // Set your desired height for the chart
+              child: LineChart(
+                LineChartData(
+                  gridData: FlGridData(show: false),
+                  titlesData: FlTitlesData(show: false),
+                  borderData: FlBorderData(show: false),
+                  lineBarsData: [
+                    LineChartBarData(
+                      spots: [
+                        const FlSpot(0, 1),
+                        const FlSpot(1, 3),
+                        const FlSpot(2, 2),
+                        const FlSpot(3, 4),
+                        const FlSpot(4, 2),
+                        const FlSpot(5, 5),
+                      ],
+                      isCurved: true,
+                      colors: [MyColors.btnColor],
+                      barWidth: 1,
+                      isStrokeCapRound: true,
+                      belowBarData: BarAreaData(
+                        show: true,
+                        gradientFrom: const Offset(0, 0),
+                        gradientTo: const Offset(0, 1),
+                        colors: [
+                          Colors.white.withOpacity(0.2),
+                          Colors.white.withOpacity(0.5),
+                        ],
+                      ),
+                      dotData: FlDotData(show: false),
+                    ),
+                  ],
+                ),
+                swapAnimationDuration: const Duration(milliseconds: 250),
+              ),
+            ),
           ),
         ],
       ),
     );
+  }
+
+  Container _header() {
+    return Container(
+        padding: const EdgeInsets.all(0),
+        decoration: BoxDecoration(
+          color: Colors.blue[900], // Set to your desired navy blue color
+        ),
+        child: Builder(
+          builder: (BuildContext context) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  children: [
+                    IconButton(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onPressed: () {
+                        if (_scaffoldKey.currentState != null) {
+                          _scaffoldKey.currentState!.openDrawer();
+                        }
+                        // Add functionality for the hamburger menu button
+                      },
+                      icon: const Icon(Iconsax.menu_1),
+                      color: Colors.white,
+                    ),
+                    const SizedBox(width: 4),
+                    Stack(
+                      children: [
+                        Container(
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white, // Set the color of the circle
+                          ),
+                          padding: const EdgeInsets.all(1.2),
+                          child: const CircleAvatar(
+                            radius: 18,
+                            backgroundImage:
+                                AssetImage('assets/images/content/user1.jpg'),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 4),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Hello',
+                          style: GoogleFonts.poppins(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: Colors.white,
+                          ),
+                        ),
+                        Text(
+                          'Suraj',
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  children: [
+                    MaterialButton(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onPressed: () {},
+                      padding: const EdgeInsets.all(0),
+                      minWidth: 0,
+                      child: const Icon(
+                        Iconsax.notification,
+                        size: 22,
+                        color: Colors.white,
+                      ),
+                    ),
+                    MaterialButton(
+                      splashColor: Colors.transparent,
+                      highlightColor: Colors.transparent,
+                      onPressed: () {},
+                      padding: const EdgeInsets.all(0),
+                      minWidth: 0,
+                      child: const Icon(
+                        Iconsax.search_normal,
+                        size: 22,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        ));
   }
 
   Future<bool> _onBackPressed() async {
