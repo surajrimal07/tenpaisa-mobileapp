@@ -7,7 +7,7 @@ class MyColors {
   static const Color btnBorderColor = Color.fromARGB(255, 183, 181, 252);
   static const Color subTitleTextColor = Color(0xFF9593a8);
 //
-  static const Color primaryColor = Color(0xfffc7a55);
+  static const Color primaryColor = Color.fromRGBO(27, 39, 112, 100);
   static const Color secondaryColor = Color(0xff1b1f28);
 }
 

@@ -16,7 +16,6 @@ dependencies:
   intl: ^0.18.1
   logger: ^2.0.1
   url_launcher: ^6.1.12
-  flutter_native_splash: ^2.3.4
   smooth_page_indicator: ^1.1.0
   animate_do: any
   iconsax: ^0.0.8
@@ -26,7 +25,8 @@ dependencies:
   shared_preferences: ^2.2.2
   fluttertoast: ^8.2.2
   pinput: ^3.0.1
-  flutter_snake_navigationbar: ^0.6.1
+
+  salomon_bottom_bar: ^3.3.2
   crypto: ^3.0.1
 
 dev_dependencies:
@@ -67,21 +67,21 @@ flutter:
     - assets/images/on_boarding_images/
 
   #--------------- LOCAL FONTS ------------------#
-  fonts:
-    - family: Poppins
-      fonts:
-        - asset: assets/fonts/Poppins-Light.ttf
-          weight: 300
-        - asset: assets/fonts/Poppins-Regular.ttf
-          weight: 400
-        - asset: assets/fonts/Poppins-Italic.ttf
-          style: italic
-        - asset: assets/fonts/Poppins-Medium.ttf
-          weight: 500
-        - asset: assets/fonts/Poppins-MediumItalic.ttf
-          weight: 500
-          style: italic
-        - asset: assets/fonts/Poppins-SemiBold.ttf
-          weight: 600
-        - asset: assets/fonts/Poppins-Bold.ttf
-          weight: 800
+  # fonts:
+  #   - family: Poppins
+  #     fonts:
+  #       - asset: assets/fonts/Poppins-Light.ttf
+  #         weight: 300
+  #       - asset: assets/fonts/Poppins-Regular.ttf
+  #         weight: 400
+  #       - asset: assets/fonts/Poppins-Italic.ttf
+  #         style: italic
+  #       - asset: assets/fonts/Poppins-Medium.ttf
+  #         weight: 500
+  #       - asset: assets/fonts/Poppins-MediumItalic.ttf
+  #         weight: 500
+  #         style: italic
+  #       - asset: assets/fonts/Poppins-SemiBold.ttf
+  #         weight: 600
+  #       - asset: assets/fonts/Poppins-Bold.ttf
+  #         weight: 800

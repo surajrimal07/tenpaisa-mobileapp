@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:paisa/data/portfolio_data.dart';
 import 'package:paisa/utils/colors_utils.dart';
+import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -17,60 +18,112 @@ class _MainPageState extends State<DashboardView> {
   DateTime? currentBackPressTime;
 
   @override
+  void initState() {
+    super.initState();
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      //statusBarColor: Colors.transparent,
+      statusBarColor: MyColors.btnColor, // Set status bar color to transparent
+      statusBarIconBrightness:
+          Brightness.light, // Adjust the status bar icons' color
+    ));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return WillPopScope(
         onWillPop: _onBackPressed,
         child: Scaffold(
-          body: SafeArea(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  _header(),
-                  _card(),
-                  _menu(),
-                  _portfolio(),
-                  _watchlist(),
-                ],
+            body: SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    _header(),
+                    _card(),
+                    _menu(),
+                    _portfolio(),
+                    _watchlist(),
+                  ],
+                ),
               ),
             ),
-          ),
-          bottomNavigationBar: SnakeNavigationBar.color(
-            behaviour: SnakeBarBehaviour.floating,
-            snakeShape: SnakeShape.circle,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-            padding: const EdgeInsets.all(16),
-            currentIndex: indexBottomBar,
-            backgroundColor: MyColors.secondaryColor,
-            selectedItemColor: Colors.white,
-            unselectedItemColor: Colors.white,
-            height: 72,
-            snakeViewColor: MyColors.primaryColor,
-            onTap: (index) => setState(() => indexBottomBar = index),
-            items: const [
-              BottomNavigationBarItem(
-                  icon: Icon(Iconsax.home),
-                  activeIcon: Icon(Iconsax.home5),
-                  label: 'home'),
-              BottomNavigationBarItem(
-                  icon: Icon(Iconsax.document),
-                  activeIcon: Icon(Iconsax.document5),
-                  label: 'transaction'),
-              BottomNavigationBarItem(
-                  icon: Icon(Iconsax.transaction_minus),
-                  activeIcon: Icon(Iconsax.transaction_minus5),
-                  label: 'buy/sell'),
-              BottomNavigationBarItem(
-                  icon: Icon(Iconsax.clock),
-                  activeIcon: Icon(Iconsax.clock5),
-                  label: 'clock'),
-              BottomNavigationBarItem(
-                  icon: Icon(Iconsax.profile_add),
-                  activeIcon: Icon(Iconsax.profile_add5),
-                  label: 'user')
-            ],
-          ),
-        ));
+            // bottomNavigationBar: SnakeNavigationBar.color(
+            //   behaviour: SnakeBarBehaviour.floating,
+            //   snakeShape: SnakeShape.indicator,
+            //   shape:
+            //       RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+            //   padding: const EdgeInsets.all(8),
+            //   currentIndex: indexBottomBar,
+            //   backgroundColor: const Color.fromARGB(156, 45, 51, 85),
+            //   selectedItemColor: Colors.white,
+            //   unselectedItemColor: Colors.white,
+            //   height: 52,
+            //   showSelectedLabels: true,
+            //   showUnselectedLabels: true,
+            //   snakeViewColor: MyColors.primaryColor,
+            //   onTap: (index) => setState(() => indexBottomBar = index),
+            //   items: const [
+            //     BottomNavigationBarItem(
+            //         icon: Icon(Iconsax.home),
+            //         activeIcon: Icon(Iconsax.home5),
+            //         label: 'home'),
+            //     BottomNavigationBarItem(
+            //         icon: Icon(Iconsax.document),
+            //         activeIcon: Icon(Iconsax.document5),
+            //         label: 'history'),
+            //     BottomNavigationBarItem(
+            //         icon: Icon(Iconsax.global_search),
+            //         activeIcon: Icon(Iconsax.global_search5),
+            //         label: 'search'),
+            //     BottomNavigationBarItem(
+            //         icon: Icon(Iconsax.wallet_1),
+            //         activeIcon: Icon(Iconsax.wallet),
+            //         label: 'Wallet'),
+            //     BottomNavigationBarItem(
+            //         icon: Icon(Iconsax.profile_add),
+            //         activeIcon: Icon(Iconsax.profile_add5),
+            //         label: 'user')
+            //   ],
+            // ),
+
+            bottomNavigationBar: SalomonBottomBar(
+              currentIndex: indexBottomBar,
+              onTap: (i) => setState(() => indexBottomBar = i),
+              items: [
+                /// Home
+                SalomonBottomBarItem(
+                  icon: const Icon(Iconsax.home),
+                  title: const Text("Home"),
+                  selectedColor: MyColors.btnColor,
+                ),
+
+                /// Search
+                SalomonBottomBarItem(
+                  icon: const Icon(Iconsax.global_search),
+                  title: const Text("Search"),
+                  selectedColor: MyColors.btnColor,
+                ),
+
+                /// Likes
+                SalomonBottomBarItem(
+                  icon: const Icon(Iconsax.document),
+                  title: const Text("Portfolio"),
+                  selectedColor: MyColors.btnColor,
+                ),
+
+                SalomonBottomBarItem(
+                  icon: const Icon(Iconsax.wallet_1),
+                  title: const Text("Wallet"),
+                  selectedColor: MyColors.btnColor,
+                ),
+
+                /// Profile
+                SalomonBottomBarItem(
+                  icon: const Icon(Iconsax.profile_circle),
+                  title: const Text("Profile"),
+                  selectedColor: MyColors.btnColor,
+                ),
+              ],
+            )));
   }
 
   Container _watchlist() {
@@ -116,7 +169,7 @@ class _MainPageState extends State<DashboardView> {
                     Row(
                       children: [
                         CircleAvatar(
-                          radius: 24,
+                          radius: 20,
                           backgroundImage:
                               NetworkImage('${stockPortfolio[index].iconUrl}'),
                         ),
@@ -127,12 +180,12 @@ class _MainPageState extends State<DashboardView> {
                             Text(
                               '${stockPortfolio[index].symbol}',
                               style: GoogleFonts.poppins(
-                                  fontSize: 16, fontWeight: FontWeight.w600),
+                                  fontSize: 15, fontWeight: FontWeight.w600),
                             ),
                             Text(
                               '${stockPortfolio[index].name}',
                               style: GoogleFonts.poppins(
-                                  fontSize: 14, fontWeight: FontWeight.w400),
+                                  fontSize: 13, fontWeight: FontWeight.w400),
                             ),
                           ],
                         )
@@ -189,7 +242,7 @@ class _MainPageState extends State<DashboardView> {
             ],
           ),
           SizedBox(
-            height: 142,
+            height: 125,
             child: ListView.builder(
               shrinkWrap: true,
               itemCount: stockPortfolio.length,
@@ -199,7 +252,7 @@ class _MainPageState extends State<DashboardView> {
                 child: Container(
                   padding: const EdgeInsets.all(12),
                   margin: const EdgeInsets.only(right: 10),
-                  height: 142,
+                  height: 125,
                   width: 200,
                   decoration: BoxDecoration(
                       color: HexColor('${stockPortfolio[index].color}')
@@ -212,7 +265,7 @@ class _MainPageState extends State<DashboardView> {
                       Row(
                         children: [
                           CircleAvatar(
-                            radius: 24,
+                            radius: 20,
                             backgroundImage: NetworkImage(
                                 '${stockPortfolio[index].iconUrl}'),
                           ),
@@ -223,7 +276,7 @@ class _MainPageState extends State<DashboardView> {
                               Text(
                                 '${stockPortfolio[index].symbol}',
                                 style: GoogleFonts.poppins(
-                                    fontSize: 16, fontWeight: FontWeight.w600),
+                                    fontSize: 15, fontWeight: FontWeight.w600),
                               ),
                               Text(
                                 '${stockPortfolio[index].name}',
@@ -234,13 +287,13 @@ class _MainPageState extends State<DashboardView> {
                           )
                         ],
                       ),
-                      const SizedBox(height: 12),
+                      const SizedBox(height: 9),
                       Text(
                         '${stockPortfolio[index].price}',
                         style: GoogleFonts.poppins(
-                            fontSize: 18, fontWeight: FontWeight.w600),
+                            fontSize: 17, fontWeight: FontWeight.w600),
                       ),
-                      const SizedBox(height: 6),
+                      const SizedBox(height: 5),
                       Row(
                         children: [
                           const Icon(
@@ -274,26 +327,27 @@ class _MainPageState extends State<DashboardView> {
           Expanded(
             child: MaterialButton(
               onPressed: () {},
-              color: MyColors.primaryColor,
+              color: Colors.white,
               elevation: 0,
               focusElevation: 0,
               highlightElevation: 0,
-              height: 58,
+              height: 45,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(32)),
+                  borderRadius: BorderRadius.circular(32),
+                  side: const BorderSide(color: MyColors.primaryColor)),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Icon(
-                    Iconsax.arrow_down_2,
-                    color: Colors.white,
+                    Icons.sell_outlined,
+                    color: MyColors.btnColor,
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    'Withdraw',
+                    'Buy',
                     style: GoogleFonts.poppins(
-                        color: Colors.white,
-                        fontSize: 16,
+                        color: MyColors.btnColor,
+                        fontSize: 15,
                         fontWeight: FontWeight.w700),
                   )
                 ],
@@ -301,7 +355,7 @@ class _MainPageState extends State<DashboardView> {
             ),
           ),
           const SizedBox(
-            width: 12,
+            width: 18,
           ),
           Expanded(
             child: MaterialButton(
@@ -310,7 +364,7 @@ class _MainPageState extends State<DashboardView> {
               elevation: 0,
               focusElevation: 0,
               highlightElevation: 0,
-              height: 58,
+              height: 45,
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(32),
                   side: const BorderSide(color: MyColors.primaryColor)),
@@ -318,15 +372,15 @@ class _MainPageState extends State<DashboardView> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Icon(
-                    Iconsax.arrow_down_2,
+                    Icons.sell_outlined,
                     color: MyColors.primaryColor,
                   ),
                   const SizedBox(width: 8),
                   Text(
-                    'Deposit',
+                    'Sell',
                     style: GoogleFonts.poppins(
                         color: MyColors.primaryColor,
-                        fontSize: 16,
+                        fontSize: 15,
                         fontWeight: FontWeight.w700),
                   )
                 ],
@@ -340,76 +394,225 @@ class _MainPageState extends State<DashboardView> {
 
   Container _card() {
     return Container(
-      padding: const EdgeInsets.all(14),
-      child: Column(children: [
-        Text(
-          'Availble Balance',
-          style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w400),
-        ),
-        Text(
-          '\$112,550.00',
-          style: GoogleFonts.poppins(fontSize: 34, fontWeight: FontWeight.w700),
-        ),
-        const SizedBox(height: 10),
-        RichText(
-          text: TextSpan(children: [
-            TextSpan(
-              text: '\$110,000.52',
+        padding: const EdgeInsets.all(8),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              'My Portfolio',
               style: GoogleFonts.poppins(
-                  color: Colors.black87,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400),
+                  fontSize: 14, fontWeight: FontWeight.w400),
+              textAlign: TextAlign.left,
             ),
-            TextSpan(
-              text: '+15',
+            Text(
+              '\$112,550.00',
               style: GoogleFonts.poppins(
-                  color: Colors.green,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400),
+                  fontSize: 24, fontWeight: FontWeight.w700),
+              textAlign: TextAlign.left,
             ),
+            const SizedBox(height: 5),
+            RichText(
+              text: TextSpan(children: [
+                TextSpan(
+                  text: '\$110,000.52',
+                  style: GoogleFonts.poppins(
+                      color: Colors.black87,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400),
+                ),
+                TextSpan(
+                  text: ' +15',
+                  style: GoogleFonts.poppins(
+                      color: Colors.green,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400),
+                ),
+              ]),
+            )
           ]),
-        )
-      ]),
-    );
+        ));
   }
+
+  // Container _header() {
+  //   return Container(
+  //     padding: const EdgeInsets.all(0),
+  //     child: Row(
+  //       children: [
+  //         IconButton(
+  //           splashColor: Colors.transparent,
+  //           highlightColor: Colors.transparent,
+  //           onPressed: () {
+  //             // Add functionality for the hamburger menu button
+  //           },
+  //           icon: const Icon(Iconsax.menu_1),
+  //           color: Colors.black,
+  //         ),
+
+  //         const CircleAvatar(
+  //           radius: 22,
+  //           backgroundImage: AssetImage('assets/images/content/user1.jpg'),
+  //         ),
+  //         const SizedBox(width: 4),
+  //         Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text(
+  //               'Hello, welcome',
+  //               style: GoogleFonts.poppins(
+  //                   fontSize: 13, fontWeight: FontWeight.w400),
+  //             ),
+  //             Text(
+  //               'Suraj',
+  //               style: GoogleFonts.poppins(
+  //                   fontSize: 15, fontWeight: FontWeight.w600),
+  //             ),
+  //           ],
+  //         ),
+  //         const Spacer(),
+  //         //const SizedBox(width: 0),
+  //         MaterialButton(
+  //           onPressed: () {},
+  //           padding: const EdgeInsets.all(6),
+  //           shape: const CircleBorder(side: BorderSide(color: Colors.black12)),
+  //           child: const Icon(Iconsax.notification),
+  //         ),
+  //         MaterialButton(
+  //           onPressed: () {},
+  //           padding: const EdgeInsets.all(6),
+  //           shape: const CircleBorder(side: BorderSide(color: Colors.black12)),
+  //           child: const Icon(Iconsax.search_normal),
+  //         )
+  //       ],
+  //     ),
+  //   );
+  // }
+//}
+
+  // Container _header() {
+  //   return Container(
+  //     padding: const EdgeInsets.all(0),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.start,
+  //       children: [
+  //         IconButton(
+  //           splashColor: Colors.transparent,
+  //           highlightColor: Colors.transparent,
+  //           onPressed: () {
+  //             // Add functionality for the hamburger menu button
+  //           },
+  //           icon: const Icon(Iconsax.menu_1),
+  //           color: Colors.black,
+  //         ),
+  //         const SizedBox(
+  //             width:
+  //                 0), // Add spacing between the hamburger menu and the CircleAvatar
+  //         const CircleAvatar(
+  //           radius: 22,
+  //           backgroundImage: AssetImage('assets/images/content/user1.jpg'),
+  //         ),
+  //         const SizedBox(width: 4),
+  //         Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           children: [
+  //             Text(
+  //               'Hello,',
+  //               style: GoogleFonts.poppins(
+  //                 fontSize: 13,
+  //                 fontWeight: FontWeight.w400,
+  //               ),
+  //             ),
+  //             Text(
+  //               'Suraj',
+  //               style: GoogleFonts.poppins(
+  //                 fontSize: 15,
+  //                 fontWeight: FontWeight.w600,
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+
+  //         MaterialButton(
+  //           onPressed: () {},
+  //           padding: const EdgeInsets.all(6),
+  //           shape: const CircleBorder(side: BorderSide(color: Colors.black12)),
+  //           child: const Icon(Iconsax.notification),
+  //         ),
+
+  //         MaterialButton(
+  //           onPressed: () {},
+  //           padding: const EdgeInsets.all(6),
+  //           shape: const CircleBorder(side: BorderSide(color: Colors.black12)),
+  //           child: const Icon(Iconsax.search_normal),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Container _header() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          const CircleAvatar(
-            radius: 28,
-            backgroundImage: AssetImage('assets/images/content/user1.jpg'),
-          ),
-          const SizedBox(width: 10),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
             children: [
-              Text(
-                'Hello Good Morning',
-                style: GoogleFonts.poppins(
-                    fontSize: 14, fontWeight: FontWeight.w400),
+              IconButton(
+                splashColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onPressed: () {
+                  // Add functionality for the hamburger menu button
+                },
+                icon: const Icon(Iconsax.menu_1),
+                color: Colors.black,
               ),
-              Text(
-                'Suraj Rimal',
-                style: GoogleFonts.poppins(
-                    fontSize: 20, fontWeight: FontWeight.w600),
+              const SizedBox(width: 4),
+              const CircleAvatar(
+                radius: 22,
+                backgroundImage: AssetImage('assets/images/content/user1.jpg'),
+              ),
+              const SizedBox(width: 4),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Hello',
+                    style: GoogleFonts.poppins(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Text(
+                    'Suraj',
+                    style: GoogleFonts.poppins(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-          const Spacer(),
+          const SizedBox(width: 40),
           MaterialButton(
             onPressed: () {},
-            padding: const EdgeInsets.all(14),
+            padding: const EdgeInsets.all(6),
             shape: const CircleBorder(side: BorderSide(color: Colors.black12)),
             child: const Icon(Iconsax.notification),
-          )
+          ),
+          const SizedBox(width: 0), // Reduced SizedBox width
+          MaterialButton(
+            onPressed: () {},
+            padding: const EdgeInsets.all(6),
+            shape: const CircleBorder(side: BorderSide(color: Colors.black12)),
+            child: const Icon(Iconsax.search_normal),
+          ),
         ],
       ),
     );
   }
-//}
 
   Future<bool> _onBackPressed() async {
     DateTime now = DateTime.now();
