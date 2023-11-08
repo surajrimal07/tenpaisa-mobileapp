@@ -26,6 +26,8 @@ dependencies:
   fluttertoast: ^8.2.2
   pinput: ^3.0.1
   fl_chart: ^0.40.0
+  webview_flutter: ^3.0.4
+  any_link_preview: ^3.0.1
 
   salomon_bottom_bar: ^3.3.2
   crypto: ^3.0.1

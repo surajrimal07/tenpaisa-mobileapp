@@ -1,5 +1,7 @@
 import 'package:paisa/view/dashboard_view.dart';
 import 'package:paisa/view/forget_view.dart';
+import 'package:paisa/view/news_view.dart';
+import 'package:paisa/view/noti_view.dart';
 import 'package:paisa/view/onboarding_view.dart';
 import 'package:paisa/view/otp_view.dart';
 import 'package:paisa/view/profile_view.dart';
@@ -17,6 +19,8 @@ class AppRoute {
   static const String forgotRoute = '/forgot';
   static const String invStyle = '/invstyle';
   static const String profileRoute = '/profile';
+  static const String newsRoute = '/news';
+  static const String notiRoute = '/noti';
 
   static getApplicationRoute() {
     return {
@@ -27,7 +31,9 @@ class AppRoute {
       otpRoute: (context) => const OtpView(),
       forgotRoute: (context) => const ForgotView(),
       invStyle: (context) => const StyleView(),
-      profileRoute: (context) => const ProfileView()
+      profileRoute: (context) => const ProfileView(),
+      newsRoute: (context) => const NewsView(),
+      notiRoute: (context) => const NotificationView()
     };
   }
 }

@@ -610,7 +610,9 @@ class _MainPageState extends State<DashboardView> {
                     MaterialButton(
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, AppRoute.newsRoute);
+                      },
                       padding: const EdgeInsets.all(0),
                       minWidth: 0,
                       child: const Icon(
