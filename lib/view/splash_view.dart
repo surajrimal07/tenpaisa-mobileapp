@@ -1,9 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:paisa/app/routes/approutes.dart';
+import 'package:paisa/services/notification_services.dart';
+import 'package:paisa/services/websocket_services.dart';
 import 'package:paisa/utils/colors_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:web_socket_channel/io.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
@@ -14,10 +18,29 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashView> {
+  late Future<void> channelInitialization; //starting noti
+  late IOWebSocketChannel channel; //starting web socket listening
+
   @override
   void initState() {
     super.initState();
     checkFirstTime();
+
+    channelInitialization =
+        NotificationServices.initializeAwesomeNotifications();
+
+    channel = WebSocketServices.startWebSocket(onDataCallback);
+  }
+
+  void onDataCallback(dynamic data) {
+    Map<String, dynamic> newData = json.decode(data);
+    String receivedTitle = newData['title'];
+    String receivedDescription = newData['description'];
+    String? receivedImage = newData['image'];
+    String url = newData['url'];
+
+    NotificationServices.showNotification(
+        receivedTitle, receivedDescription, receivedImage, url);
   }
 
   void checkFirstTime() async {
@@ -33,17 +56,12 @@ class _SplashScreenState extends State<SplashView> {
 
     Timer(const Duration(seconds: 1), () {
       if (isFirstTime == true) {
-        //print("We are here 118, first time app opening, opening onboarding");
         Navigator.pushReplacementNamed(context, AppRoute.onboardRoute);
-        //print("not working");
       } else if (userToken != null) {
-        //print(userToken);
         print("User token is true ");
         Navigator.pushReplacementNamed(context, AppRoute.dashboardRoute);
-        //print("not working");
+        //start web socker and notification service here.
       } else {
-        //print(userToken);
-        //print("We are here 46");
         print("user token is false");
         Navigator.pushReplacementNamed(context, AppRoute.signinRoute);
       }

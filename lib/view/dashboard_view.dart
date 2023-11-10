@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +6,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/data/portfolio_data.dart';
-import 'package:paisa/services/notification_services.dart';
-import 'package:paisa/services/websocket_services.dart';
+//import 'package:paisa/services/notification_services.dart';
+//import 'package:paisa/services/websocket_services.dart';
 import 'package:paisa/utils/colors_utils.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import 'package:web_socket_channel/io.dart';
+//import 'package:web_socket_channel/io.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -23,8 +21,8 @@ class DashboardView extends StatefulWidget {
 
 class _MainPageState extends State<DashboardView> {
   int indexBottomBar = 0;
-  late Future<void> channelInitialization;
-  late IOWebSocketChannel channel;
+  // late Future<void> channelInitialization;
+  // late IOWebSocketChannel channel;
   DateTime? currentBackPressTime;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -42,22 +40,22 @@ class _MainPageState extends State<DashboardView> {
           Brightness.light, // Adjust navigation bar icon colors
     ));
 
-    channelInitialization =
-        NotificationServices.initializeAwesomeNotifications();
+    // channelInitialization =
+    //     NotificationServices.initializeAwesomeNotifications();
 
-    channel = WebSocketServices.startWebSocket(onDataCallback);
+    //channel = WebSocketServices.startWebSocket(onDataCallback);
   }
 
-  void onDataCallback(dynamic data) {
-    Map<String, dynamic> newData = json.decode(data);
-    String receivedTitle = newData['title'];
-    String receivedDescription = newData['description'];
-    String? receivedImage = newData['image'];
-    String url = newData['url'];
+  // void onDataCallback(dynamic data) {
+  //   Map<String, dynamic> newData = json.decode(data);
+  //   String receivedTitle = newData['title'];
+  //   String receivedDescription = newData['description'];
+  //   String? receivedImage = newData['image'];
+  //   String url = newData['url'];
 
-    NotificationServices.showNotification(
-        receivedTitle, receivedDescription, receivedImage, url);
-  }
+  //   NotificationServices.showNotification(
+  //       receivedTitle, receivedDescription, receivedImage, url);
+  // }
 
   @override
   Widget build(BuildContext context) {
