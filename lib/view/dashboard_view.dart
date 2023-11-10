@@ -38,7 +38,8 @@ class _MainPageState extends State<DashboardView> {
           MyColors.btnColor, // Navigation bar color set to the same blue shade
       systemNavigationBarIconBrightness:
           Brightness.light, // Adjust navigation bar icon colors
-    ));
+    )
+    );
 
     // channelInitialization =
     //     NotificationServices.initializeAwesomeNotifications();
