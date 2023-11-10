@@ -31,22 +31,9 @@ class _NewsViewState extends State<NewsView> {
     WebView.platform = SurfaceAndroidWebView();
   }
 
-  // //limit large description to 20 words
-  // String _getLimitedDescription(String description) {
-  //   if (description.isNotEmpty) {
-  //     List<String> words = description.split(' ');
-
-  //     // Limit the description to 20 words
-  //     String limitedDescription = words.take(20).join(' ');
-
-  //     return limitedDescription;
-  //   }
-  //   return '';
-  // }
-
   Future<void> fetchNews() async {
     var url = Uri.parse(
-        'http://192.168.101.6:5000/news'); // Replace with your API endpoint
+        'http://192.168.101.7:5000/news'); // Replace with your API endpoint
 
     try {
       var response = await http.get(url);
