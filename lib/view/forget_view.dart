@@ -8,6 +8,7 @@ import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/model/otp_model.dart';
 import 'package:paisa/model/user_model.dart';
+import 'package:paisa/utils/serverconfig_utils.dart';
 
 import '../utils/colors_utils.dart';
 
@@ -46,7 +47,7 @@ class _ForgotState extends State<ForgotView> {
 
   Future verifymail() async {
     var url = Uri.parse(
-        "http://192.168.101.6:5000/api/forget"); //replace this with localhost ip address
+        "${ServerConfig.serverAddress}/api/forget"); //replace this with localhost ip address
 
     // print("We are here at verify mail");
     // print(mailverified);
@@ -87,7 +88,7 @@ class _ForgotState extends State<ForgotView> {
 
     //print(mailverified);
     var url = Uri.parse(
-        "http://192.168.101.6:5000/api/otp-verify"); //replace this with localhost ip address
+        "${ServerConfig.serverAddress}/api/otp-verify"); //replace this with localhost ip address
 
     var res = await http.post(
       url,
@@ -114,7 +115,7 @@ class _ForgotState extends State<ForgotView> {
 
   Future updatepassword() async {
     var url = Uri.parse(
-        "http://192.168.101.6:5000/api/updateuser"); //replace this with localhost ip address
+        "${ServerConfig.serverAddress}/api/updateuser"); //replace this with localhost ip address
     var res = await http.post(
       url,
       headers: <String, String>{

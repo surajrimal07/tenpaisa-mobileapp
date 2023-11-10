@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:paisa/app/routes/approutes.dart';
+import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/services/notification_services.dart';
 import 'package:paisa/services/websocket_services.dart';
 import 'package:paisa/utils/colors_utils.dart';
@@ -20,6 +21,7 @@ class SplashView extends StatefulWidget {
 class _SplashScreenState extends State<SplashView> {
   late Future<void> channelInitialization; //starting noti
   late IOWebSocketChannel channel; //starting web socket listening
+  String? userToken;
 
   @override
   void initState() {
@@ -32,33 +34,26 @@ class _SplashScreenState extends State<SplashView> {
     channel = WebSocketServices.startWebSocket(onDataCallback);
   }
 
-  void onDataCallback(dynamic data) {
-    Map<String, dynamic> newData = json.decode(data);
-    String receivedTitle = newData['title'];
-    String receivedDescription = newData['description'];
-    String? receivedImage = newData['image'];
-    String url = newData['url'];
-
-    NotificationServices.showNotification(
-        receivedTitle, receivedDescription, receivedImage, url);
-  }
-
   void checkFirstTime() async {
     WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
     //String? userToken = prefs.getString('userToken');
-    dynamic userToken = prefs.get('userToken');
+    //dynamic userToken = prefs.get('userToken'); test
+    dynamic loginsaved = prefs.get('loginsaved');
 
     if (isFirstTime) {
       await prefs.setBool('isFirstTime', false);
     }
 
+    userToken = prefs.getString('userToken');
+
     Timer(const Duration(seconds: 1), () {
       if (isFirstTime == true) {
         Navigator.pushReplacementNamed(context, AppRoute.onboardRoute);
-      } else if (userToken != null) {
+      } else if (userToken != null && loginsaved == true) {
         print("User token is true ");
+        print("Login saved is $loginsaved");
         Navigator.pushReplacementNamed(context, AppRoute.dashboardRoute);
         //start web socker and notification service here.
       } else {
@@ -66,6 +61,22 @@ class _SplashScreenState extends State<SplashView> {
         Navigator.pushReplacementNamed(context, AppRoute.signinRoute);
       }
     });
+  }
+
+  void onDataCallback(dynamic data) {
+    Map<String, dynamic> newData = json.decode(data);
+    String receivedTitle = newData['title'];
+    String receivedDescription = newData['description'];
+    String? receivedImage = newData['image'];
+    String url = newData['url'];
+
+    if (userToken != null) {
+      //print("Notification Service Started");
+      NotificationServices.showNotification(
+          receivedTitle, receivedDescription, receivedImage, url);
+    } else {
+      CustomToast.showToast("Notification service failed");
+    }
   }
 
   @override

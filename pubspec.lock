@@ -313,13 +313,13 @@ packages:
     source: hosted
     version: "0.0.8"
   image_picker:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: image_picker
-      sha256: b6951e25b795d053a6ba03af5f710069c99349de9341af95155d52665cb4607c
+      sha256: "7d7f2768df2a8b0a3cefa5ef4f84636121987d403130e70b17ef7e2cf650ba84"
       url: "https://pub.dev"
     source: hosted
-    version: "0.8.9"
+    version: "1.0.4"
   image_picker_android:
     dependency: transitive
     description:
@@ -633,10 +633,10 @@ packages:
     dependency: "direct dev"
     description:
       name: snippet_coder_utils
-      sha256: "516314c3d23071e4590597fa35e4c98fb86abc42d9fd6a1bb60cbee5e3f65c20"
+      sha256: b004df33ed5539eb6e999e9109fd363277ced46d9d225b926c785b9d602d74ad
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.14"
+    version: "1.0.15"
   source_span:
     dependency: transitive
     description:

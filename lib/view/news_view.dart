@@ -7,6 +7,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/utils/colors_utils.dart';
+import 'package:paisa/utils/serverconfig_utils.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -33,7 +34,7 @@ class _NewsViewState extends State<NewsView> {
 
   Future<void> fetchNews() async {
     var url = Uri.parse(
-        'http://192.168.101.4:5000/news'); // Replace with your API endpoint
+        '${ServerConfig.serverAddress}/news'); // Replace with your API endpoint
 
     try {
       var response = await http.get(url);

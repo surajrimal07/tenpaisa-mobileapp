@@ -7,6 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/model/user_model.dart';
+import 'package:paisa/utils/serverconfig_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/colors_utils.dart';
@@ -23,11 +24,35 @@ class _SigninState extends State<SigninView> {
   final _formKey = GlobalKey<FormState>();
   bool _obscureText = true;
   bool rememberMe = false;
-  //String errorMessage = ''; // Variable to store error message.
+  //String? userToken;
+
+  Future<void> savetoken(String usrtoken) async {
+    try {
+      var url = Uri.parse("${ServerConfig.serverAddress}/api/savetkn");
+
+      var requestBody = {'email': user.email, 'token': usrtoken};
+
+      var response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        CustomToast.showToast("Token Saved");
+      } else {
+        CustomToast.showToast("Token failed to save");
+      }
+    } catch (e) {
+      CustomToast.showToast("Token error");
+    }
+  }
 
   Future save() async {
     var url = Uri.parse(
-        "http://192.168.101.15:5000/api/login"); //replace this with localhost ip address
+        "${ServerConfig.serverAddress}/api/login"); //replace this with localhost ip address
     var res = await http.post(
       url,
       headers: <String, String>{
@@ -41,24 +66,20 @@ class _SigninState extends State<SigninView> {
 
     if (res.statusCode == 200) {
       CustomToast.showToast("Signin Successful");
+      SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      //save a user token after this.
       if (rememberMe == true) {
-        final String dataToHash =
-            '$user.email+$user.password'; // Concatenate email and password
-        final userToken = sha256
-            .convert(dataToHash.codeUnits)
-            .toString(); // Generate the hash
-
-        SharedPreferences prefs =
-            await SharedPreferences.getInstance(); //error here
-        prefs.setString('userToken', userToken);
-
-        //print("true sent, user token ");
+        prefs.setBool('loginsaved', true);
       }
-      // else {
-      //   //print("User didn't their password");
-      // }
+
+      final String dataToHash =
+          '$user.email+$user.password'; // Concatenate email and password
+      final userToken =
+          sha256.convert(dataToHash.codeUnits).toString(); // Generate the hash
+
+      //error here
+      prefs.setString('userToken', userToken);
+      savetoken(userToken); //also save token to db
 
       // ignore: use_build_context_synchronously
       Navigator.pushNamedAndRemoveUntil(
@@ -80,21 +101,6 @@ class _SigninState extends State<SigninView> {
         body: SingleChildScrollView(
       child: Stack(
         children: [
-          // OrientationBuilder(
-          //   builder: (context, orientation) {
-          //     return Positioned(
-          //       left: 0,
-          //       right: 0,
-          //       top: 0,
-          //       child: Image.asset(
-          //         'assets/images/blite.png',
-          //         fit: BoxFit.cover,
-          //         width: MediaQuery.of(context).size.width,
-          //       ),
-          //     );
-          //   },
-          // ),
-
           Positioned(
             left: 0,
             right: 0,
@@ -105,7 +111,6 @@ class _SigninState extends State<SigninView> {
               //width: MediaQuery.of(context).size.width,
             ),
           ),
-
           Container(
             alignment: Alignment.center,
             child: Form(

@@ -8,6 +8,7 @@ import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/model/otp_model.dart';
 import 'package:paisa/model/user_model.dart';
+import 'package:paisa/utils/serverconfig_utils.dart';
 import 'package:pinput/pinput.dart';
 
 import '../utils/colors_utils.dart';
@@ -20,10 +21,35 @@ class OtpView extends StatefulWidget {
 }
 
 class _MyVerifyState extends State<OtpView> {
+//save token
+  Future<void> savetoken(String usrtoken) async {
+    try {
+      var url = Uri.parse("${ServerConfig.serverAddress}/api/savetkn");
+
+      var requestBody = {'email': otp.email, 'token': usrtoken};
+
+      var response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        CustomToast.showToast("Token Saved");
+      } else {
+        CustomToast.showToast("Token failed to save");
+      }
+    } catch (e) {
+      CustomToast.showToast("Token error");
+    }
+  }
+
   //verify otp
   Future<void> verify() async {
     try {
-      var url = Uri.parse("http://192.168.101.6:5000/api/otp-verify");
+      var url = Uri.parse("${ServerConfig.serverAddress}/api/otp-verify");
 
       // Create a map for the request body
 
@@ -56,7 +82,8 @@ class _MyVerifyState extends State<OtpView> {
 //resend otp
   Future<void> resend() async {
     try {
-      var url = Uri.parse("http://192.168.101.6:5000/api/otp-login"); //create
+      var url =
+          Uri.parse("${ServerConfig.serverAddress}/api/otp-login"); //create
 
       // Create a map for the request body
       var requestBody = {'email': otp.email};
@@ -101,7 +128,7 @@ class _MyVerifyState extends State<OtpView> {
   //now do data entry
   Future<void> save() async {
     try {
-      var url = Uri.parse("http://192.168.101.6:5000/api/create");
+      var url = Uri.parse("${ServerConfig.serverAddress}/api/create");
 
       // Create a map for the request body
       var requestBody = {
@@ -127,6 +154,8 @@ class _MyVerifyState extends State<OtpView> {
 
       if (response.statusCode == 200) {
         CustomToast.showToast("User Created Successfully");
+
+        savetoken(hashtopass);
 
         // ignore: use_build_context_synchronously
         Navigator.pushNamedAndRemoveUntil(

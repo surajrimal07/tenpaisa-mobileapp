@@ -1,28 +1,35 @@
-import 'dart:io';
+import 'dart:convert';
 
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:http/http.dart' as http;
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/utils/colors_utils.dart';
+import 'package:paisa/utils/serverconfig_utils.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountView extends StatefulWidget {
   const AccountView({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ProfileViewState createState() => _ProfileViewState();
 }
 
 class _ProfileViewState extends State<AccountView> {
   int indexBottomBar = 4;
-  String currentName = "Suraj Rimal";
-  String currentEmail = "hello@suraj.com";
-  String currentPhone = "98402202**";
+  String currentName = "";
+  String currentPass = "**********";
+  String? currentEmail;
+  String? currentPhone;
+  String? currentDP;
+  DateTime? currentBackPressTime;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController newNameController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
@@ -56,143 +63,147 @@ class _ProfileViewState extends State<AccountView> {
       systemNavigationBarIconBrightness:
           Brightness.light, // Adjust navigation bar icon colors
     ));
+    fetchUserData();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white.withOpacity(.94),
-      appBar: AppBar(
-        title: const Text(
-          "Settings",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
-        ),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        automaticallyImplyLeading: true,
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(10),
-        child: ListView(
-          children: [
-            SimpleUserCard(
-              userName: currentName,
-              userProfilePic: _pickedImage != null
-                  ? Image.file(File(_pickedImage!.path)).image
-                  : const AssetImage("assets/images/content/user1.jpg"),
-              imageRadius: 80,
-              onTap: _pickImage,
+    return WillPopScope(
+        onWillPop: _onBackPressed,
+        child: Scaffold(
+          backgroundColor: Colors.white.withOpacity(.94),
+          appBar: AppBar(
+            title: const Text(
+              "Settings",
+              style:
+                  TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
             ),
-            SettingsGroup(
-              settingsGroupTitle: "Profile",
-              settingsGroupTitleStyle: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-              items: [
-                SettingsItem(
-                  onTap: () => showNameChangeDialog(context),
-                  icons: Icons.person_2_outlined,
-                  title: 'Name',
-                  subtitle: currentName,
-                  titleMaxLine: 1,
-                  subtitleMaxLine: 1,
+            centerTitle: true,
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            automaticallyImplyLeading: true,
+            iconTheme: const IconThemeData(color: Colors.black),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(10),
+            child: ListView(
+              children: [
+                SimpleUserCard(
+                  userName: currentName,
+                  userProfilePic: currentDP != null
+                      ? AssetImage("assets/images/content/$currentDP")
+                      : const AssetImage("assets/images/content/default.png"),
+                  imageRadius: 80,
+                  onTap: _pickImage,
                 ),
-                SettingsItem(
-                  onTap: () => showPasswordChangeDialog(context),
-                  icons: Icons.person_2_outlined,
-                  title: 'Password',
-                  subtitle: "**********",
-                  titleMaxLine: 1,
-                  subtitleMaxLine: 1,
-                ),
-                SettingsItem(
-                  onTap: () => showEmailChangeDialog(context),
-                  icons: Icons.email_outlined,
-                  title: 'Email',
-                  subtitle: currentEmail,
-                ),
-                SettingsItem(
-                  onTap: () => showPhoneChangeDialog(context),
-                  icons: Icons.phone,
-                  title: 'Phone',
-                  subtitle: currentPhone,
-                ),
-              ],
-            ),
-            SettingsGroup(
-              settingsGroupTitle: "Account",
-              settingsGroupTitleStyle: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-              items: [
-                SettingsItem(
-                  onTap: () => showSignOutDialog(context),
-                  icons: Icons.exit_to_app_rounded,
-                  title: "Sign Out",
-                ),
-                // SettingsItem(
-                //   onTap: () {},
-                //   icons: Icons.change_circle_outlined,
-                //   title: "Change email",
-                // ),
-                SettingsItem(
-                  onTap: () {},
-                  icons: CupertinoIcons.delete_solid,
-                  title: "Delete account",
-                  titleStyle: const TextStyle(
-                    color: Colors.red,
+                SettingsGroup(
+                  settingsGroupTitle: "Profile",
+                  settingsGroupTitleStyle: const TextStyle(
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
+                  items: [
+                    SettingsItem(
+                      onTap: () => showNameChangeDialog(context),
+                      icons: Icons.person_2_outlined,
+                      title: 'Name',
+                      subtitle: currentName,
+                      titleMaxLine: 1,
+                      subtitleMaxLine: 1,
+                    ),
+                    SettingsItem(
+                      onTap: () => showPasswordChangeDialog(context),
+                      icons: Icons.person_2_outlined,
+                      title: 'Password',
+                      subtitle: currentPass,
+                      titleMaxLine: 1,
+                      subtitleMaxLine: 1,
+                    ),
+                    SettingsItem(
+                      onTap: () => showEmailChangeDialog(context),
+                      icons: Icons.email_outlined,
+                      title: 'Email',
+                      subtitle: currentEmail ?? 'No Email',
+                    ),
+                    SettingsItem(
+                      onTap: () => showPhoneChangeDialog(context),
+                      icons: Icons.phone,
+                      title: 'Phone',
+                      subtitle: currentPhone ?? 'No Number',
+                    ),
+                  ],
+                ),
+                SettingsGroup(
+                  settingsGroupTitle: "Account",
+                  settingsGroupTitleStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  items: [
+                    SettingsItem(
+                      onTap: () => showSignOutDialog(context),
+                      icons: Icons.exit_to_app_rounded,
+                      title: "Sign Out",
+                    ),
+                    // SettingsItem(
+                    //   onTap: () {},
+                    //   icons: Icons.change_circle_outlined,
+                    //   title: "Change email",
+                    // ),
+                    SettingsItem(
+                      onTap: () {},
+                      icons: CupertinoIcons.delete_solid,
+                      title: "Delete account",
+                      titleStyle: const TextStyle(
+                        color: Colors.red,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: SalomonBottomBar(
-        currentIndex: indexBottomBar,
-        onTap: (i) {
-          if (i == 4) {
-            setState(() => indexBottomBar = i);
-          } else if (i == 0) {
-            Navigator.pushNamed(context, AppRoute.dashboardRoute);
-          } else {
-            setState(() => indexBottomBar = i);
-          }
-        },
-        items: [
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.home),
-            title: const Text("Home"),
-            selectedColor: MyColors.btnColor,
           ),
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.global_search),
-            title: const Text("Search"),
-            selectedColor: MyColors.btnColor,
+          bottomNavigationBar: SalomonBottomBar(
+            currentIndex: indexBottomBar,
+            onTap: (i) {
+              if (i == 4) {
+                setState(() => indexBottomBar = i);
+              } else if (i == 0) {
+                Navigator.pushNamed(context, AppRoute.dashboardRoute);
+              } else {
+                setState(() => indexBottomBar = i);
+              }
+            },
+            items: [
+              SalomonBottomBarItem(
+                icon: const Icon(Iconsax.home),
+                title: const Text("Home"),
+                selectedColor: MyColors.btnColor,
+              ),
+              SalomonBottomBarItem(
+                icon: const Icon(Iconsax.global_search),
+                title: const Text("Search"),
+                selectedColor: MyColors.btnColor,
+              ),
+              SalomonBottomBarItem(
+                icon: const Icon(Iconsax.document),
+                title: const Text("Portfolio"),
+                selectedColor: MyColors.btnColor,
+              ),
+              SalomonBottomBarItem(
+                icon: const Icon(Iconsax.wallet_1),
+                title: const Text("Wallet"),
+                selectedColor: MyColors.btnColor,
+              ),
+              SalomonBottomBarItem(
+                icon: const Icon(Iconsax.profile_circle),
+                title: const Text("Profile"),
+                selectedColor: MyColors.btnColor,
+              ),
+            ],
           ),
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.document),
-            title: const Text("Portfolio"),
-            selectedColor: MyColors.btnColor,
-          ),
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.wallet_1),
-            title: const Text("Wallet"),
-            selectedColor: MyColors.btnColor,
-          ),
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.profile_circle),
-            title: const Text("Profile"),
-            selectedColor: MyColors.btnColor,
-          ),
-        ],
-      ),
-    );
+        ));
   }
 
   Future<void> showSignOutDialog(BuildContext context) async {
@@ -203,9 +214,15 @@ class _ProfileViewState extends State<AccountView> {
           title: const Text("Are you sure?"),
           actions: [
             TextButton(
-              onPressed: () {
+              onPressed: () async {
+                // Clear the userToken from shared preferences
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+                await prefs.remove('userToken');
+
                 CustomToast.showToast("Logging out");
-                Navigator.of(context).pop();
+                // ignore: use_build_context_synchronously
+                Navigator.pushReplacementNamed(context, AppRoute.signinRoute);
+                //Navigator.of(context).pop();
               },
               child: const Text("Yes"),
             ),
@@ -337,6 +354,48 @@ class _ProfileViewState extends State<AccountView> {
     );
   }
 
+  Future<void> fetchUserData() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? userToken = prefs.getString('userToken');
+
+      print("User token is $userToken");
+
+      if (userToken == null) {
+        CustomToast.showToast('User not logged in');
+        return;
+      }
+
+      var url = Uri.parse("${ServerConfig.serverAddress}/api/verify");
+
+      var res = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{'token': userToken}),
+      );
+      print("User token is $userToken");
+      print("Response status code: ${res.statusCode}");
+      print("Response body: ${res.body}");
+
+      if (res.statusCode == 200) {
+        // Parse the JSON response and update the state
+        final userData = json.decode(res.body);
+        setState(() {
+          currentName = userData['username'];
+          currentEmail = userData['email'];
+          currentPhone = userData['phone'];
+          currentDP = userData['picture'];
+        });
+      } else {
+        CustomToast.showToast('Failed to fetch user data: ${res.statusCode}');
+      }
+    } catch (error) {
+      CustomToast.showToast('Error fetching user data: $error');
+    }
+  }
+
   Future<void> showEmailChangeDialog(BuildContext context) async {
     String? emailError;
 
@@ -411,7 +470,9 @@ class _ProfileViewState extends State<AccountView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text("Current Phone: $currentPhone"),
+                  Text(
+                    "Current Phone: ${currentPhone ?? "No Number"}",
+                  ),
                   TextField(
                     controller: newPhoneController,
                     decoration: InputDecoration(
@@ -466,7 +527,7 @@ class _ProfileViewState extends State<AccountView> {
 
   void updatePass(String newPass) {
     setState(() {
-      currentName = newPass;
+      currentPass = newPass;
     });
   }
 
@@ -480,5 +541,23 @@ class _ProfileViewState extends State<AccountView> {
     setState(() {
       currentPhone = newPhone;
     });
+  }
+
+  Future<bool> _onBackPressed() async {
+    DateTime now = DateTime.now();
+
+    if (currentBackPressTime == null ||
+        now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
+      currentBackPressTime = now;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Press back again to exit'),
+          duration: Duration(seconds: 2),
+        ),
+      );
+      return false;
+    }
+    SystemNavigator.pop();
+    return true;
   }
 }

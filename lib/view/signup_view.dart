@@ -7,6 +7,7 @@ import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/model/otp_model.dart';
 import 'package:paisa/model/user_model.dart';
+import 'package:paisa/utils/serverconfig_utils.dart';
 
 import '../utils/colors_utils.dart';
 
@@ -24,7 +25,8 @@ class _SignupState extends State<SignupView> {
 
   Future<void> save() async {
     try {
-      var url = Uri.parse("http://192.168.101.6:5000/api/otp-login"); //create
+      var url =
+          Uri.parse("${ServerConfig.serverAddress}/api/otp-login"); //create
 
       // Create a map for the request body
       var requestBody = {'email': otp.email};
