@@ -66,7 +66,7 @@ class _MainPageState extends State<DashboardView> {
           defaultPrivacy: NotificationPrivacy.Public,
           defaultColor: MyColors.btnColor,
           channelShowBadge: true,
-          //soundSource: 'resource://raw/noti.ogg',
+          soundSource: 'noti.mp3', //'resource://raw/noti.ogg',
           defaultRingtoneType: DefaultRingtoneType.Notification,
         ),
       ],
@@ -130,7 +130,7 @@ class _MainPageState extends State<DashboardView> {
 
     AwesomeNotifications().createNotification(
       content: NotificationContent(
-        id: 1,
+        id: -1,
         channelKey: 'basic_channel',
         title: title,
         body: description,
@@ -146,7 +146,10 @@ class _MainPageState extends State<DashboardView> {
         displayOnForeground: true,
         wakeUpScreen: true,
         actionType: ActionType.KeepOnTop,
-        payload: {'notificationId': '1234567890', 'url': url},
+        payload: {
+          'notificationId': '1234567890',
+          'url': url
+        }, //'notificationId': '1234567890'
       ),
     );
   }
