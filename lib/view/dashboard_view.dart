@@ -1,7 +1,5 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,8 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:paisa/app/routes/approutes.dart';
-import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/data/portfolio_data.dart';
+import 'package:paisa/services/notification_services.dart';
+import 'package:paisa/services/websocket_services.dart';
 import 'package:paisa/utils/colors_utils.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:web_socket_channel/io.dart';
@@ -24,11 +23,10 @@ class DashboardView extends StatefulWidget {
 
 class _MainPageState extends State<DashboardView> {
   int indexBottomBar = 0;
-  late IOWebSocketChannel channel;
   late Future<void> channelInitialization;
+  late IOWebSocketChannel channel;
   DateTime? currentBackPressTime;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-  //bool isDrawerOpen = false;
 
   @override
   void initState() {
@@ -44,125 +42,21 @@ class _MainPageState extends State<DashboardView> {
           Brightness.light, // Adjust navigation bar icon colors
     ));
 
-    channelInitialization = initializeAwesomeNotifications();
-    startWebSocket();
+    channelInitialization =
+        NotificationServices.initializeAwesomeNotifications();
 
-    //ends here
+    channel = WebSocketServices.startWebSocket(onDataCallback);
   }
 
-  Future<void> initializeAwesomeNotifications() async {
-    await AwesomeNotifications().initialize(
-      'resource://raw/ic_launcher', //'resource://drawable/logo' android\app\src\main\res\drawable\logo.png
-      [
-        NotificationChannel(
-          channelGroupKey: 'basic_channel_group',
-          channelKey: 'basic_channel',
-          channelName: 'stocknews',
-          channelDescription: 'Stock News',
-          playSound: true,
-          onlyAlertOnce: true,
-          groupAlertBehavior: GroupAlertBehavior.Children,
-          importance: NotificationImportance.Max,
-          defaultPrivacy: NotificationPrivacy.Public,
-          defaultColor: MyColors.btnColor,
-          channelShowBadge: true,
-          soundSource: 'noti.mp3', //'resource://raw/noti.ogg',
-          defaultRingtoneType: DefaultRingtoneType.Notification,
-        ),
-      ],
-      debug: true,
-    );
-  }
-
-  void startWebSocket() {
-    try {
-      channel = IOWebSocketChannel.connect('ws://192.168.101.4:8081');
-
-      channel.stream.listen(
-        (message) {
-          onData(message);
-        },
-        onError: (error) {
-          CustomToast.showToast("Socket: Error $error ");
-
-          handleSocketError(error);
-        },
-        onDone: () {
-          CustomToast.showToast("Socket: Connection closed");
-        },
-      );
-      //CustomToast.showToast("Socket onnected");
-      //print('Connected successfully');
-    } on SocketException catch (e) {
-      CustomToast.showToast("SocketException: ${e.message}");
-      handleSocketError(e);
-    } catch (e) {
-      CustomToast.showToast("SocketException: $e");
-      handleSocketError(e);
-    }
-  }
-
-  void handleSocketError(dynamic error) {
-    Future.delayed(const Duration(seconds: 5), () {
-      startWebSocket();
-    });
-  }
-
-  Future<void> showNotification(
-      String title, String description, String? image, String url) async {
-    //image vayo
-    //noti icon vayo
-
-    //to do
-    //sound
-    //on click
-
-    String defaultImagePath = 'resource://raw/news';
-
-    String selectedImagePath = image ?? defaultImagePath;
-
-    // print("Is image null? ${image == null}");
-    // print("Is image null? ${image != null}");
-
-    // print(defaultImagePath);
-
-    // print("selected path is $selectedImagePath");
-
-    AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: -1,
-        channelKey: 'basic_channel',
-        title: title,
-        body: description,
-        bigPicture: selectedImagePath,
-        largeIcon: selectedImagePath,
-        //customSound: 'noti.ogg',
-        //notificationLayout: NotificationLayout.BigPicture,
-
-        notificationLayout: image != null
-            ? NotificationLayout.BigPicture
-            : NotificationLayout.Default,
-        displayOnBackground: true,
-        displayOnForeground: true,
-        wakeUpScreen: true,
-        actionType: ActionType.KeepOnTop,
-        payload: {
-          'notificationId': '1234567890',
-          'url': url
-        }, //'notificationId': '1234567890'
-      ),
-    );
-  }
-
-  void onData(dynamic data) {
+  void onDataCallback(dynamic data) {
     Map<String, dynamic> newData = json.decode(data);
     String receivedTitle = newData['title'];
     String receivedDescription = newData['description'];
-    String? receivedimage = newData['image'];
+    String? receivedImage = newData['image'];
     String url = newData['url'];
-    print("hello");
 
-    showNotification(receivedTitle, receivedDescription, receivedimage, url);
+    NotificationServices.showNotification(
+        receivedTitle, receivedDescription, receivedImage, url);
   }
 
   @override
