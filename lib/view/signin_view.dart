@@ -28,7 +28,7 @@ class _SigninState extends State<SigninView> {
 
   Future<void> savetoken(String usrtoken) async {
     try {
-      var url = Uri.parse("${ServerConfig.serverAddress}/api/savetkn");
+      var url = Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/savetkn");
 
       var requestBody = {'email': user.email, 'token': usrtoken};
 
@@ -52,7 +52,7 @@ class _SigninState extends State<SigninView> {
 
   Future save() async {
     var url = Uri.parse(
-        "${ServerConfig.serverAddress}/api/login"); //replace this with localhost ip address
+        "${ServerConfig.SERVER_ADDRESS}/api/login"); //replace this with localhost ip address
     var res = await http.post(
       url,
       headers: <String, String>{
@@ -93,7 +93,7 @@ class _SigninState extends State<SigninView> {
     }
   }
 
-  User user = User('', '', '', '');
+  User user = User('', '', '', '', '', '');
 
   @override
   Widget build(BuildContext context) {

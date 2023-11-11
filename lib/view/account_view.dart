@@ -366,7 +366,9 @@ class _ProfileViewState extends State<AccountView> {
         return;
       }
 
-      var url = Uri.parse("${ServerConfig.serverAddress}/api/verify");
+      var url = Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/verify");
+
+      print(url);
 
       var res = await http.post(
         url,

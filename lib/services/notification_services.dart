@@ -1,6 +1,7 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:paisa/utils/colors_utils.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class NotificationServices {
   static Future<void> initializeAwesomeNotifications() async {
@@ -65,23 +66,43 @@ class NotificationServices {
     );
   }
 
-  static Future<void> handleNotificationAction(
-      String buttonKey, Map<String, dynamic>? payload) async {
-    if (buttonKey == 'open_link') {
-      String? url = payload?['url'];
-      print(url);
-      if (url != null && url.isNotEmpty) {
-        print("74 launch url initiated");
-        _launchURL(url);
-      }
-    }
-  }
+//really finding it hard to listen for notification events, will do it later
 
-  static Future<void> _launchURL(String url) async {
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
+  // static Future<void> handleNotificationAction(String buttonKey,
+  //     Map<String, dynamic>? payload, BuildContext context) async {
+  //   if (buttonKey == 'open_link') {
+  //     String? url = payload?['url'];
+  //     print(url);
+  //     if (url != null && url.isNotEmpty) {
+  //       print("74 launch url initiated");
+  //       if (context != null) {
+  //         _launchURL(url, context);
+  //       } else {
+  //         print('Context is null');
+  //       }
+  //     }
+  //   }
+  // }
+
+  // static Future<void> _launchURL(String url, BuildContext context) async {
+  //   print('Launching URL: $url');
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   String? userToken = prefs.getString('userToken');
+
+  //   try {
+  //     if (await canLaunchUrl(Uri.parse(url))) {
+  //       if (userToken != null && userToken.isNotEmpty) {
+  //         Navigator.pushNamed(context, AppRoute.newsRoute,
+  //             arguments: {'url': url});
+  //       } else {
+  //         await launchUrl(Uri.parse(url));
+  //       }
+  //       print('URL launched successfully');
+  //     } else {
+  //       print('Could not launch $url');
+  //     }
+  //   } catch (e) {
+  //     print('Error launching URL: $e');
+  //   }
+  // }
 }

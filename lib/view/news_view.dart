@@ -34,7 +34,7 @@ class _NewsViewState extends State<NewsView> {
 
   Future<void> fetchNews() async {
     var url = Uri.parse(
-        '${ServerConfig.serverAddress}/news'); // Replace with your API endpoint
+        '${ServerConfig.SERVER_ADDRESS}/news'); // Replace with your API endpoint
 
     try {
       var response = await http.get(url);

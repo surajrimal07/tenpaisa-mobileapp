@@ -7,6 +7,7 @@ import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/model/otp_model.dart';
 import 'package:paisa/model/user_model.dart';
+import 'package:paisa/utils/serverconfig_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/colors_utils.dart';
@@ -21,7 +22,7 @@ class StyleView extends StatefulWidget {
 
 class _StyleViewState extends State<StyleView> {
   final _formKey = GlobalKey<FormState>();
-  User user = User('', '', '', '');
+  User user = User('', '', '', '', '', '');
   int?
       _selectedValue; // Add this line  // make it int? if we are passing model (like 1,2,3,)
 
@@ -42,7 +43,7 @@ class _StyleViewState extends State<StyleView> {
   Future<void> save() async {
     String valueAsString = _selectedValue.toString();
 
-    var url = Uri.parse("http://192.168.101.6:5000/api/updateuser");
+    var url = Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/updateuser");
     var res = await http.post(
       url,
       headers: <String, String>{

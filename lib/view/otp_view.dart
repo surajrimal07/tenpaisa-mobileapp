@@ -24,7 +24,7 @@ class _MyVerifyState extends State<OtpView> {
 //save token
   Future<void> savetoken(String usrtoken) async {
     try {
-      var url = Uri.parse("${ServerConfig.serverAddress}/api/savetkn");
+      var url = Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/savetkn");
 
       var requestBody = {'email': otp.email, 'token': usrtoken};
 
@@ -49,7 +49,7 @@ class _MyVerifyState extends State<OtpView> {
   //verify otp
   Future<void> verify() async {
     try {
-      var url = Uri.parse("${ServerConfig.serverAddress}/api/otp-verify");
+      var url = Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/otp-verify");
 
       // Create a map for the request body
 
@@ -83,7 +83,7 @@ class _MyVerifyState extends State<OtpView> {
   Future<void> resend() async {
     try {
       var url =
-          Uri.parse("${ServerConfig.serverAddress}/api/otp-login"); //create
+          Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/otp-login"); //create
 
       // Create a map for the request body
       var requestBody = {'email': otp.email};
@@ -128,15 +128,14 @@ class _MyVerifyState extends State<OtpView> {
   //now do data entry
   Future<void> save() async {
     try {
-      var url = Uri.parse("${ServerConfig.serverAddress}/api/create");
+      var url = Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/create");
 
       // Create a map for the request body
       var requestBody = {
         'name': user.name,
         'email': user.email,
-        'password': user.password
-        // 'phone': '',
-        // 'style': '',
+        'password': user.password,
+        'phone': user.phone,
       };
 
       final String dataToHash =
@@ -178,7 +177,7 @@ class _MyVerifyState extends State<OtpView> {
     }
   }
 
-  User user = User('', '', '', '');
+  User user = User('', '', '', '', '', '');
   Otp otp = Otp('', '', '');
 
   //
@@ -192,6 +191,7 @@ class _MyVerifyState extends State<OtpView> {
     otp.hash = receivedData['hash'];
     user.email = receivedData['email'];
     user.password = receivedData['password'];
+    user.phone = receivedData['phone'];
 
     final defaultPinTheme = PinTheme(
       width: 56,

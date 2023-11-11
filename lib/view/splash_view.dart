@@ -38,8 +38,6 @@ class _SplashScreenState extends State<SplashView> {
     WidgetsFlutterBinding.ensureInitialized();
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool isFirstTime = prefs.getBool('isFirstTime') ?? true;
-    //String? userToken = prefs.getString('userToken');
-    //dynamic userToken = prefs.get('userToken'); test
     dynamic loginsaved = prefs.get('loginsaved');
 
     if (isFirstTime) {
@@ -55,6 +53,7 @@ class _SplashScreenState extends State<SplashView> {
         print("User token is true ");
         print("Login saved is $loginsaved");
         Navigator.pushReplacementNamed(context, AppRoute.dashboardRoute);
+
         //start web socker and notification service here.
       } else {
         print("user token is false");
@@ -75,7 +74,7 @@ class _SplashScreenState extends State<SplashView> {
       NotificationServices.showNotification(
           receivedTitle, receivedDescription, receivedImage, url);
     } else {
-      CustomToast.showToast("Notification service failed");
+      CustomToast.showToast("Notification : Auth Error");
     }
   }
 

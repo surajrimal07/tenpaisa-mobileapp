@@ -47,7 +47,7 @@ class _ForgotState extends State<ForgotView> {
 
   Future verifymail() async {
     var url = Uri.parse(
-        "${ServerConfig.serverAddress}/api/forget"); //replace this with localhost ip address
+        "${ServerConfig.SERVER_ADDRESS}/api/forget"); //replace this with localhost ip address
 
     // print("We are here at verify mail");
     // print(mailverified);
@@ -88,7 +88,7 @@ class _ForgotState extends State<ForgotView> {
 
     //print(mailverified);
     var url = Uri.parse(
-        "${ServerConfig.serverAddress}/api/otp-verify"); //replace this with localhost ip address
+        "${ServerConfig.SERVER_ADDRESS}/api/otp-verify"); //replace this with localhost ip address
 
     var res = await http.post(
       url,
@@ -115,7 +115,7 @@ class _ForgotState extends State<ForgotView> {
 
   Future updatepassword() async {
     var url = Uri.parse(
-        "${ServerConfig.serverAddress}/api/updateuser"); //replace this with localhost ip address
+        "${ServerConfig.SERVER_ADDRESS}/api/updateuser"); //replace this with localhost ip address
     var res = await http.post(
       url,
       headers: <String, String>{
@@ -142,7 +142,7 @@ class _ForgotState extends State<ForgotView> {
     }
   }
 
-  User user = User('', '', '', '');
+  User user = User('', '', '', '', '', '');
   Otp otp = Otp('', '', '');
 
   @override

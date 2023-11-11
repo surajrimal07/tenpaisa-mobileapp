@@ -26,14 +26,18 @@ class _SignupState extends State<SignupView> {
   Future<void> save() async {
     try {
       var url =
-          Uri.parse("${ServerConfig.serverAddress}/api/otp-login"); //create
+          Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/otp-login"); //create
 
       // Create a map for the request body
       var requestBody = {'email': otp.email};
 
+
+
+
       Map<String, dynamic> dataToPass = {
         'name': user.name,
         'email': user.email,
+        'phone': user.phone,
         'password': user.password,
         'hash': '',
       };
@@ -66,13 +70,11 @@ class _SignupState extends State<SignupView> {
       }
     } catch (e) {
       CustomToast.showToast("Network error: $e");
-
-      //print("Network error: $e");
     }
   }
 
   Otp otp = Otp('', '', '');
-  User user = User('', '', '', '');
+  User user = User('', '', '', '', '', '');
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +94,6 @@ class _SignupState extends State<SignupView> {
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        // Wrap the Stack in a SingleChildScrollView
         child: Stack(
           children: [
             Positioned(
@@ -150,6 +151,55 @@ class _SignupState extends State<SignupView> {
                             color: MyColors.btnColor,
                           ),
                           hintText: 'Enter Name',
+                          hintStyle: GoogleFonts.poppins(
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w400,
+                          ),
+                          contentPadding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 16),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide:
+                                const BorderSide(color: MyColors.btnColor),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide:
+                                const BorderSide(color: MyColors.btnColor),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(16),
+                            borderSide: const BorderSide(color: Colors.red),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: TextFormField(
+                        controller: TextEditingController(text: user.phone),
+                        onChanged: (value) {
+                          user.phone = value;
+                        },
+                        validator: (value) {
+                          if (value?.isEmpty ?? true) {
+                            return 'Phone number cannot be empty';
+                          } else if (RegExp(r"^[0-9]{10}$").hasMatch(value!)) {
+                            return null;
+                          } else {
+                            return 'Enter a valid 10-digit phone number';
+                          }
+                        },
+                        decoration: InputDecoration(
+                          icon: const Icon(
+                            Icons.phone_android_outlined,
+                            color: MyColors.btnColor,
+                          ),
+                          hintText: 'Enter Phone',
                           hintStyle: GoogleFonts.poppins(
                             fontSize: 14.0,
                             fontWeight: FontWeight.w400,

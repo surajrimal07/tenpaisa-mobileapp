@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:paisa/app/toast/flutter_toast.dart';
+import 'package:paisa/utils/serverconfig_utils.dart';
 import 'package:web_socket_channel/io.dart';
 
 class WebSocketServices {
@@ -16,7 +17,8 @@ class WebSocketServices {
     }
 
     try {
-      channel = IOWebSocketChannel.connect('ws://192.168.101.4:8081');
+      //print(ServerConfig.socketAddress);
+      channel = IOWebSocketChannel.connect(ServerConfig.SOCKET_ADDRESS);
 
       channel.stream.listen(
         (message) {
