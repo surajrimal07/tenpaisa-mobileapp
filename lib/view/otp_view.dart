@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:paisa/model/otp_model.dart';
 import 'package:paisa/model/user_model.dart';
 import 'package:paisa/utils/serverconfig_utils.dart';
 import 'package:pinput/pinput.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/colors_utils.dart';
 
@@ -22,11 +24,11 @@ class OtpView extends StatefulWidget {
 
 class _MyVerifyState extends State<OtpView> {
 //save token
-  Future<void> savetoken(String usrtoken) async {
+  Future<void> savetoken(String usrtoken1) async {
     try {
       var url = Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/savetkn");
 
-      var requestBody = {'email': otp.email, 'token': usrtoken};
+      var requestBody = {'email': otp.email, 'token': usrtoken1};
 
       var response = await http.post(
         url,
@@ -38,6 +40,18 @@ class _MyVerifyState extends State<OtpView> {
 
       if (response.statusCode == 200) {
         CustomToast.showToast("Token Saved");
+
+        SharedPreferences prefs =
+            await SharedPreferences.getInstance(); //error here
+        prefs.remove('userToken');
+        prefs.setString('userToken', usrtoken1);
+
+        // ignore: use_build_context_synchronously
+        Navigator.pushNamedAndRemoveUntil(
+            context,
+            AppRoute.invStyle, //AppRoute.signinRoute,
+            (route) => false,
+            arguments: {'hash': usrtoken1, 'email': user.email});
       } else {
         CustomToast.showToast("Token failed to save");
       }
@@ -138,10 +152,21 @@ class _MyVerifyState extends State<OtpView> {
         'phone': user.phone,
       };
 
-      final String dataToHash =
-          '$user.email+$user.password'; // Concatenate email and password
-      final hashtopass =
-          sha256.convert(dataToHash.codeUnits).toString(); // Generate the hash
+      //creating concept of session token and user token
+      //session token is created during login, it checks if token is there or not to function
+      //the app, also
+
+      // final String dataToHash =
+      //     '$user.email+$user.password'; // Concatenate email and password
+      // final hashtopass =
+      //     sha256.convert(dataToHash.codeUnits).toString(); // Generate the hash
+
+      final key = utf8.encode('${user.email}${user.password}');
+      final hmacSha256 = Hmac(sha256, key);
+      final digest = hmacSha256.convert(Uint8List.fromList(key));
+      final userToken1 = digest.toString();
+
+      print("Fresh token generated is : $userToken1");
 
       var response = await http.post(
         url,
@@ -154,14 +179,7 @@ class _MyVerifyState extends State<OtpView> {
       if (response.statusCode == 200) {
         CustomToast.showToast("User Created Successfully");
 
-        savetoken(hashtopass);
-
-        // ignore: use_build_context_synchronously
-        Navigator.pushNamedAndRemoveUntil(
-            context,
-            AppRoute.invStyle, //AppRoute.signinRoute,
-            (route) => false,
-            arguments: {'hash': hashtopass, 'email': user.email});
+        savetoken(userToken1);
 
         // Navigator.pushNamedAndRemoveUntil(context, AppRoute.invStyle,
         //     arguments: dataToPass);
@@ -172,8 +190,6 @@ class _MyVerifyState extends State<OtpView> {
       }
     } catch (e) {
       CustomToast.showToast("Network error: $e");
-
-      //print("Network error: $e");
     }
   }
 

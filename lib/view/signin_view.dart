@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
@@ -26,11 +27,11 @@ class _SigninState extends State<SigninView> {
   bool rememberMe = false;
   //String? userToken;
 
-  Future<void> savetoken(String usrtoken) async {
+  Future<void> savetoken(String usrtoken1) async {
     try {
       var url = Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/savetkn");
 
-      var requestBody = {'email': user.email, 'token': usrtoken};
+      var requestBody = {'email': user.email, 'token': usrtoken1};
 
       var response = await http.post(
         url,
@@ -41,7 +42,14 @@ class _SigninState extends State<SigninView> {
       );
 
       if (response.statusCode == 200) {
+        print("saved token is $usrtoken1");
         CustomToast.showToast("Token Saved");
+        // ignore: use_build_context_synchronously
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          AppRoute.dashboardRoute, //AppRoute.dashboardRoute,
+          (route) => false,
+        );
       } else {
         CustomToast.showToast("Token failed to save");
       }
@@ -72,21 +80,16 @@ class _SigninState extends State<SigninView> {
         prefs.setBool('loginsaved', true);
       }
 
-      final String dataToHash =
-          '$user.email+$user.password'; // Concatenate email and password
-      final userToken =
-          sha256.convert(dataToHash.codeUnits).toString(); // Generate the hash
+      final key = utf8.encode('${user.email}${user.password}');
+      final hmacSha256 = Hmac(sha256, key);
+      final digest = hmacSha256.convert(Uint8List.fromList(key));
+      final userToken1 = digest.toString();
+
+      print("generated token for new user in 88 is $userToken1");
 
       //error here
-      prefs.setString('userToken', userToken);
-      savetoken(userToken); //also save token to db
-
-      // ignore: use_build_context_synchronously
-      Navigator.pushNamedAndRemoveUntil(
-        context,
-        AppRoute.dashboardRoute, //AppRoute.dashboardRoute,
-        (route) => false,
-      );
+      prefs.setString('userToken', userToken1);
+      savetoken(userToken1); //also save token to db
     } else {
       //CustomSnackbar.showSnackbar(context, "Email or password is incorrect");
       CustomToast.showToast("Email or password is incorrect");

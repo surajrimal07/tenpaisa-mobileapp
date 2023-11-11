@@ -28,9 +28,9 @@ class _StyleViewState extends State<StyleView> {
 
   Future<void> savetokenskip() async {
     //print("hash saved in from style view on skip is ${otp.hash}");
-    SharedPreferences prefs =
-        await SharedPreferences.getInstance(); //error here
-    prefs.setString('userToken', otp.hash);
+    // SharedPreferences prefs =
+    //     await SharedPreferences.getInstance(); //error here
+    // prefs.setString('userToken', otp.hash);
 
     // ignore: use_build_context_synchronously
     Navigator.pushNamedAndRemoveUntil(
@@ -60,10 +60,6 @@ class _StyleViewState extends State<StyleView> {
     print("email : ${user.email} value : $valueAsString");
 
     if (res.statusCode == 200) {
-      SharedPreferences prefs =
-          await SharedPreferences.getInstance(); //error here
-      prefs.setString('userToken', otp.hash);
-
       CustomToast.showToast("Saved");
       // ignore: use_build_context_synchronously
       Navigator.pushNamedAndRemoveUntil(
@@ -76,17 +72,17 @@ class _StyleViewState extends State<StyleView> {
     }
   }
 
-  Otp otp = Otp('', '', '');
+  //Otp otp = Otp('', '', '');
 
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> receivedData =
         ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
-    otp.hash = receivedData['hash'];
+    //otp.hash = receivedData['hash'];
     user.email = receivedData['email'];
 
-    print("Hash recieved from otp view is ${otp.hash}");
+    //print("Hash recieved from otp view is ${otp.hash}");
 
     return Scaffold(
       body: SingleChildScrollView(
