@@ -6,6 +6,25 @@ import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/utils/serverconfig_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import your server configuration class
 
+
+
+
+
+
+
+
+
+  @override
+  void initState() {
+
+  }
+
+
+
+
+
+//using shared preferenses here.
+
 class UserService {
   static Future<Map<String, dynamic>?> fetchUserData() async {
     try {
@@ -88,21 +107,4 @@ class UserService {
     }
     return completer.future;
   }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
 }

@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/data/portfolio_data.dart';
+import 'package:paisa/services/user_services.dart';
 //import 'package:paisa/services/notification_services.dart';
 //import 'package:paisa/services/websocket_services.dart';
 import 'package:paisa/utils/colors_utils.dart';
@@ -21,6 +22,12 @@ class DashboardView extends StatefulWidget {
 
 class _MainPageState extends State<DashboardView> {
   int indexBottomBar = 0;
+  String currentName = "";
+  String currentPass = "**********";
+  String? currentEmail;
+  String? currentPhone;
+  String? currentDP;
+
   // late Future<void> channelInitialization;
   // late IOWebSocketChannel channel;
   DateTime? currentBackPressTime;
@@ -29,6 +36,7 @@ class _MainPageState extends State<DashboardView> {
   @override
   void initState() {
     super.initState();
+    _loadUserData();
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor:
           MyColors.btnColor, // Status bar color set to a dark blue shade
@@ -38,13 +46,20 @@ class _MainPageState extends State<DashboardView> {
           MyColors.btnColor, // Navigation bar color set to the same blue shade
       systemNavigationBarIconBrightness:
           Brightness.light, // Adjust navigation bar icon colors
-    )
-    );
+    ));
+  }
 
-    // channelInitialization =
-    //     NotificationServices.initializeAwesomeNotifications();
+  Future<void> _loadUserData() async {
+    Map<String, dynamic>? userData = await UserService.fetchUserData();
 
-    //channel = WebSocketServices.startWebSocket(onDataCallback);
+    if (userData != null) {
+      setState(() {
+        currentName = userData['name'] ?? "";
+        currentEmail = userData['email'] ?? "";
+        currentPhone = userData['phone'] ?? "";
+        currentDP = userData['dp'] ?? "assets/images/content/default.png";
+      });
+    }
   }
 
   // void onDataCallback(dynamic data) {
@@ -79,39 +94,39 @@ class _MainPageState extends State<DashboardView> {
             ),
             drawer: Drawer(
               child: ListView(
-                children: const [
+                children: [
                   UserAccountsDrawerHeader(
-                    margin: EdgeInsets.all(0),
-                    decoration: BoxDecoration(color: MyColors.btnColor),
-                    accountName: Text('Suraj Rimal'),
-                    accountEmail: Text('test@test.com'),
-                    currentAccountPictureSize: Size(60, 60),
-                    currentAccountPicture: CircleAvatar(
+                    margin: const EdgeInsets.all(0),
+                    decoration: const BoxDecoration(color: MyColors.btnColor),
+                    accountName: Text(currentName),
+                    accountEmail: Text(currentEmail ?? ""),
+                    currentAccountPictureSize: const Size(60, 60),
+                    currentAccountPicture: const CircleAvatar(
                       backgroundImage:
                           AssetImage('assets/images/content/user1.jpg'),
                     ),
                   ),
-                  ListTile(
+                  const ListTile(
                     title: Text('My Profile'),
                     leading: Icon(CupertinoIcons.person),
                   ),
-                  ListTile(
+                  const ListTile(
                     title: Text('Themes'),
                     leading: Icon(CupertinoIcons.color_filter),
                   ),
-                  ListTile(
+                  const ListTile(
                     title: Text('Fonts'),
                     leading: Icon(Icons.font_download_outlined),
                   ),
-                  ListTile(
+                  const ListTile(
                     title: Text('Favorites'),
                     leading: Icon(CupertinoIcons.heart),
                   ),
-                  ListTile(
+                  const ListTile(
                     title: Text('Settings'),
                     leading: Icon(CupertinoIcons.settings),
                   ),
-                  ListTile(
+                  const ListTile(
                     title: Text('Exit'),
                     leading: Icon(Icons.exit_to_app),
                   )
@@ -119,51 +134,53 @@ class _MainPageState extends State<DashboardView> {
               ),
             ),
             bottomNavigationBar: SalomonBottomBar(
+              backgroundColor: MyColors.btnColor,
               currentIndex: indexBottomBar,
               onTap: (i) {
                 if (i == 4) {
-                  // Index of the Profile icon
                   Navigator.pushNamed(context, AppRoute.profileRoute);
                 } else {
                   setState(() => indexBottomBar = i);
                 }
               },
-
-              // currentIndex: indexBottomBar,
-              // onTap: (i) => setState(() => indexBottomBar = i),
               items: [
                 /// Home
                 SalomonBottomBarItem(
                   icon: const Icon(Iconsax.home),
                   title: const Text("Home"),
-                  selectedColor: MyColors.btnColor,
+                  selectedColor: Colors.white,
+                  unselectedColor: Colors.white70,
                 ),
 
                 /// Search
                 SalomonBottomBarItem(
                   icon: const Icon(Iconsax.global_search),
                   title: const Text("Search"),
-                  selectedColor: MyColors.btnColor,
+                  selectedColor: Colors.white,
+                  unselectedColor: Colors.white70,
                 ),
 
                 /// Likes
                 SalomonBottomBarItem(
                   icon: const Icon(Iconsax.document),
                   title: const Text("Portfolio"),
-                  selectedColor: MyColors.btnColor,
+                  selectedColor: Colors.white,
+                  unselectedColor: Colors.white70,
                 ),
 
                 SalomonBottomBarItem(
                   icon: const Icon(Iconsax.wallet_1),
                   title: const Text("Wallet"),
-                  selectedColor: MyColors.btnColor,
+                  selectedColor: Colors.white,
+                  unselectedColor: Colors.white70,
                 ),
 
                 /// Profile
                 SalomonBottomBarItem(
                   icon: const Icon(Iconsax.profile_circle),
                   title: const Text("Profile"),
-                  selectedColor: MyColors.btnColor,
+                  selectedColor: Colors.white,
+                  unselectedColor: Colors.white70,
                 ),
               ],
             )));
@@ -594,10 +611,9 @@ class _MainPageState extends State<DashboardView> {
                             color: Colors.white, // Set the color of the circle
                           ),
                           padding: const EdgeInsets.all(1.2),
-                          child: const CircleAvatar(
+                          child: CircleAvatar(
                             radius: 18,
-                            backgroundImage:
-                                AssetImage('assets/images/content/user1.jpg'),
+                            backgroundImage: Image.asset(currentDP!).image,
                           ),
                         ),
                       ],
@@ -615,7 +631,7 @@ class _MainPageState extends State<DashboardView> {
                           ),
                         ),
                         Text(
-                          'Suraj',
+                          currentName.split(' ')[0],
                           style: GoogleFonts.poppins(
                             fontSize: 12,
                             fontWeight: FontWeight.w600,

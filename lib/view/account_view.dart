@@ -8,12 +8,12 @@ import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
-import 'package:paisa/services/websocket_Services.dart';
+import 'package:paisa/services/websocket_services.dart';
 import 'package:paisa/utils/colors_utils.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../services/user_Services.dart';
+import '../services/user_services.dart';
 
 class AccountView extends StatefulWidget {
   const AccountView({super.key});
@@ -31,7 +31,7 @@ class _ProfileViewState extends State<AccountView> {
   String? currentEmail;
   String? currentPhone;
   String? currentDP;
-  DateTime? currentBackPressTime;
+  //DateTime? currentBackPressTime;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController newNameController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
@@ -597,21 +597,21 @@ class _ProfileViewState extends State<AccountView> {
     });
   }
 
-  Future<bool> _onBackPressed() async {
-    DateTime now = DateTime.now();
+  // Future<bool> _onBackPressed() async {
+  //   DateTime now = DateTime.now();
 
-    if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
-      currentBackPressTime = now;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Press back again to exit'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return false;
-    }
-    SystemNavigator.pop();
-    return true;
-  }
+  //   if (currentBackPressTime == null ||
+  //       now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
+  //     currentBackPressTime = now;
+  //     ScaffoldMessenger.of(context).showSnackBar(
+  //       const SnackBar(
+  //         content: Text('Press back again to exit'),
+  //         duration: Duration(seconds: 2),
+  //       ),
+  //     );
+  //     return false;
+  //   }
+  //   SystemNavigator.pop();
+  //   return true;
+  // }
 }
