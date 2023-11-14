@@ -1,14 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/model/otp_model.dart';
 import 'package:paisa/model/user_model.dart';
-import 'package:paisa/utils/serverconfig_utils.dart';
 
+import '../services/user_services.dart';
 import '../utils/colors_utils.dart';
 
 class SignupView extends StatefulWidget {
@@ -24,53 +21,47 @@ class _SignupState extends State<SignupView> {
   bool _obscureText = true;
 
   Future<void> save() async {
+    Map<String, dynamic> dataToPass = {
+      'name': user.name,
+      'email': user.email,
+      'phone': user.phone,
+      'password': user.password,
+    };
+
     try {
-      var url =
-          Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/otp-login"); //create
+      await UserService.preVerify(user.email, "email");
+      await Future.delayed(const Duration(seconds: 2));
+      //verifyPhone();
+      try {
+        await UserService.preVerify(user.phone, "phone");
+        await Future.delayed(const Duration(seconds: 2));
+        try {
+          await UserService.signupUser(
+              user.name, user.email, user.phone, user.password);
 
-      // Create a map for the request body
-      var requestBody = {'email': otp.email};
-
-
-
-
-      Map<String, dynamic> dataToPass = {
-        'name': user.name,
-        'email': user.email,
-        'phone': user.phone,
-        'password': user.password,
-        'hash': '',
-      };
-
-      var response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(requestBody),
-      );
-
-      CustomToast.showToast("Please Wait");
-
-      if (response.statusCode == 200) {
-        var result = response.body;
-        Map<String, dynamic> parsedResponse = json.decode(result);
-        String dataValue = parsedResponse['data'];
-        dataToPass['hash'] = dataValue;
-
-        CustomToast.showToast("Please Check Email OTP");
-
-        // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, AppRoute.otpRoute,
-            arguments: dataToPass); // error
-      } else if (response.statusCode == 400) {
-        CustomToast.showToast("Email Exists : ${response.statusCode}");
-      } else {
-        CustomToast.showToast("Server error: ${response.statusCode}");
+          await Future.delayed(const Duration(seconds: 2));
+          CustomToast.showToast("Please Check Email OTP");
+          // ignore: use_build_context_synchronously
+          Navigator.pushNamed(context, AppRoute.otpRoute,
+              arguments: dataToPass);
+        } catch (error) {
+          if (error == "300") {
+            CustomToast.showToast("Server Error");
+          } else if (error == "500") {
+            CustomToast.showToast("Network error $error");
+          }
+        }
+      } catch (error) {
+        if (error == "400") {
+          CustomToast.showToast("Phone Exists");
+        }
       }
-    } catch (e) {
-      CustomToast.showToast("Network error: $e");
+    } catch (error) {
+      if (error == "400") {
+        CustomToast.showToast("Email Exists");
+      }
     }
+    return;
   }
 
   Otp otp = Otp('', '', '');

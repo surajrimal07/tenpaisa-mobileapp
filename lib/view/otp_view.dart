@@ -1,17 +1,13 @@
-import 'dart:convert';
-import 'dart:typed_data';
+// ignore_for_file: use_build_context_synchronously
 
-import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/model/otp_model.dart';
 import 'package:paisa/model/user_model.dart';
-import 'package:paisa/utils/serverconfig_utils.dart';
+import 'package:paisa/services/user_services.dart';
 import 'package:pinput/pinput.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utils/colors_utils.dart';
 
@@ -23,180 +19,73 @@ class OtpView extends StatefulWidget {
 }
 
 class _MyVerifyState extends State<OtpView> {
-//save token
-  Future<void> savetoken(String usrtoken1) async {
-    try {
-      var url = Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/savetkn");
-
-      var requestBody = {'email': otp.email, 'token': usrtoken1};
-
-      var response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(requestBody),
-      );
-
-      if (response.statusCode == 200) {
-        CustomToast.showToast("Token Saved");
-
-        SharedPreferences prefs =
-            await SharedPreferences.getInstance(); //error here
-        prefs.remove('userToken');
-        prefs.setString('userToken', usrtoken1);
-
-        // ignore: use_build_context_synchronously
-        Navigator.pushNamedAndRemoveUntil(
-            context,
-            AppRoute.invStyle, //AppRoute.signinRoute,
-            (route) => false,
-            arguments: {'hash': usrtoken1, 'email': user.email});
-      } else {
-        CustomToast.showToast("Token failed to save");
-      }
-    } catch (e) {
-      CustomToast.showToast("Token error");
-    }
-  }
-
-  //verify otp
   Future<void> verify() async {
     try {
-      var url = Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/otp-verify");
+      await UserService.verifyOTP(otp.email, otp.otp);
 
-      // Create a map for the request body
-
-      var requestBody = {'email': otp.email, 'hash': otp.hash, 'otp': otp.otp};
-
-      //print(requestBody);
-
-      var response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(requestBody),
-      );
-
-      if (response.statusCode == 200) {
-        CustomToast.showToast("OTP Verified successfully");
-
-        // ignore: use_build_context_synchronously
-        save();
-        //Navigator.pushNamed(context, AppRoute.otpRoute); // error
-      } else {
-        CustomToast.showToast("OTP Expired: ${response.statusCode}");
+      await Future.delayed(const Duration(seconds: 2)); //delaying for 2 seconds
+      CustomToast.showToast("OTP Verified successfully");
+      save();
+    } catch (error) {
+      if (error == 400) {
+        CustomToast.showToast("OTP Error");
+      } else if (error == 600) {
+        CustomToast.showToast("Network error");
       }
-    } catch (e) {
-      CustomToast.showToast("Network error: $e");
     }
   }
 
-//resend otp
   Future<void> resend() async {
+    Map<String, dynamic> dataToPass = {
+      'name': user.name,
+      'email': user.email,
+      'password': user.password,
+      'phone': user.phone,
+    };
+
     try {
-      var url =
-          Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/otp-login"); //create
+      await UserService.resendOTP(otp.email);
 
-      // Create a map for the request body
-      var requestBody = {'email': otp.email};
+      await Future.delayed(const Duration(seconds: 2));
+      CustomToast.showToast("Please Enter Email OTP");
 
-      Map<String, dynamic> dataToPass = {
-        'name': user.name,
-        'email': user.email,
-        'password': user.password,
-        'hash': '',
-      };
-
-      var response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(requestBody),
-      );
-
-      if (response.statusCode == 200) {
-        var result = response.body;
-        Map<String, dynamic> parsedResponse = json.decode(result);
-        String dataValue = parsedResponse['data'];
-        dataToPass['hash'] = dataValue;
-
-        CustomToast.showToast("Please Enter Email OTP");
-
-        // ignore: use_build_context_synchronously
-        Navigator.pushNamed(context, AppRoute.otpRoute,
-            arguments: dataToPass); // error
-      } else if (response.statusCode == 400) {
-        CustomToast.showToast("Email Exists : ${response.statusCode}");
-      } else {
-        CustomToast.showToast("Server error: ${response.statusCode}");
+      Navigator.pushNamed(context, AppRoute.otpRoute, arguments: dataToPass);
+    } catch (error) {
+      if (error == 400) {
+        CustomToast.showToast("Email Exists");
+      } else if (error == 600) {
+        CustomToast.showToast("Network error $error");
       }
-    } catch (e) {
-      CustomToast.showToast("Network error: $e");
-      //print("Network error: $e");
     }
   }
 
-  //now do data entry
   Future<void> save() async {
     try {
-      var url = Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/create");
+      await UserService.savedata(
+          user.name, user.email, user.password, user.phone);
 
-      // Create a map for the request body
-      var requestBody = {
-        'name': user.name,
-        'email': user.email,
-        'password': user.password,
-        'phone': user.phone,
-      };
+      await Future.delayed(const Duration(seconds: 2)); //delaying for 2 seconds
 
-      //creating concept of session token and user token
-      //session token is created during login, it checks if token is there or not to function
-      //the app, also
-
-      // final String dataToHash =
-      //     '$user.email+$user.password'; // Concatenate email and password
-      // final hashtopass =
-      //     sha256.convert(dataToHash.codeUnits).toString(); // Generate the hash
-
-      final key = utf8.encode('${user.email}${user.password}');
-      final hmacSha256 = Hmac(sha256, key);
-      final digest = hmacSha256.convert(Uint8List.fromList(key));
-      final userToken1 = digest.toString();
-
-      print("Fresh token generated is : $userToken1");
-
-      var response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(requestBody),
+      CustomToast.showToast("User Created Successfully");
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        AppRoute.invStyle,
+        (route) => false,
       );
-
-      if (response.statusCode == 200) {
-        CustomToast.showToast("User Created Successfully");
-
-        savetoken(userToken1);
-
-        // Navigator.pushNamedAndRemoveUntil(context, AppRoute.invStyle,
-        //     arguments: dataToPass);
-      } else if (response.statusCode == 400) {
-        CustomToast.showToast("Email Exists : ${response.statusCode}");
+    } catch (error) {
+      if (error == "500") {
+        CustomToast.showToast("Server error $error");
+      } else if (error == "300") {
+        CustomToast.showToast("Token save failed");
       } else {
-        CustomToast.showToast("Server Error: ${response.statusCode}");
+        CustomToast.showToast("Network error $error");
       }
-    } catch (e) {
-      CustomToast.showToast("Network error: $e");
     }
   }
 
   User user = User('', '', '', '', '', '');
   Otp otp = Otp('', '', '');
 
-  //
   @override
   Widget build(BuildContext context) {
     final Map<String, dynamic> receivedData =
@@ -204,7 +93,6 @@ class _MyVerifyState extends State<OtpView> {
 
     user.name = receivedData['name'];
     otp.email = receivedData['email'];
-    otp.hash = receivedData['hash'];
     user.email = receivedData['email'];
     user.password = receivedData['password'];
     user.phone = receivedData['phone'];
@@ -324,6 +212,7 @@ class _MyVerifyState extends State<OtpView> {
                         ),
                         InkWell(
                           onTap: () {
+                            CustomToast.showToast("Please wait");
                             resend();
                           },
                           child: Text(

@@ -1,14 +1,9 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
-import 'package:paisa/model/otp_model.dart';
 import 'package:paisa/model/user_model.dart';
-import 'package:paisa/utils/serverconfig_utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:paisa/services/user_services.dart';
 
 import '../utils/colors_utils.dart';
 
@@ -26,64 +21,29 @@ class _StyleViewState extends State<StyleView> {
   int?
       _selectedValue; // Add this line  // make it int? if we are passing model (like 1,2,3,)
 
-  Future<void> savetokenskip() async {
-    //print("hash saved in from style view on skip is ${otp.hash}");
-    // SharedPreferences prefs =
-    //     await SharedPreferences.getInstance(); //error here
-    // prefs.setString('userToken', otp.hash);
-
-    // ignore: use_build_context_synchronously
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      AppRoute.dashboardRoute,
-      (route) => false,
-    );
-  }
-
   Future<void> save() async {
     String valueAsString = _selectedValue.toString();
 
-    var url = Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/updateuser");
-    var res = await http.post(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        //make it int later
-        'email': user.email,
-        'field': "style",
-        'value': valueAsString
-      }),
-    );
-
-    print("email : ${user.email} value : $valueAsString");
-
-    if (res.statusCode == 200) {
-      CustomToast.showToast("Saved");
+    try {
+      await UserService.updateUser("style", valueAsString,"");
+      CustomToast.showToast("Saved Successfully");
       // ignore: use_build_context_synchronously
       Navigator.pushNamedAndRemoveUntil(
         context,
         AppRoute.dashboardRoute,
         (route) => false,
       );
-    } else {
-      CustomToast.showToast("Error Occured Saving");
+    } catch (error) {
+      if (error == "400") {
+        CustomToast.showToast("Failed to save token");
+      } else {
+        CustomToast.showToast("error occured $error");
+      }
     }
   }
 
-  //Otp otp = Otp('', '', '');
-
   @override
   Widget build(BuildContext context) {
-    final Map<String, dynamic> receivedData =
-        ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
-
-    //otp.hash = receivedData['hash'];
-    user.email = receivedData['email'];
-
-    //print("Hash recieved from otp view is ${otp.hash}");
-
     return Scaffold(
       body: SingleChildScrollView(
         child: Stack(
@@ -218,8 +178,11 @@ class _StyleViewState extends State<StyleView> {
                                 ),
                               ),
                               onPressed: () {
-                                //save user token, and open dashboard
-                                savetokenskip();
+                                Navigator.pushNamedAndRemoveUntil(
+                                  context,
+                                  AppRoute.dashboardRoute,
+                                  (route) => false,
+                                );
                               },
                               child: Text(
                                 "Skip",

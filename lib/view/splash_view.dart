@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:paisa/app/routes/approutes.dart';
-import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/services/notification_services.dart';
 import 'package:paisa/services/websocket_services.dart';
 import 'package:paisa/utils/colors_utils.dart';
@@ -54,7 +53,6 @@ class _SplashScreenState extends State<SplashView> {
         print("Login saved is $loginsaved");
         Navigator.pushReplacementNamed(context, AppRoute.dashboardRoute);
 
-        //start web socker and notification service here.
       } else {
         print("user token is false");
         Navigator.pushReplacementNamed(context, AppRoute.signinRoute);
@@ -70,11 +68,11 @@ class _SplashScreenState extends State<SplashView> {
     String url = newData['url'];
 
     if (userToken != null) {
-      //print("Notification Service Started");
       NotificationServices.showNotification(
           receivedTitle, receivedDescription, receivedImage, url);
     } else {
-      CustomToast.showToast("Notification : Auth Error");
+      print("Noti Service: Auth ERROR");
+      //CustomToast.showToast("Notification : Auth Error");
     }
   }
 

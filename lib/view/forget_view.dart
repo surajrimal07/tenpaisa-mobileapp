@@ -1,14 +1,11 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/model/otp_model.dart';
 import 'package:paisa/model/user_model.dart';
-import 'package:paisa/utils/serverconfig_utils.dart';
+import 'package:paisa/services/user_services.dart';
 
 import '../utils/colors_utils.dart';
 
@@ -28,107 +25,29 @@ class _ForgotState extends State<ForgotView> {
   bool otpverified = false;
   String btntext = "Verify Email";
 
-//verify mail logic
-// push email from here
-// make seperate recover pass endpoint
-// get that email and verify of that email exists in the databse
-// if email exists, send otp
-
-//verify otp logic
-//get email and otp from here
-// send the otp to recover pass end point
-// if otp verified (status 200)
-// enable passwrd textfield
-
-//reset password logic
-//if above all opreations are done and true
-//send password mail and otp data from here to endpoint
-//after 200 success, send user to login page with a toast
-
-  Future verifymail() async {
-    var url = Uri.parse(
-        "${ServerConfig.SERVER_ADDRESS}/api/forget"); //replace this with localhost ip address
-
-    // print("We are here at verify mail");
-    // print(mailverified);
-    var res = await http.post(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'email': otp.email,
-      }),
-    );
-
-    if (res.statusCode == 200) {
-      //print("enabling otp button 64");
+  Future<void> verifymail() async {
+    try {
+      await UserService.forget(otp.email);
       CustomToast.showToast("Check Email for OTP");
-
       setState(() {
-        mailverified = true; // This will show the OTP field
+        mailverified = true;
       });
-
-      var result = res.body;
-
-      Map<String, dynamic> parsedResponse = json.decode(result);
-      String dataValue = parsedResponse['hash'];
-      otp.hash = dataValue;
-
-      //print("enabling otp button");
-    } else if (res.statusCode == 404) {
-      CustomToast.showToast("Email Not Found");
+    } catch (error) {
+      if (error == "404") {
+        CustomToast.showToast("Email Not Found");
+      } else {
+        CustomToast.showToast("Error Occured $error");
+      }
     }
   }
 
-  Future verifyotp() async {
-    // print(otp.email);
-    // print(otp.otp);
-    // print(otp.hash);
+  Future<void> updatepassword() async {
+    try {
+      await UserService.saveUserToken(otp.email, otp.otp);
+      await Future.delayed(const Duration(seconds: 2));
+      await UserService.updateUser("password", user.password, "");
+      await Future.delayed(const Duration(seconds: 2));
 
-    //print(mailverified);
-    var url = Uri.parse(
-        "${ServerConfig.SERVER_ADDRESS}/api/otp-verify"); //replace this with localhost ip address
-
-    var res = await http.post(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'email': otp.email,
-        'otp': otp.otp,
-        'hash': otp.hash,
-      }),
-    );
-
-    if (res.statusCode == 200) {
-      setState(() {
-        otpverified = true;
-      });
-
-      CustomToast.showToast("OTP Verified");
-    } else {
-      CustomToast.showToast("OTP Error : VO 112");
-    }
-  }
-
-  Future updatepassword() async {
-    var url = Uri.parse(
-        "${ServerConfig.SERVER_ADDRESS}/api/updateuser"); //replace this with localhost ip address
-    var res = await http.post(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'email': otp.email,
-        'field': 'password',
-        'value': user.password,
-      }),
-    );
-
-    if (res.statusCode == 200) {
       CustomToast.showToast("Password Updated");
 
       // ignore: use_build_context_synchronously
@@ -137,8 +56,21 @@ class _ForgotState extends State<ForgotView> {
         AppRoute.signinRoute,
         (route) => false,
       );
-    } else {
-      CustomToast.showToast("Error occured${otp.email}${user.password}");
+    } catch (error) {
+      CustomToast.showToast("Error Occured $error");
+    }
+  }
+
+  Future<void> verifyotp() async {
+    try {
+      await UserService.verifyOTP(otp.email, otp.otp);
+      CustomToast.showToast("OTP Verified");
+
+      setState(() {
+        otpverified = true;
+      });
+    } catch (error) {
+      CustomToast.showToast("Otp Error $error");
     }
   }
 
@@ -147,8 +79,6 @@ class _ForgotState extends State<ForgotView> {
 
   @override
   Widget build(BuildContext context) {
-    print("inside 117");
-    print(mailverified);
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(
@@ -263,7 +193,6 @@ class _ForgotState extends State<ForgotView> {
                           child: TextFormField(
                             controller: TextEditingController(text: otp.otp),
                             onChanged: (value) {
-                              //user.password = value;
                               otp.otp = value;
                             },
                             validator: (value) {

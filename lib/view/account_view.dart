@@ -24,14 +24,12 @@ class AccountView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<AccountView> {
-  //GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   int indexBottomBar = 4;
   String currentName = "";
   String currentPass = "";
   String currentEmail = "";
   String currentPhone = "";
   String currentDP = "assets/images/content/default.png";
-  //DateTime? currentBackPressTime;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController newNameController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
@@ -92,21 +90,9 @@ class _ProfileViewState extends State<AccountView> {
     }
   }
 
-  // Future<void> updateUserData(String whatfield, String whatvalue) async {
-  //   try {
-  //     await UserService.updateUser(whatfield, whatvalue);
-
-  //     CustomToast.showToast("Data updated successfully");
-  //   } catch (error) {
-  //     CustomToast.showToast("Error occured updating data");
-  //     print("Error updating user $whatfield : $error");
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Colors.white.withOpacity(.94),
       appBar: AppBar(
         title: const Text(
           "Settings",
@@ -323,11 +309,8 @@ class _ProfileViewState extends State<AccountView> {
                     if (_formKey.currentState!.validate()) {
                       String newName = newNameController.text;
 
-                      //updateName(newName);
-                      //updateUserData("name", newName);
-
                       try {
-                        await UserService.updateUser("name", newName);
+                        await UserService.updateUser("name", newName, "");
                         updateName(newName);
                         CustomToast.showToast("Name Updated");
                       } catch (error) {
@@ -397,25 +380,23 @@ class _ProfileViewState extends State<AccountView> {
 
                       try {
                         await UserService.deleteUser(pass);
-                        //updateName(pass);
+                        await Future.delayed(const Duration(seconds: 2));
+
                         CustomToast.showToast("Account Deleted");
                         SharedPreferences prefs =
                             await SharedPreferences.getInstance();
                         await prefs.remove('userToken');
 
-                        String? checktoken = prefs.getString('userToken');
-                        print("is token null after deleting : $checktoken");
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
+                        Navigator.of(context).pushNamedAndRemoveUntil(
                           AppRoute.signinRoute,
                           (route) => false,
                         );
                       } catch (error) {
-                        if (error == 404) {
+                        if (error == "401") {
                           CustomToast.showToast("Password Incorrect");
                         } else {
                           CustomToast.showToast("Error occured");
-                          print(error);
+                          // print(error);
                         }
                       }
                       newPassController.clear();
@@ -485,11 +466,10 @@ class _ProfileViewState extends State<AccountView> {
                     if (_formKey.currentState!.validate()) {
                       String newPassword = newPasswordController.text;
                       if (newPassword.isNotEmpty) {
-                        // Process the new password
-
                         try {
                           CustomToast.showToast("Password Updated");
-                          await UserService.updateUser("password", newPassword);
+                          await UserService.updateUser(
+                              "password", newPassword, "");
                         } catch (error) {
                           CustomToast.showToast("Error occured updating Pass");
                           print("Error: $error");
@@ -555,24 +535,20 @@ class _ProfileViewState extends State<AccountView> {
                             .hasMatch(newEmailController.text)) {
                       String newEmail = newEmailController.text;
                       try {
-                        await UserService.updateUser("email", newEmail);
+                        await UserService.updateUser("email", newEmail, "");
                         updateEmail(newEmail);
                         Navigator.of(context).pop();
-                        //updateUserData("name", newName);
                         CustomToast.showToast("Saved: $newEmail");
                       } catch (error) {
                         if (error == "400") {
                           setState(() {
                             emailError = 'Email already exists';
                           });
-                          //CustomToast.showToast("Email already exists");
                         } else {
                           CustomToast.showToast("Error occured updating Email");
-                          //print("Error: $error");
                         }
                       }
                     } else {
-                      // Handle invalid email case
                       setState(() {
                         emailError = 'Please enter a valid email address';
                       });
@@ -603,7 +579,6 @@ class _ProfileViewState extends State<AccountView> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    //currentEmail.isEmpty ? 'No Email' : currentEmail,
                     "Current Phone: ${currentPhone.isEmpty ? "No Number" : currentPhone}",
                   ),
                   TextField(
@@ -633,7 +608,7 @@ class _ProfileViewState extends State<AccountView> {
                       String newPhone = newPhoneController.text;
 
                       try {
-                        await UserService.updateUser("phone", newPhone);
+                        await UserService.updateUser("phone", newPhone, "");
                         updatePhone(newPhone);
                         //updateUserData("name", newName);
                         CustomToast.showToast("Saved: $newPhone");
@@ -671,12 +646,6 @@ class _ProfileViewState extends State<AccountView> {
     });
   }
 
-  // void updatePass(String newPass) {
-  //   setState(() {
-  //     currentPass = newPass;
-  //   });
-  // }
-
   void updateEmail(String newEmail) {
     setState(() {
       currentEmail = newEmail;
@@ -688,22 +657,4 @@ class _ProfileViewState extends State<AccountView> {
       currentPhone = newPhone;
     });
   }
-
-  // Future<bool> _onBackPressed() async {
-  //   DateTime now = DateTime.now();
-
-  //   if (currentBackPressTime == null ||
-  //       now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
-  //     currentBackPressTime = now;
-  //     ScaffoldMessenger.of(context).showSnackBar(
-  //       const SnackBar(
-  //         content: Text('Press back again to exit'),
-  //         duration: Duration(seconds: 2),
-  //       ),
-  //     );
-  //     return false;
-  //   }
-  //   SystemNavigator.pop();
-  //   return true;
-  // }
 }

@@ -22,19 +22,17 @@ class NewsView extends StatefulWidget {
 
 class _NewsViewState extends State<NewsView> {
   int indexBottomBar = 0;
-  List<dynamic> newsList = []; // Store the fetched news
+  List<dynamic> newsList = [];
 
   @override
   void initState() {
     super.initState();
-    // Fetch news data when the widget initializes
     fetchNews();
     WebView.platform = SurfaceAndroidWebView();
   }
 
   Future<void> fetchNews() async {
-    var url = Uri.parse(
-        '${ServerConfig.SERVER_ADDRESS}/news'); // Replace with your API endpoint
+    var url = Uri.parse('${ServerConfig.SERVER_ADDRESS}${ServerConfig.NEWS}');
 
     try {
       var response = await http.get(url);
@@ -44,11 +42,9 @@ class _NewsViewState extends State<NewsView> {
         });
       } else {
         CustomToast.showToast("Failed to load news");
-        //print('Failed to load news');
       }
     } catch (error) {
       CustomToast.showToast('Error fetching data: $error');
-      //print('Error fetching data: $error');
     }
   }
 
@@ -64,31 +60,16 @@ class _NewsViewState extends State<NewsView> {
         child: ListView.builder(
           itemCount: newsList.length,
           itemBuilder: (context, index) {
-            //final imgURL = newsList[index]['img_url'];
             final url = newsList[index]['link'];
             return Column(
-              //elevation: 3,
-              //margin:
-              //   const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-              //child: ListTile(
               children: [
                 const SizedBox(height: 4),
                 const SizedBox(height: 4),
-
                 AnyLinkPreview(
                   urlLaunchMode: LaunchMode.inAppBrowserView,
                   displayDirection: UIDirection.uiDirectionHorizontal,
                   link: url,
                 ),
-
-                // GestureDetector(
-                //   onTap: () {
-                //     _openNewsInWebView(
-                //         newsList[index]['link'], newsList[index]['title']);
-                //     //_launchURL(url);
-                //   },
-
-                // ),
               ],
             );
           },
@@ -103,10 +84,8 @@ class _NewsViewState extends State<NewsView> {
               setState(() => indexBottomBar = 0);
             }
           } else if (i == 1) {
-            //if (indexBottomBar != 1) {
             Navigator.pushReplacementNamed(context, AppRoute.notiRoute);
             setState(() => indexBottomBar = 1);
-            //}
           } else {
             setState(() => indexBottomBar = i);
           }
@@ -126,34 +105,4 @@ class _NewsViewState extends State<NewsView> {
       ),
     );
   }
-
-//   void _openNewsInWebView(String url, String title) {
-//     Navigator.push(
-//       context,
-//       MaterialPageRoute(
-//         builder: (context) => NewsWebView(url: url, title: title),
-//       ),
-//     );
-//   }
-// }
-
-// class NewsWebView extends StatelessWidget {
-//   final String url;
-//   final String title;
-
-//   const NewsWebView({super.key, required this.url, required this.title});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text(title),
-//         backgroundColor: MyColors.btnColor,
-//       ),
-//       body: WebView(
-//         initialUrl: url,
-//         javascriptMode: JavascriptMode.unrestricted,
-//       ),
-//     );
-//  }
 }

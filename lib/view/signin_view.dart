@@ -1,16 +1,14 @@
 import 'dart:convert';
-import 'dart:typed_data';
 
-import 'package:crypto/crypto.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/model/user_model.dart';
-import 'package:paisa/utils/serverconfig_utils.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:paisa/services/notification_services.dart';
+import 'package:paisa/services/websocket_services.dart';
 
+import '../services/user_Services.dart';
 import '../utils/colors_utils.dart';
 
 class SigninView extends StatefulWidget {
@@ -25,75 +23,54 @@ class _SigninState extends State<SigninView> {
   final _formKey = GlobalKey<FormState>();
   bool _obscureText = true;
   bool rememberMe = false;
-  //String? userToken;
 
-  Future<void> savetoken(String usrtoken1) async {
-    try {
-      var url = Uri.parse("${ServerConfig.SERVER_ADDRESS}/api/savetkn");
-
-      var requestBody = {'email': user.email, 'token': usrtoken1};
-
-      var response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(requestBody),
-      );
-
-      if (response.statusCode == 200) {
-        print("saved token is $usrtoken1");
-        CustomToast.showToast("Token Saved");
-        // ignore: use_build_context_synchronously
-        Navigator.pushNamedAndRemoveUntil(
-          context,
-          AppRoute.dashboardRoute, //AppRoute.dashboardRoute,
-          (route) => false,
-        );
-      } else {
-        CustomToast.showToast("Token failed to save");
-      }
-    } catch (e) {
-      CustomToast.showToast("Token error");
+  @override
+  void initState() {
+    super.initState();
+    if (!WebSocketServices.isConnected) {
+      NotificationServices.initializeAwesomeNotifications();
+      WebSocketServices.startWebSocket(onDataCallback);
     }
   }
 
-  Future save() async {
-    var url = Uri.parse(
-        "${ServerConfig.SERVER_ADDRESS}/api/login"); //replace this with localhost ip address
-    var res = await http.post(
-      url,
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'email': user.email,
-        'password': user.password,
-      }),
-    );
+  void onDataCallback(dynamic data) {
+    Map<String, dynamic> newData = json.decode(data);
+    String receivedTitle = newData['title'];
+    String receivedDescription = newData['description'];
+    String? receivedImage = newData['image'];
+    String url = newData['url'];
 
-    if (res.statusCode == 200) {
-      CustomToast.showToast("Signin Successful");
-      
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-
-      if (rememberMe == true) {
-        prefs.setBool('loginsaved', true);
-      }
-
-      final key = utf8.encode('${user.email}${user.password}');
-      final hmacSha256 = Hmac(sha256, key);
-      final digest = hmacSha256.convert(Uint8List.fromList(key));
-      final userToken1 = digest.toString();
-
-      print("generated token for new user in 88 is $userToken1");
-
-      //error here
-      prefs.setString('userToken', userToken1);
-      savetoken(userToken1); //also save token to db
+    if (WebSocketServices.isConnected == false) {
+      NotificationServices.showNotification(
+          receivedTitle, receivedDescription, receivedImage, url);
     } else {
-      //CustomSnackbar.showSnackbar(context, "Email or password is incorrect");
-      CustomToast.showToast("Email or password is incorrect");
+      print("Service already started");
+    }
+  }
+
+  Future<void> save() async {
+    try {
+      await UserService.login(user.email, user.password, rememberMe);
+      CustomToast.showToast("Signin Successful");
+      // ignore: use_build_context_synchronously
+      Navigator.pushNamedAndRemoveUntil(
+        context,
+        AppRoute.dashboardRoute,
+        (route) => false,
+      );
+
+      if (WebSocketServices.isConnected == false) {
+      } else {
+        print("Socket is already connected");
+      }
+    } catch (error) {
+      if (error == "400") {
+        CustomToast.showToast("Failed to save token");
+      } else if (error == "401") {
+        CustomToast.showToast("Email or password incorrect");
+      } else {
+        CustomToast.showToast("Login failed $error");
+      }
     }
   }
 
@@ -300,8 +277,6 @@ class _SigninState extends State<SigninView> {
                       ],
                     ),
                   ),
-
-                  //new code
 
                   Padding(
                     padding: const EdgeInsets.fromLTRB(55, 16, 16, 0),
