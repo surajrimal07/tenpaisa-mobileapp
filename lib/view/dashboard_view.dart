@@ -23,10 +23,10 @@ class DashboardView extends StatefulWidget {
 class _MainPageState extends State<DashboardView> {
   int indexBottomBar = 0;
   String currentName = "";
-  String currentPass = "**********";
-  String? currentEmail;
-  String? currentPhone;
-  String? currentDP;
+  String currentPass = "";
+  String currentEmail = "";
+  String currentPhone = "";
+  String currentDP = "assets/images/content/default.png";
 
   // late Future<void> channelInitialization;
   // late IOWebSocketChannel channel;
@@ -54,24 +54,14 @@ class _MainPageState extends State<DashboardView> {
 
     if (userData != null) {
       setState(() {
-        currentName = userData['name'] ?? "";
-        currentEmail = userData['email'] ?? "";
-        currentPhone = userData['phone'] ?? "";
-        currentDP = userData['dp'] ?? "assets/images/content/default.png";
+        currentName = userData['name'];
+        currentEmail = userData['email'];
+        currentPass = userData['pass'];
+        currentPhone = userData['phone'];
+        currentDP = userData['dp'];
       });
     }
   }
-
-  // void onDataCallback(dynamic data) {
-  //   Map<String, dynamic> newData = json.decode(data);
-  //   String receivedTitle = newData['title'];
-  //   String receivedDescription = newData['description'];
-  //   String? receivedImage = newData['image'];
-  //   String url = newData['url'];
-
-  //   NotificationServices.showNotification(
-  //       receivedTitle, receivedDescription, receivedImage, url);
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -99,11 +89,10 @@ class _MainPageState extends State<DashboardView> {
                     margin: const EdgeInsets.all(0),
                     decoration: const BoxDecoration(color: MyColors.btnColor),
                     accountName: Text(currentName),
-                    accountEmail: Text(currentEmail ?? ""),
+                    accountEmail: Text(currentEmail),
                     currentAccountPictureSize: const Size(60, 60),
-                    currentAccountPicture: const CircleAvatar(
-                      backgroundImage:
-                          AssetImage('assets/images/content/user1.jpg'),
+                    currentAccountPicture: CircleAvatar(
+                      backgroundImage: AssetImage(currentDP),
                     ),
                   ),
                   const ListTile(
@@ -612,9 +601,8 @@ class _MainPageState extends State<DashboardView> {
                           ),
                           padding: const EdgeInsets.all(1.2),
                           child: CircleAvatar(
-                            radius: 18,
-                            backgroundImage: Image.asset(currentDP!).image,
-                          ),
+                              radius: 18,
+                              backgroundImage: AssetImage(currentDP)),
                         ),
                       ],
                     ),

@@ -74,6 +74,7 @@ class _SigninState extends State<SigninView> {
 
     if (res.statusCode == 200) {
       CustomToast.showToast("Signin Successful");
+      
       SharedPreferences prefs = await SharedPreferences.getInstance();
 
       if (rememberMe == true) {

@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
-//import 'package:image_picker/image_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/services/websocket_services.dart';
@@ -27,46 +27,47 @@ class _ProfileViewState extends State<AccountView> {
   //GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   int indexBottomBar = 4;
   String currentName = "";
-  String currentPass = "";
+  String currentPass = "**********";
   String currentEmail = "";
   String currentPhone = "";
-  String currentDP = "assets/images/content/default.png";
+  String currentDP = "";
   //DateTime? currentBackPressTime;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController newNameController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
   final TextEditingController newEmailController = TextEditingController();
   final TextEditingController newPhoneController = TextEditingController();
-  final TextEditingController newPassController = TextEditingController();
+
 //updating image is broken, needs more logic,
-  //XFile? _pickedImage; // Initialize with null
+  XFile? _pickedImage; // Initialize with null
 
-  // Future<void> _pickImage() async {
-  //   final ImagePicker picker = ImagePicker();
-  //   final XFile? pickedImage =
-  //       await picker.pickImage(source: ImageSource.gallery);
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedImage =
+        await picker.pickImage(source: ImageSource.gallery);
 
-  //   if (pickedImage != null) {
-  //     //bool success = await UserService.uploadProfilePicture(pickedImage.path);
+    if (pickedImage != null) {
+      //bool success = await UserService.uploadProfilePicture(pickedImage.path);
 
-  //     // if (success) {
-  //     //   // Update the user's profile picture URL
-  //     //   //await UserService.updateUserProfilePictureUrl();
+      // if (success) {
+      //   // Update the user's profile picture URL
+      //   //await UserService.updateUserProfilePictureUrl();
 
-  //     //   setState(() {
-  //     //     // Get the updated profile picture URL
-  //     //     //currentDP = UserService.getUpdatedProfilePictureUrl();
-  //     //   });
-  //     // } else {
-  //     //   CustomToast.showToast("Failed to upload profile picture");
-  //     // }
-  //   }
-  // }
+      //   setState(() {
+      //     // Get the updated profile picture URL
+      //     //currentDP = UserService.getUpdatedProfilePictureUrl();
+      //   });
+      // } else {
+      //   CustomToast.showToast("Failed to upload profile picture");
+      // }
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     _loadUserData();
+    //_formKey = GlobalKey<FormState>();
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor:
           MyColors.btnColor, // Status bar color set to a dark blue shade
@@ -123,10 +124,16 @@ class _ProfileViewState extends State<AccountView> {
         child: ListView(
           children: [
             SimpleUserCard(
-              userName: currentName,
-              userProfilePic: AssetImage(currentDP),
+              userName: currentDP, // currentName
+              userProfilePic: AssetImage(currentDP)
+              // != null
+              //     ? AssetImage("assets/images/content/$currentDP")
+              //     : const AssetImage("assets/images/content/default.png"
+
+              //)
+              ,
               imageRadius: 80,
-              //onTap: (_pickImage),
+              onTap: _pickImage,
             ),
             SettingsGroup(
               settingsGroupTitle: "Profile",
@@ -155,13 +162,13 @@ class _ProfileViewState extends State<AccountView> {
                   onTap: () => showEmailChangeDialog(context),
                   icons: Icons.email_outlined,
                   title: 'Email',
-                  subtitle: currentEmail.isEmpty ? 'No Email' : currentEmail,
+                  subtitle: currentEmail ?? 'No Email',
                 ),
                 SettingsItem(
                   onTap: () => showPhoneChangeDialog(context),
                   icons: Icons.phone,
                   title: 'Phone',
-                  subtitle: currentPhone.isEmpty ? 'No Phone' : currentPhone,
+                  subtitle: currentPhone ?? 'No Number',
                 ),
               ],
             ),
@@ -178,7 +185,7 @@ class _ProfileViewState extends State<AccountView> {
                   title: "Sign Out",
                 ),
                 SettingsItem(
-                  onTap: () => deleteAccount(context),
+                  onTap: () {},
                   icons: CupertinoIcons.delete_solid,
                   title: "Delete account",
                   titleStyle: const TextStyle(
@@ -329,9 +336,10 @@ class _ProfileViewState extends State<AccountView> {
                       try {
                         await UserService.updateUser("name", newName);
                         updateName(newName);
-                        CustomToast.showToast("Name Updated");
+                        //updateUserData("name", newName);
+                        CustomToast.showToast("Saved: $newName");
                       } catch (error) {
-                        CustomToast.showToast("Error occured");
+                        CustomToast.showToast("Error occured updating Name");
                         print("Error: $error");
                       }
 
@@ -343,90 +351,6 @@ class _ProfileViewState extends State<AccountView> {
                     }
                   },
                   child: const Text("Save"),
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Future<void> deleteAccount(BuildContext context) async {
-    String? passError;
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return AlertDialog(
-              title: const Text("Delete Account"),
-              content: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Text("Please Enter your password"),
-                    TextFormField(
-                      controller: newPassController,
-                      decoration: const InputDecoration(labelText: 'Password'),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter a password';
-                        }
-                        return null;
-                      },
-                    ),
-                  ],
-                ),
-              ),
-              actions: [
-                TextButton(
-                  onPressed: () {
-                    CustomToast.showToast("Cancelled");
-                    newPassController.clear();
-                    Navigator.of(context).pop();
-                  },
-                  child: const Text("Cancel"),
-                ),
-                TextButton(
-                  onPressed: () async {
-                    if (_formKey.currentState!.validate()) {
-                      String pass = newPassController.text;
-
-                      try {
-                        await UserService.deleteUser(pass);
-                        //updateName(pass);
-                        CustomToast.showToast("Account Deleted");
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        await prefs.remove('userToken');
-
-                        String? checktoken = prefs.getString('userToken');
-                        print("is token null after deleting : $checktoken");
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          AppRoute.signinRoute,
-                          (route) => false,
-                        );
-                      } catch (error) {
-                        if (error == 404) {
-                          CustomToast.showToast("Password Incorrect");
-                        } else {
-                          CustomToast.showToast("Error occured");
-                          print(error);
-                        }
-                      }
-                      newPassController.clear();
-                      Navigator.of(context).pop();
-                    } else {
-                      setState(() {
-                        passError = 'Password is empty';
-                      });
-                    }
-                  },
-                  child: const Text("Delete"),
                 ),
               ],
             );
@@ -488,8 +412,8 @@ class _ProfileViewState extends State<AccountView> {
                         // Process the new password
 
                         try {
-                          CustomToast.showToast("Password Updated");
                           await UserService.updateUser("password", newPassword);
+                          CustomToast.showToast("Password Updated");
                         } catch (error) {
                           CustomToast.showToast("Error occured updating Pass");
                           print("Error: $error");
@@ -557,20 +481,13 @@ class _ProfileViewState extends State<AccountView> {
                       try {
                         await UserService.updateUser("email", newEmail);
                         updateEmail(newEmail);
-                        Navigator.of(context).pop();
                         //updateUserData("name", newName);
                         CustomToast.showToast("Saved: $newEmail");
                       } catch (error) {
-                        if (error == "400") {
-                          setState(() {
-                            emailError = 'Email already exists';
-                          });
-                          //CustomToast.showToast("Email already exists");
-                        } else {
-                          CustomToast.showToast("Error occured updating Email");
-                          //print("Error: $error");
-                        }
+                        CustomToast.showToast("Error occured updating Email");
+                        print("Error: $error");
                       }
+                      Navigator.of(context).pop();
                     } else {
                       // Handle invalid email case
                       setState(() {
@@ -603,8 +520,7 @@ class _ProfileViewState extends State<AccountView> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    //currentEmail.isEmpty ? 'No Email' : currentEmail,
-                    "Current Phone: ${currentPhone.isEmpty ? "No Number" : currentPhone}",
+                    "Current Phone: ${currentPhone ?? "No Number"}",
                   ),
                   TextField(
                     controller: newPhoneController,
@@ -638,17 +554,13 @@ class _ProfileViewState extends State<AccountView> {
                         //updateUserData("name", newName);
                         CustomToast.showToast("Saved: $newPhone");
                       } catch (error) {
-                        if (error == "400") {
-                          setState(() {
-                            phoneError = 'Phone already exists';
-                          });
-                        } else {
-                          CustomToast.showToast("Error occured updating Email");
-                        }
+                        CustomToast.showToast("Error occured updating Phone");
+                        print("Error: $error");
                       }
 
                       Navigator.of(context).pop();
                     } else {
+                      // Handle invalid phone number case
                       setState(() {
                         phoneError =
                             'Please enter a valid 10-digit phone number';
