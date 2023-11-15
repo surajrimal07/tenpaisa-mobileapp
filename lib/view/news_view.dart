@@ -52,7 +52,7 @@ class _NewsViewState extends State<NewsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('News'),
+        title: const Text('Financial News'),
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: RefreshIndicator(

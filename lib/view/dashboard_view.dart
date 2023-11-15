@@ -6,6 +6,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/data/portfolio_data.dart';
+import 'package:paisa/services/notification_controllers.dart';
 import 'package:paisa/services/user_services.dart';
 //import 'package:paisa/services/notification_services.dart';
 //import 'package:paisa/services/websocket_services.dart';
@@ -27,9 +28,11 @@ class _MainPageState extends State<DashboardView> {
   String currentEmail = "";
   String currentPhone = "";
   String currentDP = "assets/images/content/default.png";
-
+  int notificationCount =
+      NotificationController.getDisplayedNotificationCount();
   // late Future<void> channelInitialization;
   // late IOWebSocketChannel channel;
+
   DateTime? currentBackPressTime;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
@@ -38,15 +41,12 @@ class _MainPageState extends State<DashboardView> {
     super.initState();
     _loadUserData();
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor:
-          MyColors.btnColor, // Status bar color set to a dark blue shade
-      statusBarIconBrightness:
-          Brightness.light, // Adjust status bar icon colors
-      systemNavigationBarColor:
-          MyColors.btnColor, // Navigation bar color set to the same blue shade
-      systemNavigationBarIconBrightness:
-          Brightness.light, // Adjust navigation bar icon colors
+      statusBarColor: MyColors.btnColor,
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: MyColors.btnColor,
+      systemNavigationBarIconBrightness: Brightness.light,
     ));
+    print(notificationCount);
   }
 
   Future<void> _loadUserData() async {
@@ -77,7 +77,10 @@ class _MainPageState extends State<DashboardView> {
                     _card(),
                     _menu(),
                     _portfolio(),
+                    _performing(),
                     _watchlist(),
+                    _trending(),
+                    _mySummary()
                   ],
                 ),
               ),
@@ -186,6 +189,12 @@ class _MainPageState extends State<DashboardView> {
 
   Container _watchlist() {
     return Container(
+      margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+            color: Colors.black, width: 0.1), // Adjust width as needed
+      ),
       padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
       child: Column(
         children: [
@@ -195,16 +204,19 @@ class _MainPageState extends State<DashboardView> {
               Text(
                 'My Watchlist',
                 style: GoogleFonts.poppins(
-                    fontSize: 20, fontWeight: FontWeight.w600),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               MaterialButton(
                 onPressed: () {},
                 child: Text(
                   'View All',
                   style: GoogleFonts.poppins(
-                      color: MyColors.primaryColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400),
+                    color: MyColors.primaryColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
               )
             ],
@@ -219,8 +231,9 @@ class _MainPageState extends State<DashboardView> {
                 padding: const EdgeInsets.all(12),
                 margin: const EdgeInsets.only(top: 12),
                 decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.04),
-                    borderRadius: BorderRadius.circular(12)),
+                  color: Colors.black.withOpacity(0.04),
+                  borderRadius: BorderRadius.circular(12),
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -238,12 +251,16 @@ class _MainPageState extends State<DashboardView> {
                             Text(
                               '${stockPortfolio[index].symbol}',
                               style: GoogleFonts.poppins(
-                                  fontSize: 15, fontWeight: FontWeight.w600),
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
                             ),
                             Text(
                               '${stockPortfolio[index].name}',
                               style: GoogleFonts.poppins(
-                                  fontSize: 13, fontWeight: FontWeight.w400),
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ],
                         )
@@ -255,12 +272,124 @@ class _MainPageState extends State<DashboardView> {
                         Text(
                           '${stockPortfolio[index].price}',
                           style: GoogleFonts.poppins(
-                              fontSize: 16, fontWeight: FontWeight.w600),
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         Text(
                           '${stockPortfolio[index].change}',
                           style: GoogleFonts.poppins(
-                              fontSize: 12, fontWeight: FontWeight.w400),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Container _trending() {
+    return Container(
+      margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+            color: Colors.black, width: 0.1), // Adjust width as needed
+      ),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Top Trending',
+                style: GoogleFonts.poppins(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              MaterialButton(
+                onPressed: () {},
+                child: Text(
+                  'View All',
+                  style: GoogleFonts.poppins(
+                    color: MyColors.primaryColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              )
+            ],
+          ),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: stockPortfolio.length,
+            itemBuilder: (context, index) => InkWell(
+              onTap: () {},
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                margin: const EdgeInsets.only(top: 12),
+                decoration: BoxDecoration(
+                  color: Colors.black.withOpacity(0.04),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundImage:
+                              NetworkImage('${stockPortfolio[index].iconUrl}'),
+                        ),
+                        const SizedBox(width: 8),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '${stockPortfolio[index].symbol}',
+                              style: GoogleFonts.poppins(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            Text(
+                              '${stockPortfolio[index].name}',
+                              style: GoogleFonts.poppins(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          '${stockPortfolio[index].price}',
+                          style: GoogleFonts.poppins(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          '${stockPortfolio[index].change}',
+                          style: GoogleFonts.poppins(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400,
+                          ),
                         ),
                       ],
                     )
@@ -283,7 +412,7 @@ class _MainPageState extends State<DashboardView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Portfolio',
+                'My Portfolio',
                 style: GoogleFonts.poppins(
                     fontSize: 20, fontWeight: FontWeight.w600),
               ),
@@ -373,6 +502,175 @@ class _MainPageState extends State<DashboardView> {
             ),
           )
         ],
+      ),
+    );
+  }
+
+  Container _performing() {
+    return Container(
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                'Fast Movers',
+                style: GoogleFonts.poppins(
+                    fontSize: 20, fontWeight: FontWeight.w600),
+              ),
+              MaterialButton(
+                onPressed: () {},
+                child: Text(
+                  'View All',
+                  style: GoogleFonts.poppins(
+                      color: MyColors.primaryColor,
+                      fontSize: 14,
+                      fontWeight: FontWeight.w400),
+                ),
+              )
+            ],
+          ),
+          SizedBox(
+            height: 125,
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: stockPortfolio.length,
+              scrollDirection: Axis.horizontal,
+              itemBuilder: (context, index) => InkWell(
+                onTap: () {},
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  margin: const EdgeInsets.only(right: 10),
+                  height: 125,
+                  width: 150,
+                  decoration: BoxDecoration(
+                      color: HexColor('${stockPortfolio[index].color}')
+                          .withOpacity(0.12),
+                      borderRadius: BorderRadius.circular(16)),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          CircleAvatar(
+                            radius: 20,
+                            backgroundImage: NetworkImage(
+                                '${stockPortfolio[index].iconUrl}'),
+                          ),
+                          const SizedBox(width: 8),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                '${stockPortfolio[index].symbol}',
+                                style: GoogleFonts.poppins(
+                                    fontSize: 15, fontWeight: FontWeight.w600),
+                              ),
+                              Text(
+                                '${stockPortfolio[index].name}',
+                                style: GoogleFonts.poppins(
+                                    fontSize: 14, fontWeight: FontWeight.w400),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 9),
+                      Text(
+                        '${stockPortfolio[index].price}',
+                        style: GoogleFonts.poppins(
+                            fontSize: 17, fontWeight: FontWeight.w600),
+                      ),
+                      const SizedBox(height: 5),
+                      Row(
+                        children: [
+                          const Icon(
+                            Iconsax.arrow_up_1,
+                            size: 18,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            '${stockPortfolio[index].change}',
+                            style: GoogleFonts.poppins(
+                                fontSize: 12, fontWeight: FontWeight.w400),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Container _mySummary() {
+    return Container(
+      margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+            color: Colors.black, width: 0.1), // Adjust width as needed
+      ),
+      child: Container(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'My Summary',
+              style: GoogleFonts.poppins(
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Total Asset',
+                  style: GoogleFonts.poppins(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  'Rs 100,000',
+                  style: GoogleFonts.poppins(
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Top Holding Asset',
+                  style: GoogleFonts.poppins(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                Text(
+                  'Rs 50,000',
+                  style: GoogleFonts.poppins(
+                    fontSize: 15,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -603,16 +901,22 @@ class _MainPageState extends State<DashboardView> {
                     const SizedBox(width: 4),
                     Stack(
                       children: [
-                        Container(
-                          decoration: const BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white, // Set the color of the circle
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, AppRoute.profileRoute);
+                          },
+                          child: Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                              color:
+                                  Colors.white, // Set the color of the circle
+                            ),
+                            padding: const EdgeInsets.all(1.2),
+                            child: CircleAvatar(
+                                radius: 18,
+                                backgroundImage: AssetImage(currentDP)),
                           ),
-                          padding: const EdgeInsets.all(1.2),
-                          child: CircleAvatar(
-                              radius: 18,
-                              backgroundImage: AssetImage(currentDP)),
-                        ),
+                        )
                       ],
                     ),
                     const SizedBox(width: 4),

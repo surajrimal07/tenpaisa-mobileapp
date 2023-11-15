@@ -65,6 +65,13 @@ class NotificationServices {
       ],
     );
   }
+}
+  // // Get the count of active notifications
+  // static Future<int> getNotificationCount() async {
+  //   final List<ReceivedNotification>? activeNotifications =
+  //       await AwesomeNotifications().getActiveNotifications();
+  //   return activeNotifications?.length ?? 0;
+  // }
 
 //really finding it hard to listen for notification events, will do it later
 
@@ -105,4 +112,4 @@ class NotificationServices {
   //     print('Error launching URL: $e');
   //   }
   // }
-}
+
