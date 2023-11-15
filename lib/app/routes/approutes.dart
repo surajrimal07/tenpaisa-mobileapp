@@ -5,9 +5,12 @@ import 'package:paisa/view/news_view.dart';
 import 'package:paisa/view/noti_view.dart';
 import 'package:paisa/view/onboarding_view.dart';
 import 'package:paisa/view/otp_view.dart';
+import 'package:paisa/view/portfolio_View.dart';
+import 'package:paisa/view/search_view.dart';
 import 'package:paisa/view/signin_view.dart';
 import 'package:paisa/view/signup_view.dart';
 import 'package:paisa/view/style_view.dart';
+import 'package:paisa/view/wallet_view.dart';
 
 class AppRoute {
   AppRoute._();
@@ -21,6 +24,9 @@ class AppRoute {
   static const String profileRoute = '/profile';
   static const String newsRoute = '/news';
   static const String notiRoute = '/noti';
+  static const String portRoute = '/port';
+  static const String searchRoute = '/search';
+  static const String walletRoute = '/wallet';
 
   static getApplicationRoute() {
     return {
@@ -33,7 +39,10 @@ class AppRoute {
       invStyle: (context) => const StyleView(),
       profileRoute: (context) => const AccountView(),
       newsRoute: (context) => const NewsView(),
-      notiRoute: (context) => const NotificationView()
+      notiRoute: (context) => const NotificationView(),
+      portRoute: (context) => const PortfolioView(),
+      searchRoute: (context) => const SearchView(),
+      walletRoute: (context) => const WalletView()
     };
   }
 }

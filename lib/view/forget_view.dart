@@ -43,8 +43,6 @@ class _ForgotState extends State<ForgotView> {
 
   Future<void> updatepassword() async {
     try {
-      await UserService.saveUserToken(otp.email, otp.otp);
-      await Future.delayed(const Duration(seconds: 2));
       await UserService.updateUser("password", user.password, "");
       await Future.delayed(const Duration(seconds: 2));
 
@@ -64,7 +62,10 @@ class _ForgotState extends State<ForgotView> {
   Future<void> verifyotp() async {
     try {
       await UserService.verifyOTP(otp.email, otp.otp);
+      await Future.delayed(const Duration(seconds: 2));
       CustomToast.showToast("OTP Verified");
+      await UserService.fetchtoken(otp.email);
+      await Future.delayed(const Duration(seconds: 2));
 
       setState(() {
         otpverified = true;

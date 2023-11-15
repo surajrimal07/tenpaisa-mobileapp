@@ -95,9 +95,12 @@ class _MainPageState extends State<DashboardView> {
                       backgroundImage: AssetImage(currentDP),
                     ),
                   ),
-                  const ListTile(
-                    title: Text('My Profile'),
-                    leading: Icon(CupertinoIcons.person),
+                  ListTile(
+                    title: const Text('My Profile'),
+                    leading: const Icon(CupertinoIcons.person),
+                    onTap: () {
+                      Navigator.pushNamed(context, AppRoute.profileRoute);
+                    },
                   ),
                   const ListTile(
                     title: Text('Themes'),
@@ -128,6 +131,12 @@ class _MainPageState extends State<DashboardView> {
               onTap: (i) {
                 if (i == 4) {
                   Navigator.pushNamed(context, AppRoute.profileRoute);
+                } else if (i == 2) {
+                  Navigator.pushNamed(context, AppRoute.portRoute);
+                } else if (i == 1) {
+                  Navigator.pushNamed(context, AppRoute.searchRoute);
+                } else if (i == 3) {
+                  Navigator.pushNamed(context, AppRoute.walletRoute);
                 } else {
                   setState(() => indexBottomBar = i);
                 }
@@ -649,7 +658,9 @@ class _MainPageState extends State<DashboardView> {
                     MaterialButton(
                       splashColor: Colors.transparent,
                       highlightColor: Colors.transparent,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, AppRoute.searchRoute);
+                      },
                       padding: const EdgeInsets.all(0),
                       minWidth: 0,
                       child: const Icon(

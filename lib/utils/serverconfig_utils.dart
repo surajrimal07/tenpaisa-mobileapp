@@ -10,7 +10,7 @@ class ServerConfig {
   static const String VERIFY_API = "/api/verify";
   static const String UPDATE_USER = "/api/updateuser";
   static const String DELETE_USER = "/api/delete-acc";
-  static const String SAVE_TOKEN = "/api/savetkn";
+  //static const String SAVE_TOKEN = "/api/savetkn";
   static const String LOGIN = "/api/login";
   static const String SIGNUP = "/api/otp-login";
   static const String OTP_VERIFY = "/api/otp-verify";
@@ -19,4 +19,5 @@ class ServerConfig {
   static const String PRE_VERIFY = "/api/pre-verify";
   static const String FORGET = "/api/forget";
   static const String NEWS = "/news";
+  static const String WHATTOKEN = "/api/whattoken";
 }

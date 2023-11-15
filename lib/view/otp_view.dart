@@ -22,7 +22,6 @@ class _MyVerifyState extends State<OtpView> {
   Future<void> verify() async {
     try {
       await UserService.verifyOTP(otp.email, otp.otp);
-
       await Future.delayed(const Duration(seconds: 2)); //delaying for 2 seconds
       CustomToast.showToast("OTP Verified successfully");
       save();

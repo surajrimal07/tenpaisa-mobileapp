@@ -1,9 +1,12 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:crypto/crypto.dart';
+import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
+import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/utils/serverconfig_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import your server configuration class
@@ -12,7 +15,7 @@ import 'package:shared_preferences/shared_preferences.dart'; // Import your serv
 void initState() {}
 
 class UserService {
-  String? _userToken;
+  static String? _userToken; //made it static
 
   String? get userToken => _userToken;
 
@@ -22,18 +25,23 @@ class UserService {
     _userToken = prefs.getString('userToken');
   }
 
-  //delete token
-  Future<void> deleteUserToken() async {
+  //delete local token  //token should never be deleted from server
+  static Future<void> deleteUserToken() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.remove('userToken');
     _userToken = null;
   }
 
 //create token
-  static Future<String> createToken(String email, String pass) async {
+  static Future<String> createToken() async {
     final completer = Completer<String>();
     try {
-      final key = utf8.encode('$email$pass');
+      //using email and pass to generate token is wrong, we will be using rand
+      //value to generate token
+      final random1 = Random().nextInt(10000);
+      final random2 = Random().nextInt(10000);
+      final data = '$random1$random2';
+      final key = utf8.encode(data);
       final hmacSha256 = Hmac(sha256, key);
       final digest = hmacSha256.convert(Uint8List.fromList(key));
       final userToken1 = digest.toString();
@@ -44,41 +52,59 @@ class UserService {
     return completer.future;
   }
 
-//save token
-  static Future<void> saveUserToken(String email, String pass) async {
+// //save token
+//   static Future<void> saveUserToken(String email, String pass) async {
+//     var completer = Completer<void>();
+
+//     var userToken = "";
+//     try {
+//       userToken = await UserService.createToken();
+//     } catch (error) {
+//       print("Failed to generate token");
+//     }
+
+//     try {
+//       var url =
+//           Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.SAVE_TOKEN}");
+
+//       var requestBody = {'email': email, 'token': userToken};
+
+//       var response = await http.post(
+//         url,
+//         headers: <String, String>{
+//           'Content-Type': 'application/json; charset=UTF-8',
+//         },
+//         body: jsonEncode(requestBody),
+//       );
+
+//       if (response.statusCode == 200) {
+//         completer.complete();
+
+//         SharedPreferences prefs = await SharedPreferences.getInstance();
+//         await prefs.setString('userToken', userToken);
+//       } else {
+//         completer.completeError("400");
+//       }
+//     } catch (e) {
+//       completer.completeError("500");
+//     }
+//     return completer.future;
+//   }
+
+  //save token
+  static Future<void> saveUserToken() async {
     var completer = Completer<void>();
 
     var userToken = "";
-    try {
-      userToken = await UserService.createToken(email, pass);
-    } catch (error) {
-      //print("Failed to generate token"); //remove this later
-    }
 
     try {
-      var url =
-          Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.SAVE_TOKEN}");
+      userToken = await UserService.createToken();
 
-      var requestBody = {'email': email, 'token': userToken};
-
-      var response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(requestBody),
-      );
-
-      if (response.statusCode == 200) {
-        completer.complete();
-
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('userToken', userToken);
-      } else {
-        completer.completeError("400"); //failed to save token
-      }
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      await prefs.setString('userToken', userToken);
+      completer.complete();
     } catch (e) {
-      completer.completeError("500"); //("Token error");
+      completer.completeError("500");
     }
     return completer.future;
   }
@@ -87,8 +113,7 @@ class UserService {
   static Future<void> login(String email, String pass, bool remember) async {
     var completer = Completer<void>();
 
-    var url = Uri.parse(
-        "${ServerConfig.SERVER_ADDRESS}${ServerConfig.LOGIN}"); //replace this with localhost ip address
+    var url = Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.LOGIN}");
     var res = await http.post(
       url,
       headers: <String, String>{
@@ -102,25 +127,18 @@ class UserService {
 
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (res.statusCode == 200) {
-      //print("we are here 86");
       try {
-        await saveUserToken(email, pass);
-        completer.complete();
-        //CustomToast.showToast("Signin Successful");
-
-        //SharedPreferences prefs = await SharedPreferences.getInstance();
+        //await saveUserToken(email, pass);
 
         if (remember == true) {
           prefs.setBool('loginsaved', true);
         }
+        completer.complete();
       } catch (e) {
         completer.completeError("400");
-        //CustomToast.showToast("Token Error");
       }
     } else {
       completer.completeError("401");
-      //print("401 103 line of login");
-      //CustomToast.showToast("Email or password is incorrect");
     }
     return completer.future;
   }
@@ -133,6 +151,8 @@ class UserService {
 
       if (userService.userToken == null || userService.userToken!.isEmpty) {
         CustomToast.showToast('User not logged in');
+
+//force user to go to sign in screen
         return null;
       }
 
@@ -174,6 +194,7 @@ class UserService {
     }
   }
 
+//preverify
   static Future<void> preVerify(String value, String fields) async {
     var completer = Completer<void>();
     try {
@@ -208,8 +229,7 @@ class UserService {
     String value,
     String? email,
   ) async {
-    final UserService userService =
-        UserService(); //String? is for special purpose like when in password reset view where we don't have any token
+    final UserService userService = UserService();
     await userService._loadUserToken();
 
     var completer = Completer<void>();
@@ -224,7 +244,7 @@ class UserService {
       'value': value
     };
 
-    print(requestBody);
+    //print(requestBody);
     var res = await http.post(
       url,
       headers: <String, String>{
@@ -244,7 +264,7 @@ class UserService {
   }
 
 //delete user
-  static Future<void> deleteUser(String password) async {
+  static Future<void> deleteUser(String password, BuildContext context) async {
     final UserService userService = UserService();
     await userService._loadUserToken();
 
@@ -261,10 +281,14 @@ class UserService {
         },
         body: jsonEncode(requestBody),
       );
-      print(res);
+      //print(res);
 
       if (res.statusCode == 200) {
+        UserService.deleteUserToken();
+        await Future.delayed(const Duration(seconds: 2));
         completer.complete();
+        // ignore: use_build_context_synchronously
+        Navigator.pushReplacementNamed(context, AppRoute.signinRoute);
       } else if (res.statusCode == 401) {
         completer.completeError("401");
       }
@@ -280,7 +304,6 @@ class UserService {
     String? temphash = prefs.getString('otphash');
 
     var completer = Completer<void>();
-
     try {
       var url =
           Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.OTP_VERIFY}");
@@ -331,17 +354,8 @@ class UserService {
         String dataValue = parsedResponse['data'];
         prefs.setString('otphash', dataValue);
 
-        //userService.setTempHash(dataValue);
-
-        ///setting hash value here
-        print("hash is $dataValue");
-
-        //trigger verify otp function and pass datatopass
         completer.complete();
-      }
-      // else if (response.statusCode == 400) {
-      //   completer.completeError("401");}
-      else {
+      } else {
         completer.completeError("300");
         CustomToast.showToast("Server error: ${response.statusCode}");
       }
@@ -356,23 +370,17 @@ class UserService {
   static Future<void> savedata(
       String name, String email, String password, String phone) async {
     var completer = Completer<void>();
-
-    var userToken = "";
-
-    try {
-      userToken = await UserService.createToken(email, password);
-      print("Fresh token generated is : $userToken");
-    } catch (error) {
-      print("Failed to generate token"); //remove this later
-    }
+    final UserService userService = UserService();
 
     try {
+      await UserService.saveUserToken();
+      await userService._loadUserToken();
+
       var url =
           Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.SAVE_USER}");
 
-      // Create a map for the request body
       var requestBody = {
-        'token': userToken,
+        'token': userService.userToken,
         'name': name,
         'email': email,
         'password': password,
@@ -388,16 +396,7 @@ class UserService {
       );
 
       if (response.statusCode == 200) {
-        //completer.isCompleted();     //if code dosen't detect completed task use this
-        //completer.complete();
-        //CustomToast.showToast("User Created Successfully");
-
-        try {
-          await saveUserToken(email, password);
-          completer.complete();
-        } catch (e) {
-          completer.completeError("300"); //tokenerror
-        }
+        completer.complete();
       } else {
         completer.completeError(500);
       }
@@ -441,6 +440,44 @@ class UserService {
     }
   }
 
+//fetch token used in forget password
+  static Future<void> fetchtoken(String email) async {
+    String temptkn = "";
+    final UserService userService = UserService();
+    try {
+      var url =
+          Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.WHATTOKEN}");
+
+      var requestBody = {
+        'email': email,
+      };
+
+      var res = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (res.statusCode == 200) {
+        final userData = json.decode(res.body);
+
+        temptkn = userData['token'];
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('userToken', temptkn);
+        await Future.delayed(const Duration(seconds: 2));
+        await userService._loadUserToken();
+      } else {
+        CustomToast.showToast('Failed to fetch user data: ${res.statusCode}');
+        return;
+      }
+    } catch (error) {
+      print("failed to fetch token");
+      return;
+    }
+  }
+
   static Future<void> forget(String email) async {
     var completer = Completer<void>();
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -467,7 +504,7 @@ class UserService {
 
         completer.complete();
       } else if (res.statusCode == 404) {
-        completer.completeError(404); //mail not found
+        completer.completeError(404);
       }
     } catch (error) {
       completer.completeError(error);

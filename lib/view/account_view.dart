@@ -96,13 +96,19 @@ class _ProfileViewState extends State<AccountView> {
       appBar: AppBar(
         title: const Text(
           "Settings",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
-        backgroundColor: Colors.transparent,
+        backgroundColor: MyColors.btnColor,
         elevation: 0,
         automaticallyImplyLeading: true,
         iconTheme: const IconThemeData(color: Colors.black),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -188,12 +194,19 @@ class _ProfileViewState extends State<AccountView> {
         ),
       ),
       bottomNavigationBar: SalomonBottomBar(
+        backgroundColor: MyColors.btnColor,
         currentIndex: indexBottomBar,
         onTap: (i) {
           if (i == 4) {
             setState(() => indexBottomBar = i);
           } else if (i == 0) {
             Navigator.pushNamed(context, AppRoute.dashboardRoute);
+          } else if (i == 2) {
+            Navigator.pushNamed(context, AppRoute.portRoute);
+          } else if (i == 1) {
+            Navigator.pushNamed(context, AppRoute.searchRoute);
+          } else if (i == 3) {
+            Navigator.pushNamed(context, AppRoute.walletRoute);
           } else {
             setState(() => indexBottomBar = i);
           }
@@ -202,27 +215,32 @@ class _ProfileViewState extends State<AccountView> {
           SalomonBottomBarItem(
             icon: const Icon(Iconsax.home),
             title: const Text("Home"),
-            selectedColor: MyColors.btnColor,
+            selectedColor: Colors.white,
+            unselectedColor: Colors.white70,
           ),
           SalomonBottomBarItem(
             icon: const Icon(Iconsax.global_search),
             title: const Text("Search"),
-            selectedColor: MyColors.btnColor,
+            selectedColor: Colors.white,
+            unselectedColor: Colors.white70,
           ),
           SalomonBottomBarItem(
             icon: const Icon(Iconsax.document),
             title: const Text("Portfolio"),
-            selectedColor: MyColors.btnColor,
+            selectedColor: Colors.white,
+            unselectedColor: Colors.white70,
           ),
           SalomonBottomBarItem(
             icon: const Icon(Iconsax.wallet_1),
             title: const Text("Wallet"),
-            selectedColor: MyColors.btnColor,
+            selectedColor: Colors.white,
+            unselectedColor: Colors.white70,
           ),
           SalomonBottomBarItem(
             icon: const Icon(Iconsax.profile_circle),
             title: const Text("Profile"),
-            selectedColor: MyColors.btnColor,
+            selectedColor: Colors.white,
+            unselectedColor: Colors.white70,
           ),
         ],
       ),
@@ -241,8 +259,8 @@ class _ProfileViewState extends State<AccountView> {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.remove('userToken');
 
-                String? checktoken = prefs.getString('userToken');
-                print("is token null after logged out: $checktoken");
+                //String? checktoken = prefs.getString('userToken');
+                //print("is token null after logged out: $checktoken");
                 CustomToast.showToast("Logging out");
 
                 //Navigator.pushReplacementNamed(context, AppRoute.signinRoute);
@@ -379,24 +397,14 @@ class _ProfileViewState extends State<AccountView> {
                       String pass = newPassController.text;
 
                       try {
-                        await UserService.deleteUser(pass);
-                        await Future.delayed(const Duration(seconds: 2));
+                        await UserService.deleteUser(pass, context);
 
                         CustomToast.showToast("Account Deleted");
-                        SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
-                        await prefs.remove('userToken');
-
-                        Navigator.of(context).pushNamedAndRemoveUntil(
-                          AppRoute.signinRoute,
-                          (route) => false,
-                        );
                       } catch (error) {
                         if (error == "401") {
                           CustomToast.showToast("Password Incorrect");
                         } else {
                           CustomToast.showToast("Error occured");
-                          // print(error);
                         }
                       }
                       newPassController.clear();
