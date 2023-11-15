@@ -1,10 +1,15 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/utils/colors_utils.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+
+import '../services/asset_services.dart';
 
 class SearchView extends StatefulWidget {
   const SearchView({super.key});
@@ -15,13 +20,15 @@ class SearchView extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchView> {
   int indexBottomBar = 1;
+  //List<dynamic> symbols = [];
+  List<Map<String, dynamic>> symbols = [];
 
   final TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    _loadUserData();
+    fetchData();
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: MyColors.btnColor,
       statusBarIconBrightness: Brightness.light,
@@ -30,8 +37,13 @@ class _SearchScreenState extends State<SearchView> {
     ));
   }
 
-  _loadUserData() {
-    // Implement your user data loading logic here
+  Future<void> fetchData() async {
+    List<Map<String, dynamic>> fetchedSymbols =
+        await AssetService.getassets("allwithdata");
+
+    setState(() {
+      symbols = fetchedSymbols;
+    });
   }
 
   @override
@@ -62,21 +74,30 @@ class _SearchScreenState extends State<SearchView> {
           IconButton(
             icon: const Icon(CupertinoIcons.xmark_circle, color: Colors.white),
             onPressed: () {
-              // Clear the text in the TextField
               _searchController.clear();
             },
           ),
         ],
       ),
-      body: Center(
-        child: Container(
-          color: Colors.white,
-          padding: const EdgeInsets.all(16),
-          child: const Text(
-            'Search Something',
-            style: TextStyle(fontSize: 18, color: Colors.black),
-          ),
-        ),
+      body: ListView.builder(
+        padding: const EdgeInsets.all(16),
+        itemCount: symbols.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(
+              symbols[index]['name'],
+              style: GoogleFonts.poppins(),
+            ),
+            subtitle: Text(
+              symbols[index]['sector'],
+              style: GoogleFonts.poppins(),
+            ),
+            trailing: Text(
+              'Rs ${symbols[index]['ltp'] ?? ''}',
+              style: GoogleFonts.poppins(),
+            ),
+          );
+        },
       ),
       bottomNavigationBar: SalomonBottomBar(
         backgroundColor: MyColors.btnColor,

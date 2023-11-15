@@ -6,6 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/utils/colors_utils.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import '../services/asset_services.dart';
 
 class PortfolioView extends StatefulWidget {
   const PortfolioView({super.key});

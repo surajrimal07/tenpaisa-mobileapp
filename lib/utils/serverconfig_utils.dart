@@ -1,5 +1,3 @@
-// config.dart
-
 class ServerConfig {
   static const String HTTPS = "http://";
   static const String PORT = ":5000";
@@ -20,4 +18,5 @@ class ServerConfig {
   static const String FORGET = "/api/forget";
   static const String NEWS = "/news";
   static const String WHATTOKEN = "/api/whattoken";
+  static const String GET_ASSET = "/api/getasset";
 }
