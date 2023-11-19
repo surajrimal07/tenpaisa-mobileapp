@@ -59,9 +59,10 @@ Before you start, make sure you have the following installed:
 - Database: You'll need a MongoDB database system or MongoDB Atlas, to store user and financial data. Make sure you have 'paisa' database with 'users' collection [official website](https://www.mongodb.com/try/download/community).
 
 ## TODO
-- Screen: Add screens in dashboard. Currently only dashboard screen exists.
-- Database: Connect dashboard data to mongoDB. Currently data is hardcoded.
-- Database: Add CRUD logic.
+- Charts, Notification Listener, wacc, loss gains and other financial calculations. 
+- Complete asset View, portfolio view.
+- Recommendation system.
+- Fetch live data (working on it).
 
 ## What Works?
 - Splash Screen
@@ -69,6 +70,13 @@ Before you start, make sure you have the following installed:
 - Login Screen (connected to MongoDB)
 - Signup Screen (connected to MongoDB)
 - OTP Screen (EMail OTP, uses [ethereal.email](ethereal.email) service)
+- Password reset, user data update.
+- Live asset prices (limited asset).
+- Live notification.
+- User token system works.
+- Proper navigation and routing.
+- Account deletion.
+- Web socket
 
 ## Getting Started
 
