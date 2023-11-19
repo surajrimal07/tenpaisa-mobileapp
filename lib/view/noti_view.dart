@@ -3,11 +3,8 @@ import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/utils/colors_utils.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:web_socket_channel/io.dart';
 
 class NotificationView extends StatefulWidget {
@@ -115,30 +112,6 @@ class _NotificationViewState extends State<NotificationView> {
           'Under Development',
           style: TextStyle(fontSize: 20),
         ),
-      ),
-      bottomNavigationBar: SalomonBottomBar(
-        currentIndex: indexBottomBar,
-        onTap: (i) {
-          if (i == 0) {
-            Navigator.pushReplacementNamed(context, AppRoute.newsRoute);
-          } else if (i == 1) {
-            // If the user taps on the current tab (index 1), no need to change the route
-          } else {
-            setState(() => indexBottomBar = i);
-          }
-        },
-        items: [
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.paperclip_2),
-            title: const Text("News"),
-            selectedColor: MyColors.btnColor,
-          ),
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.notification),
-            title: const Text("Notification"),
-            selectedColor: MyColors.btnColor,
-          ),
-        ],
       ),
     );
   }

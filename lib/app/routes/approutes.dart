@@ -27,6 +27,7 @@ class AppRoute {
   static const String portRoute = '/port';
   static const String searchRoute = '/search';
   static const String walletRoute = '/wallet';
+  static const String assetRoute = '/asset';
 
   static getApplicationRoute() {
     return {
@@ -42,7 +43,8 @@ class AppRoute {
       notiRoute: (context) => const NotificationView(),
       portRoute: (context) => const PortfolioView(),
       searchRoute: (context) => const SearchView(),
-      walletRoute: (context) => const WalletView()
+      walletRoute: (context) => const WalletView(),
+      //assetRoute: (context) => const AssetView()
     };
   }
 }

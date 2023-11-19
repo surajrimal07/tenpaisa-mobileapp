@@ -1,36 +1,55 @@
+// class Asset {
+//   String symbol;
+//   String name;
+//   String? category;
+//   String? sector;
+//   double? eps;
+//   double? bookvalue;
+//   double? pe;
+//   double? percentchange;
+//   double ltp;
+//   double? totaltradedquantity;
+//   double? previousclose;
+
+//   Asset(
+//     this.symbol,
+//     this.name,
+//     this.category,
+//     this.sector,
+//     this.eps,
+//     this.bookvalue,
+//     this.pe,
+//     this.ltp,
+//     this.percentchange,
+//     this.totaltradedquantity,
+//     this.previousclose,
+//   );
+// }
+
 class Asset {
-  String? iconUrl;
-  String? symbol;
-  String? name;
-  String? price;
-  String? change;
-  String? color;
+  String symbol;
+  String name;
+  String? category;
+  String? sector;
+  String? eps;
+  String? bookvalue;
+  String? pe;
+  String? percentchange;
+  String? ltp;
+  String? totaltradedquantity;
+  String? previousclose;
 
-  Asset(
-      {this.iconUrl,
-      this.symbol,
-      this.name,
-      this.price,
-      this.change,
-      this.color});
-
-  Asset.fromJson(Map<String, dynamic> json) {
-    iconUrl = json['iconUrl'];
-    symbol = json['symbol'];
-    name = json['name'];
-    price = json['price'];
-    change = json['change'];
-    color = json['color'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['iconUrl'] = iconUrl;
-    data['symbol'] = symbol;
-    data['name'] = name;
-    data['price'] = price;
-    data['change'] = change;
-    data['color'] = color;
-    return data;
-  }
+  Asset({
+    required this.symbol,
+    required this.name,
+    this.category,
+    this.sector,
+    this.eps,
+    this.bookvalue,
+    this.pe,
+    this.percentchange,
+    this.ltp,
+    this.totaltradedquantity,
+    this.previousclose,
+  });
 }

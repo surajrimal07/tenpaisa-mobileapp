@@ -5,6 +5,8 @@ import 'package:http/http.dart' as http;
 import 'package:paisa/utils/serverconfig_utils.dart';
 
 class AssetService {
+  static Timer? _timer;
+
   static Future<List<dynamic>> getasset(String symbol) async {
     print(symbol);
     try {
@@ -46,8 +48,15 @@ class AssetService {
     }
   }
 
+//experiment to cache data, due to delay
+  static final Map<String, List<Map<String, dynamic>>> _cache = {};
+
   static Future<List<Map<String, dynamic>>> getassets(String symbol) async {
     try {
+      if (_cache.containsKey(symbol)) {
+        return _cache[symbol]!;
+      }
+
       var url =
           Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.GET_ASSET}");
 
@@ -62,15 +71,29 @@ class AssetService {
         },
         body: jsonEncode(requestBody),
       );
+
       if (response.statusCode == 200) {
         List<Map<String, dynamic>> data =
             List<Map<String, dynamic>>.from(json.decode(response.body));
+
+        _cache[symbol] = data;
+
         return data;
       } else {
         throw Exception('Failed to load symbols');
       }
     } catch (error) {
       throw Exception('An error occurred: $error');
+    }
+  }
+
+  static void setupCacheTimer(String symbol) {
+    // Set up a periodic timer for auto-refresh (every 5 minutes)
+    if (_timer == null) {
+      const Duration refreshDuration = Duration(minutes: 5);
+      _timer = Timer.periodic(refreshDuration, (timer) async {
+        await getassets(symbol);
+      });
     }
   }
 }

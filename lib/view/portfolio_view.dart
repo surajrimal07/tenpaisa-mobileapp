@@ -1,12 +1,13 @@
-// ignore_for_file: library_private_types_in_public_api
+// portfolio_view.dart
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:paisa/app/routes/approutes.dart';
+import 'package:paisa/app/toast/flutter_toast.dart';
+import 'package:paisa/services/portfolio_services.dart'; // Import your PortfolioService
 import 'package:paisa/utils/colors_utils.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-import '../services/asset_services.dart';
 
 class PortfolioView extends StatefulWidget {
   const PortfolioView({super.key});
@@ -17,24 +18,49 @@ class PortfolioView extends StatefulWidget {
 
 class _PortfolioScreenState extends State<PortfolioView> {
   int indexBottomBar = 2;
+
+  List<Map<String, dynamic>> portfolioData = [];
+
   @override
   void initState() {
     super.initState();
-    _loadUserData();
+    _loadPortfolioData();
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor:
-          MyColors.btnColor, // Status bar color set to a dark blue shade
-      statusBarIconBrightness:
-          Brightness.light, // Adjust status bar icon colors
-      systemNavigationBarColor:
-          MyColors.btnColor, // Navigation bar color set to the same blue shade
-      systemNavigationBarIconBrightness:
-          Brightness.light, // Adjust navigation bar icon colors
+      statusBarColor: MyColors.btnColor,
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: MyColors.btnColor,
+      systemNavigationBarIconBrightness: Brightness.light,
     ));
   }
 
-  _loadUserData() {
-    // Implement your user data loading logic here
+  // _loadPortfolioData() async {
+  //   try {
+  //     List<Map<String, dynamic>> data = await PortfolioService.getPort();
+  //     print('Fetched data: $data');
+
+  //     setState(() {
+  //       print("State updated");
+  //       portfolioData = data;
+  //     });
+  //   } catch (error) {
+  //     CustomToast.showToast("Error occurred");
+  //     print('Error loading portfolio data: $error');
+  //   }
+  // }
+
+  _loadPortfolioData() async {
+    try {
+      List<Map<String, dynamic>> data = await PortfolioService.getPort();
+      print('API Response: $data');
+
+      setState(() {
+        print("State updated");
+        portfolioData = data;
+      });
+    } catch (error) {
+      CustomToast.showToast("Error occurred");
+      print('Error loading portfolio data: $error');
+    }
   }
 
   @override
@@ -64,10 +90,17 @@ class _PortfolioScreenState extends State<PortfolioView> {
         child: Container(
           color: Colors.white,
           padding: const EdgeInsets.all(16),
-          child: const Text(
-            'No portfolio found',
-            style: TextStyle(fontSize: 18, color: Colors.black),
-          ),
+          child: portfolioData.isNotEmpty
+              ? Column(
+                  children: [
+                    for (var portfolio in portfolioData)
+                      _buildPortfolioContainer(portfolio),
+                  ],
+                )
+              : const Text(
+                  'No portfolio',
+                  style: TextStyle(fontSize: 18, color: Colors.black),
+                ),
         ),
       ),
       bottomNavigationBar: SalomonBottomBar(
@@ -119,6 +152,86 @@ class _PortfolioScreenState extends State<PortfolioView> {
             selectedColor: Colors.white,
             unselectedColor: Colors.white70,
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPortfolioContainer(Map<String, dynamic> portfolio) {
+    return Container(
+      margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.black,
+          width: 0.1,
+        ),
+      ),
+      padding: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                portfolio['name'],
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              MaterialButton(
+                onPressed: () {
+                  // Handle view all button tap
+                },
+                child: const Text(
+                  'View All',
+                  style: TextStyle(
+                    color: MyColors.primaryColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              )
+            ],
+          ),
+          if (portfolio['stocks'] != null &&
+              (portfolio['stocks'] as List).isNotEmpty)
+            Expanded(
+              child: ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: (portfolio['stocks'] as List).length,
+                itemBuilder: (context, index) {
+                  var stock = portfolio['stocks'][index];
+                  return InkWell(
+                    onTap: () {
+                      // Handle stock tap
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(12),
+                      margin: const EdgeInsets.only(top: 12),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.04),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Add logic to display stock information here
+                          // You can access properties like stock['symbol'], stock['name'], etc.
+                        ],
+                      ),
+                    ),
+                  );
+                },
+              ),
+            )
+          else
+            const Text(
+              'No stocks found',
+              style: TextStyle(fontSize: 16, color: Colors.black),
+            ),
         ],
       ),
     );

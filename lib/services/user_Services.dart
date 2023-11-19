@@ -20,7 +20,8 @@ class UserService {
   String? get userToken => _userToken;
 
 //load token
-  Future<void> _loadUserToken() async {
+  Future<void> loadUserToken() async {
+    // made _load (private) to load (public)
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _userToken = prefs.getString('userToken');
   }
@@ -147,7 +148,7 @@ class UserService {
   static Future<Map<String, dynamic>?> fetchUserData() async {
     try {
       final UserService userService = UserService();
-      await userService._loadUserToken();
+      await userService.loadUserToken();
 
       if (userService.userToken == null || userService.userToken!.isEmpty) {
         CustomToast.showToast('User not logged in');
@@ -230,7 +231,7 @@ class UserService {
     String? email,
   ) async {
     final UserService userService = UserService();
-    await userService._loadUserToken();
+    await userService.loadUserToken();
 
     var completer = Completer<void>();
 
@@ -266,7 +267,7 @@ class UserService {
 //delete user
   static Future<void> deleteUser(String password, BuildContext context) async {
     final UserService userService = UserService();
-    await userService._loadUserToken();
+    await userService.loadUserToken();
 
     var completer = Completer<void>();
     try {
@@ -374,7 +375,7 @@ class UserService {
 
     try {
       await UserService.saveUserToken();
-      await userService._loadUserToken();
+      await userService.loadUserToken();
 
       var url =
           Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.SAVE_USER}");
@@ -467,7 +468,7 @@ class UserService {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('userToken', temptkn);
         await Future.delayed(const Duration(seconds: 2));
-        await userService._loadUserToken();
+        await userService.loadUserToken();
       } else {
         CustomToast.showToast('Failed to fetch user data: ${res.statusCode}');
         return;

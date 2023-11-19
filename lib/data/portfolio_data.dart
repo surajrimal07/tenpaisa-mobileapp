@@ -1,4 +1,4 @@
-import 'package:paisa/model/asset_model.dart';
+import 'package:paisa/model/dummymodel.dart';
 
 List<Asset> stockPortfolio = [
   Asset(
