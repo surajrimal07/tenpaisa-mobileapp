@@ -20,7 +20,7 @@ class UserService {
   String? get userToken => _userToken;
 
 //load token
-  Future<void> loadUserToken() async {
+  Future<void> _loadUserToken() async {
     // made _load (private) to load (public)
     SharedPreferences prefs = await SharedPreferences.getInstance();
     _userToken = prefs.getString('userToken');
@@ -103,6 +103,7 @@ class UserService {
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString('userToken', userToken);
+      print(userToken);
       completer.complete();
     } catch (e) {
       completer.completeError("500");
@@ -113,6 +114,10 @@ class UserService {
 //login
   static Future<void> login(String email, String pass, bool remember) async {
     var completer = Completer<void>();
+    print("rememberme");
+    print(remember); //
+    print("usr token");
+    print(UserService._userToken); //
 
     var url = Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.LOGIN}");
     var res = await http.post(
@@ -129,7 +134,8 @@ class UserService {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     if (res.statusCode == 200) {
       try {
-        //await saveUserToken(email, pass);
+        await fetchtoken(email);
+        //await saveUserToken(); //test
 
         if (remember == true) {
           prefs.setBool('loginsaved', true);
@@ -148,7 +154,7 @@ class UserService {
   static Future<Map<String, dynamic>?> fetchUserData() async {
     try {
       final UserService userService = UserService();
-      await userService.loadUserToken();
+      await userService._loadUserToken();
 
       if (userService.userToken == null || userService.userToken!.isEmpty) {
         CustomToast.showToast('User not logged in');
@@ -231,7 +237,7 @@ class UserService {
     String? email,
   ) async {
     final UserService userService = UserService();
-    await userService.loadUserToken();
+    await userService._loadUserToken();
 
     var completer = Completer<void>();
 
@@ -267,7 +273,7 @@ class UserService {
 //delete user
   static Future<void> deleteUser(String password, BuildContext context) async {
     final UserService userService = UserService();
-    await userService.loadUserToken();
+    await userService._loadUserToken();
 
     var completer = Completer<void>();
     try {
@@ -375,7 +381,7 @@ class UserService {
 
     try {
       await UserService.saveUserToken();
-      await userService.loadUserToken();
+      await userService._loadUserToken();
 
       var url =
           Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.SAVE_USER}");
@@ -468,7 +474,7 @@ class UserService {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('userToken', temptkn);
         await Future.delayed(const Duration(seconds: 2));
-        await userService.loadUserToken();
+        await userService._loadUserToken();
       } else {
         CustomToast.showToast('Failed to fetch user data: ${res.statusCode}');
         return;
