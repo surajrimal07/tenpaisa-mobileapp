@@ -1,5 +1,3 @@
-// portfolio_view.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
@@ -32,21 +30,6 @@ class _PortfolioScreenState extends State<PortfolioView> {
       systemNavigationBarIconBrightness: Brightness.light,
     ));
   }
-
-  // _loadPortfolioData() async {
-  //   try {
-  //     List<Map<String, dynamic>> data = await PortfolioService.getPort();
-  //     print('Fetched data: $data');
-
-  //     setState(() {
-  //       print("State updated");
-  //       portfolioData = data;
-  //     });
-  //   } catch (error) {
-  //     CustomToast.showToast("Error occurred");
-  //     print('Error loading portfolio data: $error');
-  //   }
-  // }
 
   _loadPortfolioData() async {
     try {
@@ -159,7 +142,7 @@ class _PortfolioScreenState extends State<PortfolioView> {
 
   Widget _buildPortfolioContainer(Map<String, dynamic> portfolio) {
     return Container(
-      margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
+      margin: const EdgeInsets.only(left: 3, right: 3, top: 3, bottom: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
