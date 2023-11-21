@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:page_view_indicators/circle_page_indicator.dart';
 import 'package:paisa/app/routes/approutes.dart';
+import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/utils/colors_utils.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
@@ -18,29 +18,23 @@ class SearchView extends StatefulWidget {
   _SearchScreenState createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchView> {
+class _SearchScreenState extends State<SearchView>
+    with SingleTickerProviderStateMixin {
   int indexBottomBar = 1;
   int currentPageIndex = 0;
-  final PageController _pageController = PageController(initialPage: 0);
-  List<Asset> symbols = [];
-  List<dynamic> commodityData = []; // for commodity
+  //final PageController _pageController = PageController(initialPage: 0);
   final TextEditingController _searchController = TextEditingController();
-  final _currentPageNotifier = ValueNotifier<int>(0);
+  //final _currentPageNotifier = ValueNotifier<int>(0);
+
+  late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    fetchData();
-    fetchCommodityData(); //fetch commodity data from this
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: MyColors.btnColor,
-      statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: MyColors.btnColor,
-      systemNavigationBarIconBrightness: Brightness.light,
-    ));
+    _tabController = TabController(length: 2, vsync: this);
   }
 
-  Future<void> fetchData() async {
+  Future<List<Asset>> fetchData() async {
     try {
       List<Map<String, dynamic>> fetchedSymbolMaps =
           await AssetService.getassets("allwithdata");
@@ -54,9 +48,7 @@ class _SearchScreenState extends State<SearchView> {
                 eps: map['eps'],
                 bookvalue: map['bookvalue'],
                 pe: map['pe'],
-                ltp: map['ltp'] is double
-                    ? map['ltp'].toString()
-                    : map['ltp'], //map['ltp'],
+                ltp: map['ltp'] is double ? map['ltp'].toString() : map['ltp'],
                 percentchange: map['percentchange'],
                 totaltradedquantity: map['totaltradedquantity'],
                 previousclose: map['previousclose'],
@@ -65,15 +57,14 @@ class _SearchScreenState extends State<SearchView> {
 
       fetchedSymbols.sort((a, b) => a.name.compareTo(b.name));
 
-      setState(() {
-        symbols = fetchedSymbols;
-      });
+      return fetchedSymbols;
     } catch (error) {
-      print('Error fetching symbols: $error');
+      CustomToast.showToast("asset data error");
+      rethrow;
     }
   }
 
-  Future<void> fetchCommodityData() async {
+  Future<List<Asset>> fetchCommodityData() async {
     try {
       List<Map<String, dynamic>> fetchedCommodityMaps =
           await AssetService.getcommodity();
@@ -96,19 +87,19 @@ class _SearchScreenState extends State<SearchView> {
 
       fetchedCommodities.sort((a, b) => a.name.compareTo(b.name));
 
-      setState(() {
-        commodityData = fetchedCommodities;
-      });
+      return fetchedCommodities;
     } catch (error) {
-      print('Error fetching commodity data: $error');
+      CustomToast.showToast("commodity data error");
+      rethrow;
     }
   }
 
-  void _onAssetTapped(Asset asset) {
+  void _onAssetTapped(Asset asset, comopage) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => AssetView(assetData: asset),
+        builder: (context) =>
+            AssetView(assetData: asset, fromCommodityPage: comopage),
       ),
     );
   }
@@ -123,7 +114,7 @@ class _SearchScreenState extends State<SearchView> {
             controller: _searchController,
             style: const TextStyle(color: Colors.white),
             decoration: const InputDecoration(
-              hintText: 'Search Assets',
+              hintText: 'Search',
               hintStyle: TextStyle(color: Colors.grey),
               border: InputBorder.none,
             ),
@@ -149,125 +140,167 @@ class _SearchScreenState extends State<SearchView> {
             },
           ),
         ],
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: const [
+            Tab(text: 'Stocks'),
+            Tab(text: 'Commodities'),
+          ],
+        ),
       ),
-      body: Stack(
+      body: TabBarView(
+        controller: _tabController,
         children: [
-          PageView(
-            controller: _pageController,
-            onPageChanged: (index) {
-              setState(() {
-                currentPageIndex = index;
-                _currentPageNotifier.value = index;
-              });
+          // Asset data
+          FutureBuilder<List<Asset>>(
+            future: fetchData(),
+            builder: (context, assetSnapshot) {
+              if (assetSnapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: SpinKitCircle(
+                    color: MyColors.btnColor,
+                    size: 25.0,
+                  ),
+                );
+              } else if (assetSnapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${assetSnapshot.error}'),
+                );
+              } else if (assetSnapshot.hasData) {
+                return ListView.builder(
+                  padding: const EdgeInsets.all(5),
+                  itemCount: assetSnapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    String name = assetSnapshot.data![index].name;
+                    String sector = assetSnapshot.data![index].sector ?? '';
+                    String ltp = assetSnapshot.data![index].ltp ?? '';
+
+                    bool matchesSearch = name
+                            .toLowerCase()
+                            .contains(_searchController.text.toLowerCase()) ||
+                        assetSnapshot.data![index].symbol
+                            .toLowerCase()
+                            .contains(_searchController.text.toLowerCase());
+
+                    return matchesSearch
+                        ? Column(
+                            children: [
+                              ListTile(
+                                title: Text(
+                                  name,
+                                  style: GoogleFonts.poppins(),
+                                ),
+                                subtitle: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          sector,
+                                          style: GoogleFonts.poppins(),
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          'Rs $ltp',
+                                          style: GoogleFonts.poppins(),
+                                        ),
+                                      ],
+                                    ),
+                                    _buildArrowAndPercentage(assetSnapshot
+                                        .data![index].percentchange),
+                                  ],
+                                ),
+                                onTap: () {
+                                  _onAssetTapped(
+                                      assetSnapshot.data![index], false);
+                                },
+                              ),
+                              const Divider(
+                                color: MyColors.btnColor,
+                                height: 0.3,
+                                thickness: 0.3,
+                              ),
+                            ],
+                          )
+                        : Container();
+                  },
+                );
+              } else {
+                return Container();
+              }
             },
-            children: [
-              ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemCount: symbols.length,
-                itemBuilder: (context, index) {
-                  bool matchesSearch = symbols[index]
-                          .name
-                          .toLowerCase()
-                          .contains(_searchController.text.toLowerCase()) ||
-                      symbols[index]
-                          .symbol
-                          .toLowerCase()
-                          .contains(_searchController.text.toLowerCase());
-
-                  return matchesSearch
-                      ? ListTile(
-                          title: Text(
-                            symbols[index].name,
-                            style: GoogleFonts.poppins(),
-                          ),
-                          subtitle: Text(
-                            symbols[index].sector ?? "",
-                            style: GoogleFonts.poppins(),
-                          ),
-                          trailing: Text(
-                            'Rs ${symbols[index].ltp ?? ''}',
-                            style: GoogleFonts.poppins(),
-                          ),
-                          onTap: () {
-                            _onAssetTapped(symbols[index]);
-                          },
-                        )
-                      : Container();
-                },
-              ),
-              // Commodity data page
-              // ListView.builder(
-              //   padding: const EdgeInsets.all(16),
-              //   itemCount: commodityData.length,
-              //   itemBuilder: (context, index) {
-              //     return ListTile(
-              //       title: Text(
-              //         commodityData[index].name,
-              //         style: GoogleFonts.poppins(),
-              //       ),
-              //       subtitle: Text(
-              //         commodityData[index].sector ?? "",
-              //         style: GoogleFonts.poppins(),
-              //       ),
-              //       trailing: Text(
-              //         'Rs ${commodityData[index].ltp ?? ''}',
-              //         style: GoogleFonts.poppins(),
-              //       ),
-              //       onTap: () {
-              //         // Handle commodity item tap
-              //         // ...
-              //       },
-              //     );
-              //   },
-              // ),
-              // Inside the itemBuilder for commodityData
-              ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemCount: commodityData.length,
-                itemBuilder: (context, index) {
-                  bool matchesSearch = commodityData[index]
-                          .name
-                          .toLowerCase()
-                          .contains(_searchController.text.toLowerCase()) ||
-                      commodityData[index]
-                          .symbol
-                          .toLowerCase()
-                          .contains(_searchController.text.toLowerCase());
-
-                  return matchesSearch
-                      ? ListTile(
-                          title: Text(
-                            commodityData[index].name,
-                            style: GoogleFonts.poppins(),
-                          ),
-                          subtitle: Text(
-                            commodityData[index].sector ?? "",
-                            style: GoogleFonts.poppins(),
-                          ),
-                          trailing: Text(
-                            'Rs ${commodityData[index].ltp ?? ''}',
-                            style: GoogleFonts.poppins(),
-                          ),
-                          onTap: () {
-                            // Handle commodity item tap
-                            // ...
-                          },
-                        )
-                      : Container();
-                },
-              ),
-            ],
           ),
-          Positioned(
-            bottom: 10.0,
-            left: 0.0,
-            right: 0.0,
-            child: CirclePageIndicator(
-              dotColor: Colors.grey,
-              selectedDotColor: MyColors.btnColor,
-              itemCount: 2,
-              currentPageNotifier: _currentPageNotifier,
-            ),
+
+          // Commodity data
+          FutureBuilder<List<Asset>>(
+            future: fetchCommodityData(),
+            builder: (context, commoditySnapshot) {
+              if (commoditySnapshot.connectionState ==
+                  ConnectionState.waiting) {
+                return const Center(
+                  child: SpinKitCircle(
+                    color: MyColors.btnColor,
+                    size: 50.0,
+                  ),
+                );
+              } else if (commoditySnapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${commoditySnapshot.error}'),
+                );
+              } else if (commoditySnapshot.hasData) {
+                return ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: commoditySnapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    String name = commoditySnapshot.data![index].name;
+                    String sector = commoditySnapshot.data![index].sector ?? '';
+                    String ltp = commoditySnapshot.data![index].ltp ?? '';
+
+                    bool matchesSearch = name
+                            .toLowerCase()
+                            .contains(_searchController.text.toLowerCase()) ||
+                        commoditySnapshot.data![index].symbol
+                            .toLowerCase()
+                            .contains(_searchController.text.toLowerCase());
+
+                    return matchesSearch
+                        ? Column(
+                            children: [
+                              ListTile(
+                                title: Text(
+                                  name,
+                                  style: GoogleFonts.poppins(),
+                                ),
+                                subtitle: Text(
+                                  sector,
+                                  style: GoogleFonts.poppins(),
+                                ),
+                                trailing: Text(
+                                  'Rs $ltp',
+                                  style: GoogleFonts.poppins(),
+                                ),
+                                onTap: () {
+                                  _onAssetTapped(
+                                      commoditySnapshot.data![index], true);
+                                },
+                              ),
+                              const Divider(
+                                color: MyColors.btnColor,
+                                height: 0.3,
+                                thickness: 0.3,
+                              ),
+                            ],
+                          )
+                        : Container();
+                  },
+                );
+              } else {
+                return Container();
+              }
+            },
           ),
         ],
       ),
@@ -326,4 +359,36 @@ class _SearchScreenState extends State<SearchView> {
       ),
     );
   }
+}
+
+Widget _buildArrowAndPercentage(dynamic percentChange) {
+  double change = double.tryParse(percentChange.toString()) ?? 0.0;
+
+  IconData arrowIcon = Icons.arrow_upward;
+  Color arrowColor = Colors.green;
+
+  if (change < 0) {
+    arrowIcon = Icons.arrow_downward;
+    arrowColor = Colors.red;
+  }
+
+  String formattedChange = change.toStringAsFixed(1);
+
+  return Row(
+    children: [
+      Icon(
+        arrowIcon,
+        color: arrowColor,
+        size: 16,
+      ),
+      const SizedBox(width: 4),
+      Text(
+        '$formattedChange%',
+        style: GoogleFonts.poppins(
+          color: arrowColor,
+          fontSize: 13,
+        ),
+      ),
+    ],
+  );
 }
