@@ -1,7 +1,8 @@
 class ServerConfig {
   static const String HTTPS = "http://";
   static const String PORT = ":5000";
-  static const String ADDRESS = "192.168.101.6"; // Change me
+  //static const String ADDRESS = "192.168.101.8";
+  static const String ADDRESS = "10.12.1.25"; // Change me
   static const String SERVER_ADDRESS = "$HTTPS$ADDRESS$PORT";
   static const String SOCKET_ADDRESS = "ws://$ADDRESS:8081";
 
@@ -21,4 +22,5 @@ class ServerConfig {
   static const String GET_ASSET = "/api/multiassetdetails";
   static const String GET_SINGLEASSET = "/api/singleassetdetails";
   static const String GET_PORT = "/api/getallassets";
+  static const String GET_COMMODITY = "/api/commodity";
 }

@@ -8,7 +8,6 @@ class AssetService {
   static Timer? _timer;
 
   static Future<List<dynamic>> getasset(String symbol) async {
-    print(symbol);
     try {
       var url =
           Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.GET_ASSET}");
@@ -17,7 +16,6 @@ class AssetService {
         'symbol': symbol,
       };
 
-      print(url);
       var response = await http.post(
         url,
         headers: <String, String>{
@@ -25,10 +23,8 @@ class AssetService {
         },
         body: jsonEncode(requestBody),
       );
-      print(requestBody);
       if (response.statusCode == 200) {
         List<dynamic> data = json.decode(response.body);
-        // List<String> fetchedSymbols = List<String>.from(data);
 
         if (symbol == 'allwithdata') {
           List<Map<String, dynamic>> data =
@@ -37,7 +33,6 @@ class AssetService {
         }
 
         List<String> fetchedSymbols = List<String>.from(data);
-        print(fetchedSymbols);
 
         return fetchedSymbols;
       } else {
@@ -87,6 +82,37 @@ class AssetService {
     }
   }
 
+//fetch commodity prices //experimental
+  static Future<List<Map<String, dynamic>>> getcommodity() async {
+    try {
+      if (_cache.containsKey('commodity')) {
+        print("cache data sent commodity");
+        return _cache['commodity']!;
+      }
+
+      var url = Uri.parse(
+          "${ServerConfig.SERVER_ADDRESS}${ServerConfig.GET_COMMODITY}");
+
+      var response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+      if (response.statusCode == 200) {
+        List<Map<String, dynamic>> data =
+            List<Map<String, dynamic>>.from(json.decode(response.body));
+        _cache['commodity'] = data;
+        return data;
+      } else {
+        throw Exception('Failed to load symbols');
+      }
+    } catch (error) {
+      throw Exception('An error occurred: $error');
+    }
+  }
+
+//
   static void setupCacheTimer(String symbol) {
     // Set up a periodic timer for auto-refresh (every 5 minutes)
     if (_timer == null) {
