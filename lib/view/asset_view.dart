@@ -1,17 +1,18 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/utils/colors_utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 import '../model/asset_model.dart';
-import '../services/asset_services.dart';
 
 class AssetView extends StatefulWidget {
   const AssetView(
       {super.key, required this.assetData, this.fromCommodityPage = false});
+
   final Asset assetData;
   final bool fromCommodityPage;
 
@@ -20,21 +21,15 @@ class AssetView extends StatefulWidget {
 }
 
 class _AssetViewState extends State<AssetView> {
-  bool _isMounted = false;
-  // String symbol = "";
-  // String name = "";
-  // String sector = "";
-  // String category = "";
-  // double ltp = 0;
-  // double percentageChange = 0;
-  // double previousclose = 0;
-  // double totaltradedquantity = 0;
+  //bool _isMounted = false; // Initialize with an empty string
+  Map<String, List<FlSpot>> assetChartData = {};
 
   @override
   void initState() {
     super.initState();
-    _loadAssetData();
-    bool isMounted = false;
+    //_loadAssetData();
+
+    //bool isMounted = false;
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: MyColors.btnColor,
       statusBarIconBrightness: Brightness.light,
@@ -43,37 +38,9 @@ class _AssetViewState extends State<AssetView> {
     ));
   }
 
-  Future<void> _loadAssetData() async {
-    try {
-      List<Map<String, dynamic>> fetchedAssets =
-          await AssetService.getassets(widget.assetData.symbol);
-
-      if (_isMounted && fetchedAssets.isNotEmpty) {
-        final Map<String, dynamic> assetData = fetchedAssets[0];
-
-        // setState(() {
-        //   symbol = assetData['symbol'] ?? "";
-        //   name = assetData['name'];
-        //   sector = assetData['sector'];
-        //   category = assetData['category'];
-        //   ltp = double.parse(assetData['ltp'] ?? '0');
-        //   percentageChange = assetData['percentchange'] ??
-        //       '0'; //double.parse(assetData['percentchange'] ?? '0');
-        //   previousclose = double.parse(assetData['previousclose'] ?? '0');
-        //   totaltradedquantity =
-        //       double.parse(assetData['totaltradedquantity'] ?? '0');
-        // });
-      }
-    } catch (error) {
-      if (_isMounted) {
-        CustomToast.showToast("Error loading data");
-      }
-    }
-  }
-
   @override
   void dispose() {
-    _isMounted = false;
+    //_isMounted = false;
     super.dispose();
   }
 
@@ -151,46 +118,25 @@ class _AssetViewState extends State<AssetView> {
                   ),
                 ),
               ),
-              const SizedBox(height: 5),
-              Container(
-                child: !widget.fromCommodityPage
-                    ? SizedBox(
-                        height: 200,
-                        child: Hero(
-                          tag: 'stockInfo_${stockData.name}',
-                          child: LineChart(
-                            LineChartData(
-                              gridData: FlGridData(
-                                show: true,
-                                drawHorizontalLine: true,
-                                drawVerticalLine: true,
-                              ),
-                              titlesData: FlTitlesData(show: false),
-                              borderData: FlBorderData(
-                                show: true,
-                                border: Border.all(color: Colors.white),
-                              ),
-                              lineBarsData: [
-                                // LineChartBarData(
-                                //   spots: _generateSpots(stockData.priceLast7Days),
-                                //   isCurved: true,
-                                //   colors: [Colors.white],
-                                //   dotData: FlDotData(show: false),
-                                //   belowBarData: BarAreaData(show: false),
-                                // ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      )
-                    : Container(),
+              SizedBox(
+                height: 400,
+                child: Hero(
+                  tag: 'stockInfo_${stockData.name}',
+                  child: !widget.fromCommodityPage
+                      ? WebView(
+                          initialUrl:
+                              _getWebViewUrl(stockData.symbol, stockData.name),
+                          javascriptMode: JavascriptMode.unrestricted,
+                        )
+                      : Container(),
+                ),
               ),
               const SizedBox(height: 8),
               Container(
                 child: !widget.fromCommodityPage
                     ? ElevatedButton(
                         onPressed: () {
-                          _launchURL(context, stockData.symbol);
+                          _launchURL(context, stockData.symbol, stockData.name);
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: MyColors.primaryColor,
@@ -245,8 +191,19 @@ class _AssetViewState extends State<AssetView> {
                 'Price',
                 'Rs ${stockData.ltp}', //added ? //'\$${stockData.ltp?.toStringAsFixed(2)}',
               ),
+              if (widget.fromCommodityPage)
+                Column(
+                  children: [
+                    const SizedBox(height: 8),
+                    _buildDetailItem(
+                      'Unit',
+                      stockData.unit ?? "",
+                    ),
+                  ],
+                ),
               Container(
-                child: !widget.fromCommodityPage
+                child: !widget.fromCommodityPage &&
+                        stockData.category != "Metals"
                     ? Column(
                         children: [
                           const SizedBox(height: 8),
@@ -261,7 +218,8 @@ class _AssetViewState extends State<AssetView> {
                     : Container(), // An empty container when fromCommodityPage is true
               ),
               Container(
-                child: !widget.fromCommodityPage
+                child: !widget.fromCommodityPage &&
+                        stockData.category != "Metals"
                     ? Column(
                         children: [
                           const SizedBox(height: 8),
@@ -274,17 +232,18 @@ class _AssetViewState extends State<AssetView> {
                     : Container(), // An empty container when fromCommodityPage is true
               ),
               Container(
-                child: !widget.fromCommodityPage
-                    ? Column(
-                        children: [
-                          const SizedBox(height: 8),
-                          _buildDetailItem(
-                            'Trading Quantity',
-                            '${stockData.totaltradedquantity}', //'\$${stockData.eps?.toStringAsFixed(2)}',
-                          ),
-                        ],
-                      )
-                    : Container(),
+                child:
+                    !widget.fromCommodityPage && stockData.category != "Metals"
+                        ? Column(
+                            children: [
+                              const SizedBox(height: 8),
+                              _buildDetailItem(
+                                'Trading Quantity',
+                                '${stockData.totaltradedquantity}', //'\$${stockData.eps?.toStringAsFixed(2)}',
+                              ),
+                            ],
+                          )
+                        : Container(),
               ),
               const SizedBox(height: 16),
               Row(
@@ -314,30 +273,6 @@ class _AssetViewState extends State<AssetView> {
                       ),
                     ),
                   ),
-                  // ElevatedButton(
-                  //   onPressed: () {
-                  //     // Placeholder for Sell button action
-                  //   },
-                  //   style: ElevatedButton.styleFrom(
-                  //     shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.circular(4.0),
-                  //     ),
-                  //     backgroundColor: Colors.red,
-                  //   ),
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.symmetric(
-                  //       horizontal: 20.0,
-                  //       vertical: 9.0, // Adjust the vertical padding as needed
-                  //     ),
-                  //     child: Text(
-                  //       'Sell',
-                  //       style: GoogleFonts.poppins(
-                  //         fontSize: 16,
-                  //         fontWeight: FontWeight.w600,
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                 ],
               ),
             ],
@@ -371,16 +306,27 @@ class _AssetViewState extends State<AssetView> {
     );
   }
 
-  void _launchURL(BuildContext context, sym) {
+  String _getWebViewUrl(String sym, String name) {
+    String baseUrl = 'https://www.nepsealpha.com/trading/chart?symbol=';
+    String query = Uri.encodeComponent(sym);
+
+    if (widget.fromCommodityPage) {
+      return '$baseUrl$query';
+    } else if (name == "Fine Gold" || name == "Tejabi Gold") {
+      return 'https://www.tradingview.com/chart/?symbol=OANDA%3AXAUUSD';
+    } else if (name == "Silver") {
+      return 'https://www.tradingview.com/chart/?symbol=TVC%3ASILVER';
+    } else {
+      return '$baseUrl$query';
+    }
+  }
+
+  void _launchURL(BuildContext context, sym, name) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
     ));
-
-    String baseUrl = 'https://www.nepsealpha.com/trading/chart?symbol=';
-    String query = Uri.encodeComponent(sym);
-    String fullUrl = '$baseUrl$query';
 
     Navigator.push(
       context,
@@ -392,7 +338,7 @@ class _AssetViewState extends State<AssetView> {
           ),
           child: Scaffold(
             body: WebView(
-              initialUrl: fullUrl,
+              initialUrl: _getWebViewUrl(sym, name),
               javascriptMode: JavascriptMode.unrestricted,
             ),
           ),
@@ -403,10 +349,5 @@ class _AssetViewState extends State<AssetView> {
           overlays: SystemUiOverlay.values);
       SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
     });
-  }
-
-  List<FlSpot> _generateSpots(List<double> prices) {
-    return List.generate(
-        prices.length, (index) => FlSpot(index.toDouble(), prices[index]));
   }
 }

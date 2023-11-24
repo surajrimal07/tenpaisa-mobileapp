@@ -5,14 +5,14 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:paisa/app/routes/approutes.dart';
+import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/data/portfolio_data.dart';
-import 'package:paisa/services/notification_controllers.dart';
+import 'package:paisa/model/asset_model.dart';
 import 'package:paisa/services/user_services.dart';
-//import 'package:paisa/services/notification_services.dart';
-//import 'package:paisa/services/websocket_services.dart';
 import 'package:paisa/utils/colors_utils.dart';
 import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
-//import 'package:web_socket_channel/io.dart';
+
+import '../services/asset_services.dart';
 
 class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
@@ -28,8 +28,8 @@ class _MainPageState extends State<DashboardView> {
   String currentEmail = "";
   String currentPhone = "";
   String currentDP = "assets/images/content/default.png";
-  int notificationCount =
-      NotificationController.getDisplayedNotificationCount();
+  final ScrollController _scrollController = ScrollController();
+  Color scaffoldBackgroundColor = Colors.white;
 
   DateTime? currentBackPressTime;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -38,12 +38,46 @@ class _MainPageState extends State<DashboardView> {
   void initState() {
     super.initState();
     _loadUserData();
+    fetchTrendingData();
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: MyColors.btnColor,
       statusBarIconBrightness: Brightness.light,
       systemNavigationBarColor: MyColors.btnColor,
       systemNavigationBarIconBrightness: Brightness.light,
     ));
+  }
+
+  Future<List<Asset>> fetchTrendingData() async {
+    try {
+      List<Map<String, dynamic>> fetchedTrendingMaps =
+          await AssetService.gettrending();
+
+      // Print data types for inspection
+      for (var map in fetchedTrendingMaps) {
+        print('symbol: ${map['symbol'].runtimeType}');
+        print('name: ${map['name'].runtimeType}');
+        print('percentageChange: ${map['percentageChange'].runtimeType}');
+        print('ltp: ${map['ltp'].runtimeType}');
+      }
+
+      List<Asset> fetchedTrending = fetchedTrendingMaps
+          .map((map) => Asset(
+                symbol: map['symbol'] ?? '',
+                name: map['name'] ?? '',
+                percentchange: (map['percentageChange'] ?? 0).toString(),
+                ltp: (map['ltp'] ?? 0.0).toString(),
+              ))
+          .toList();
+
+      List<Asset> topFive = fetchedTrending.take(5).toList();
+
+      List<Asset> bottomFive = fetchedTrending.skip(5).take(5).toList();
+
+      return fetchedTrending;
+    } catch (error) {
+      CustomToast.showToast("Trending data error");
+      rethrow;
+    }
   }
 
   Future<void> _loadUserData() async {
@@ -68,6 +102,8 @@ class _MainPageState extends State<DashboardView> {
             key: _scaffoldKey,
             body: SafeArea(
               child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                controller: _scrollController,
                 child: Column(
                   children: [
                     _header(),
@@ -418,7 +454,7 @@ class _MainPageState extends State<DashboardView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Top Trending',
+                'Trending',
                 style: GoogleFonts.poppins(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
@@ -784,94 +820,6 @@ class _MainPageState extends State<DashboardView> {
       ),
     );
   }
-
-  // Padding _menu() {
-  //   return Padding(
-  //     padding: const EdgeInsets.only(left: 0, right: 0, top: 0, bottom: 0),
-  //     child: Container(
-  //       decoration: const BoxDecoration(
-  //         color: MyColors.btnColor, // Set to your desired navy blue color
-  //         borderRadius: BorderRadius.only(
-  //           bottomLeft: Radius.circular(14),
-  //           bottomRight: Radius.circular(14),
-  //         ),
-  //       ),
-  //       child: Row(
-  //         children: [
-  //           Expanded(
-  //             child: MaterialButton(
-  //               onPressed: () {},
-  //               color: Colors.white,
-  //               elevation: 0,
-  //               focusElevation: 0,
-  //               highlightElevation: 0,
-  //               height: 40,
-  //               shape: RoundedRectangleBorder(
-  //                 borderRadius: BorderRadius.circular(32),
-  //                 side: const BorderSide(color: MyColors.primaryColor),
-  //               ),
-  //               child: Row(
-  //                 mainAxisAlignment: MainAxisAlignment.center,
-  //                 children: [
-  //                   const Icon(
-  //                     Icons.sell_outlined,
-  //                     size: 22,
-  //                     color: MyColors.btnColor,
-  //                   ),
-  //                   const SizedBox(width: 8),
-  //                   Text(
-  //                     'Buy',
-  //                     style: GoogleFonts.poppins(
-  //                       color: MyColors.btnColor,
-  //                       fontSize: 15,
-  //                       fontWeight: FontWeight.w700,
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ),
-  //           const SizedBox(
-  //             width: 28,
-  //           ),
-  //           Expanded(
-  //             child: MaterialButton(
-  //               onPressed: () {},
-  //               color: Colors.white,
-  //               elevation: 0,
-  //               focusElevation: 0,
-  //               highlightElevation: 0,
-  //               height: 40,
-  //               shape: RoundedRectangleBorder(
-  //                 borderRadius: BorderRadius.circular(32),
-  //                 side: const BorderSide(color: MyColors.primaryColor),
-  //               ),
-  //               child: Row(
-  //                 mainAxisAlignment: MainAxisAlignment.center,
-  //                 children: [
-  //                   const Icon(
-  //                     Icons.sell_outlined,
-  //                     size: 22,
-  //                     color: MyColors.primaryColor,
-  //                   ),
-  //                   const SizedBox(width: 8),
-  //                   Text(
-  //                     'Sell',
-  //                     style: GoogleFonts.poppins(
-  //                       color: MyColors.primaryColor,
-  //                       fontSize: 15,
-  //                       fontWeight: FontWeight.w700,
-  //                     ),
-  //                   ),
-  //                 ],
-  //               ),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Container _card() {
     return Container(

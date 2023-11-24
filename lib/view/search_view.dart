@@ -22,16 +22,14 @@ class _SearchScreenState extends State<SearchView>
     with SingleTickerProviderStateMixin {
   int indexBottomBar = 1;
   int currentPageIndex = 0;
-  //final PageController _pageController = PageController(initialPage: 0);
   final TextEditingController _searchController = TextEditingController();
-  //final _currentPageNotifier = ValueNotifier<int>(0);
 
   late TabController _tabController;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: 3, vsync: this);
   }
 
   Future<List<Asset>> fetchData() async {
@@ -71,17 +69,11 @@ class _SearchScreenState extends State<SearchView>
 
       List<Asset> fetchedCommodities = fetchedCommodityMaps
           .map((map) => Asset(
-                symbol: map['symbol'] ?? '',
+                symbol: map['name'] ?? '', //no symbol in commodity
                 name: map['name'] ?? '',
                 category: map['category'],
-                sector: map['category'],
-                eps: map['eps'],
-                bookvalue: map['bookvalue'],
-                pe: map['pe'],
-                percentchange: map['percentchange'],
+                unit: map['unit'],
                 ltp: (map['ltp'] is int) ? map['ltp'].toString() : map['ltp'],
-                totaltradedquantity: map['totaltradedquantity'],
-                previousclose: map['previousclose'],
               ))
           .toList();
 
@@ -94,7 +86,32 @@ class _SearchScreenState extends State<SearchView>
     }
   }
 
-  void _onAssetTapped(Asset asset, comopage) {
+  Future<List<Asset>> fetchMetalData() async {
+    try {
+      List<Map<String, dynamic>> fetchedMetalMaps =
+          await AssetService.getMetal();
+
+      List<Asset> fetchedMetals = fetchedMetalMaps
+          .map((map) => Asset(
+                symbol: map['name'] ?? '', //no symbol in commodity
+                name: map['name'] ?? '',
+                sector: map['sector'] ?? '',
+                category: map['category'],
+                unit: map['unit'],
+                ltp: (map['ltp'] is int) ? map['ltp'].toString() : map['ltp'],
+              ))
+          .toList();
+
+      fetchedMetals.sort((a, b) => a.name.compareTo(b.name));
+
+      return fetchedMetals;
+    } catch (error) {
+      CustomToast.showToast("Metal data error");
+      rethrow;
+    }
+  }
+
+  void _onAssetTapped(Asset asset, aname, comopage) {
     Navigator.push(
       context,
       MaterialPageRoute(
@@ -145,6 +162,7 @@ class _SearchScreenState extends State<SearchView>
           tabs: const [
             Tab(text: 'Stocks'),
             Tab(text: 'Commodities'),
+            Tab(text: 'Metals'),
           ],
         ),
       ),
@@ -215,7 +233,7 @@ class _SearchScreenState extends State<SearchView>
                                 ),
                                 onTap: () {
                                   _onAssetTapped(
-                                      assetSnapshot.data![index], false);
+                                      assetSnapshot.data![index], name, false);
                                 },
                               ),
                               const Divider(
@@ -256,13 +274,15 @@ class _SearchScreenState extends State<SearchView>
                   itemCount: commoditySnapshot.data!.length,
                   itemBuilder: (context, index) {
                     String name = commoditySnapshot.data![index].name;
-                    String sector = commoditySnapshot.data![index].sector ?? '';
+                    String sector =
+                        commoditySnapshot.data![index].category ?? '';
                     String ltp = commoditySnapshot.data![index].ltp ?? '';
+                    //String unit = commoditySnapshot.data![index].unit ?? '';
 
                     bool matchesSearch = name
                             .toLowerCase()
                             .contains(_searchController.text.toLowerCase()) ||
-                        commoditySnapshot.data![index].symbol
+                        commoditySnapshot.data![index].name
                             .toLowerCase()
                             .contains(_searchController.text.toLowerCase());
 
@@ -283,8 +303,78 @@ class _SearchScreenState extends State<SearchView>
                                   style: GoogleFonts.poppins(),
                                 ),
                                 onTap: () {
-                                  _onAssetTapped(
-                                      commoditySnapshot.data![index], true);
+                                  _onAssetTapped(commoditySnapshot.data![index],
+                                      name, true);
+                                },
+                              ),
+                              const Divider(
+                                color: MyColors.btnColor,
+                                height: 0.3,
+                                thickness: 0.3,
+                              ),
+                            ],
+                          )
+                        : Container();
+                  },
+                );
+              } else {
+                return Container();
+              }
+            },
+          ),
+          //
+          FutureBuilder<List<Asset>>(
+            future: fetchMetalData(),
+            builder: (context, commoditySnapshot) {
+              if (commoditySnapshot.connectionState ==
+                  ConnectionState.waiting) {
+                return const Center(
+                  child: SpinKitCircle(
+                    color: MyColors.btnColor,
+                    size: 50.0,
+                  ),
+                );
+              } else if (commoditySnapshot.hasError) {
+                return Center(
+                  child: Text('Error: ${commoditySnapshot.error}'),
+                );
+              } else if (commoditySnapshot.hasData) {
+                return ListView.builder(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: commoditySnapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    String name = commoditySnapshot.data![index].name;
+                    String sector =
+                        commoditySnapshot.data![index].category ?? '';
+                    String ltp = commoditySnapshot.data![index].ltp ?? '';
+                    //String unit = commoditySnapshot.data![index].unit ?? '';
+
+                    bool matchesSearch = name
+                            .toLowerCase()
+                            .contains(_searchController.text.toLowerCase()) ||
+                        commoditySnapshot.data![index].name
+                            .toLowerCase()
+                            .contains(_searchController.text.toLowerCase());
+
+                    return matchesSearch
+                        ? Column(
+                            children: [
+                              ListTile(
+                                title: Text(
+                                  name,
+                                  style: GoogleFonts.poppins(),
+                                ),
+                                subtitle: Text(
+                                  sector,
+                                  style: GoogleFonts.poppins(),
+                                ),
+                                trailing: Text(
+                                  'Rs $ltp',
+                                  style: GoogleFonts.poppins(),
+                                ),
+                                onTap: () {
+                                  _onAssetTapped(commoditySnapshot.data![index],
+                                      name, false);
                                 },
                               ),
                               const Divider(

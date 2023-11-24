@@ -286,6 +286,7 @@ class _ProfileViewState extends State<AccountView> {
   }
 
   Future<void> showNameChangeDialog(BuildContext context) async {
+    // ignore: unused_local_variable
     String? nameError;
     return showDialog(
       context: context,
@@ -333,7 +334,7 @@ class _ProfileViewState extends State<AccountView> {
                         CustomToast.showToast("Name Updated");
                       } catch (error) {
                         CustomToast.showToast("Error occured");
-                        print("Error: $error");
+                        //print("Error: $error");
                       }
 
                       Navigator.of(context).pop();

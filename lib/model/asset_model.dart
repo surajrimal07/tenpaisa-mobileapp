@@ -36,6 +36,7 @@ class Asset {
   String? pe;
   String? percentchange;
   String? ltp;
+  String? unit; //optional
   String? totaltradedquantity;
   String? previousclose;
 
@@ -49,6 +50,7 @@ class Asset {
     this.pe,
     this.percentchange,
     this.ltp,
+    this.unit,
     this.totaltradedquantity,
     this.previousclose,
   });

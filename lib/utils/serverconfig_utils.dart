@@ -1,7 +1,7 @@
 class ServerConfig {
   static const String HTTPS = "http://";
   static const String PORT = ":5000";
-  static const String ADDRESS = "192.168.101.8";
+  static const String ADDRESS = "192.168.101.9";
   //static const String ADDRESS = "10.12.1.25"; // Change me
   static const String SERVER_ADDRESS = "$HTTPS$ADDRESS$PORT";
   static const String SOCKET_ADDRESS = "ws://$ADDRESS:8081";
@@ -9,7 +9,6 @@ class ServerConfig {
   static const String VERIFY_API = "/api/verify";
   static const String UPDATE_USER = "/api/updateuser";
   static const String DELETE_USER = "/api/delete-acc";
-  //static const String SAVE_TOKEN = "/api/savetkn";
   static const String LOGIN = "/api/login";
   static const String SIGNUP = "/api/otp-login";
   static const String OTP_VERIFY = "/api/otp-verify";
@@ -23,4 +22,7 @@ class ServerConfig {
   static const String GET_SINGLEASSET = "/api/singleassetdetails";
   static const String GET_PORT = "/api/getallassets";
   static const String GET_COMMODITY = "/api/commodity";
+  static const String TRENDING = "/api/trending";
+  static const String METALHISTORY = "/api/metalhist";
+  static const String METAL = "/api/metalprices";
 }
