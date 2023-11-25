@@ -25,4 +25,6 @@ class ServerConfig {
   static const String TRENDING = "/api/trending";
   static const String METALHISTORY = "/api/metalhist";
   static const String METAL = "/api/metalprices";
+  static const String TURNOVER = "/api/turnover";
+  static const String VOLUME = "/api/topvolume";
 }

@@ -1,31 +1,3 @@
-// class Asset {
-//   String symbol;
-//   String name;
-//   String? category;
-//   String? sector;
-//   double? eps;
-//   double? bookvalue;
-//   double? pe;
-//   double? percentchange;
-//   double ltp;
-//   double? totaltradedquantity;
-//   double? previousclose;
-
-//   Asset(
-//     this.symbol,
-//     this.name,
-//     this.category,
-//     this.sector,
-//     this.eps,
-//     this.bookvalue,
-//     this.pe,
-//     this.ltp,
-//     this.percentchange,
-//     this.totaltradedquantity,
-//     this.previousclose,
-//   );
-// }
-
 class Asset {
   String symbol;
   String name;
@@ -39,6 +11,7 @@ class Asset {
   String? unit; //optional
   String? totaltradedquantity;
   String? previousclose;
+  String? turnover;
 
   Asset({
     required this.symbol,
@@ -53,5 +26,6 @@ class Asset {
     this.unit,
     this.totaltradedquantity,
     this.previousclose,
+    this.turnover,
   });
 }

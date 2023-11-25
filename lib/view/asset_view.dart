@@ -118,18 +118,36 @@ class _AssetViewState extends State<AssetView> {
                   ),
                 ),
               ),
-              SizedBox(
-                height: 400,
-                child: Hero(
-                  tag: 'stockInfo_${stockData.name}',
-                  child: !widget.fromCommodityPage
-                      ? WebView(
-                          initialUrl:
-                              _getWebViewUrl(stockData.symbol, stockData.name),
-                          javascriptMode: JavascriptMode.unrestricted,
-                        )
-                      : Container(),
+              // SizedBox(
+              //   height: 400,
+              //   child: Hero(
+              //     tag: 'stockInfo_${stockData.name}',
+              //     child: !widget.fromCommodityPage
+              //         ? WebView(
+              //             initialUrl:
+              //                 _getWebViewUrl(stockData.symbol, stockData.name),
+              //             javascriptMode: JavascriptMode.unrestricted,
+              //           )
+              //         : Container(),
+              //   ),
+              // ),
+              Visibility(
+                visible: !widget.fromCommodityPage,
+                child: SizedBox(
+                  height: 400,
+                  child: Hero(
+                    tag: 'stockInfo_${stockData.name}',
+                    child: WebView(
+                      initialUrl:
+                          _getWebViewUrl(stockData.symbol, stockData.name),
+                      javascriptMode: JavascriptMode.unrestricted,
+                    ),
+                  ),
                 ),
+              ),
+              Visibility(
+                visible: widget.fromCommodityPage,
+                child: Container(),
               ),
               const SizedBox(height: 8),
               Container(
@@ -266,6 +284,35 @@ class _AssetViewState extends State<AssetView> {
                       ),
                       child: Text(
                         'Add to portfolio',
+                        style: GoogleFonts.poppins(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      // Placeholder for Buy button action
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(4.0),
+                      ),
+                      backgroundColor: Colors.red[300],
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20.0,
+                        vertical: 9.0, // Adjust the vertical padding as needed
+                      ),
+                      child: Text(
+                        'Add to Watchlist',
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w600,

@@ -10,6 +10,8 @@ import 'package:paisa/utils/colors_utils.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:web_socket_channel/io.dart';
 
+import '../services/asset_services.dart';
+
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
 
@@ -32,6 +34,8 @@ class _SplashScreenState extends State<SplashView> {
         NotificationServices.initializeAwesomeNotifications();
 
     channel = WebSocketServices.startWebSocket(onDataCallback);
+
+    AssetService.startGlobalTimer(); //start timer of asset fetch
   }
 
   void checkFirstTime() async {

@@ -2,20 +2,83 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/utils/serverconfig_utils.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AssetService {
   static Timer? _timer;
+  // ignore: unused_field
+  static const String _cacheKey = 'asset_cache';
+
+  static void startGlobalTimer() {
+    if (_timer == null) {
+      const Duration refreshDuration = Duration(minutes: 5);
+      _timer = Timer.periodic(refreshDuration, (timer) async {
+        await refreshAllFunctions();
+      });
+    }
+  }
+
+  static Future<void> refreshAllFunctions() async {
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      print("Refreshing data");
+
+      print("Refreshing getassets");
+      prefs.remove('asset_NABIL');
+      await getasset('NABIL');
+
+      print("getassets('allwithdata')");
+      prefs.remove('asset_cache');
+      await getassets('allwithdata');
+
+      print("getcommodity");
+      prefs.remove('commodity_cache');
+      await getcommodity();
+
+      print("getMetal");
+      prefs.remove('metal_cache');
+      await getMetal();
+
+      // prefs.remove('metal_history_cache');
+      // await getAssetHistory();
+
+      print("gettrending");
+      prefs.remove('trending_cache');
+      await gettrending();
+
+      print("getturnover");
+      prefs.remove('turnover_cache');
+      await getturnover();
+
+      print("getvolume");
+      prefs.remove('topvolume_cache');
+      await getvolume();
+    } catch (error) {
+      print("Error occured while refreshing data");
+      CustomToast.showToast("Error refreshing functions");
+    }
+  }
 
   static Future<List<dynamic>> getasset(String symbol) async {
     try {
+      final String cacheKey = 'asset_$symbol';
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? cachedData = prefs.getString(cacheKey);
+
+      if (cachedData != null) {
+        List<dynamic> data = json.decode(cachedData);
+
+        return data;
+      }
       var url =
           Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.GET_ASSET}");
 
       var requestBody = {
         'symbol': symbol,
       };
-
       var response = await http.post(
         url,
         headers: <String, String>{
@@ -23,18 +86,13 @@ class AssetService {
         },
         body: jsonEncode(requestBody),
       );
+
       if (response.statusCode == 200) {
         List<dynamic> data = json.decode(response.body);
 
-        if (symbol == 'allwithdata') {
-          List<Map<String, dynamic>> data =
-              List<Map<String, dynamic>>.from(json.decode(response.body));
-          return data;
-        }
+        prefs.setString(cacheKey, json.encode(data));
 
-        List<String> fetchedSymbols = List<String>.from(data);
-
-        return fetchedSymbols;
+        return data;
       } else {
         throw Exception('Failed to load symbols');
       }
@@ -43,13 +101,19 @@ class AssetService {
     }
   }
 
-//experiment to cache data, due to delay
-  static final Map<String, List<Map<String, dynamic>>> _cache = {};
-
+// new approach to save cache in shared preferenses
   static Future<List<Map<String, dynamic>>> getassets(String symbol) async {
     try {
-      if (_cache.containsKey(symbol)) {
-        return _cache[symbol]!;
+      const String cacheKey = 'asset_cache';
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? cachedData = prefs.getString(cacheKey);
+
+      if (cachedData != null) {
+        List<Map<String, dynamic>> data =
+            List<Map<String, dynamic>>.from(json.decode(cachedData));
+
+        return data;
       }
 
       var url =
@@ -71,7 +135,7 @@ class AssetService {
         List<Map<String, dynamic>> data =
             List<Map<String, dynamic>>.from(json.decode(response.body));
 
-        _cache[symbol] = data;
+        prefs.setString(cacheKey, json.encode(data));
 
         return data;
       } else {
@@ -83,11 +147,19 @@ class AssetService {
   }
 
 //fetch commodity prices //experimental
+
   static Future<List<Map<String, dynamic>>> getcommodity() async {
     try {
-      if (_cache.containsKey('commodity')) {
-        //print("cache data sent commodity");
-        return _cache['commodity']!;
+      const String cacheKey = 'commodity_cache';
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? cachedData = prefs.getString(cacheKey);
+
+      if (cachedData != null) {
+        List<Map<String, dynamic>> data =
+            List<Map<String, dynamic>>.from(json.decode(cachedData));
+
+        return data;
       }
 
       var url = Uri.parse(
@@ -99,10 +171,13 @@ class AssetService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
+
       if (response.statusCode == 200) {
         List<Map<String, dynamic>> data =
             List<Map<String, dynamic>>.from(json.decode(response.body));
-        _cache['commodity'] = data;
+
+        prefs.setString(cacheKey, json.encode(data));
+
         return data;
       } else {
         throw Exception('Failed to load symbols');
@@ -115,10 +190,17 @@ class AssetService {
 // fetch metal prices
   static Future<List<Map<String, dynamic>>> getMetal() async {
     try {
-      if (_cache.containsKey('metal')) {
-        return _cache['metal']!;
-      }
+      const String cacheKey = 'metal_cache';
 
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? cachedData = prefs.getString(cacheKey);
+
+      if (cachedData != null) {
+        List<Map<String, dynamic>> data =
+            List<Map<String, dynamic>>.from(json.decode(cachedData));
+
+        return data;
+      }
       var url =
           Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.METAL}");
 
@@ -135,7 +217,9 @@ class AssetService {
         if (responseData.containsKey('metalPrices')) {
           List<Map<String, dynamic>> data =
               List<Map<String, dynamic>>.from(responseData['metalPrices']);
-          _cache['metal'] = data;
+
+          prefs.setString(cacheKey, json.encode(data));
+
           return data;
         } else {
           throw Exception('Invalid backend response structure');
@@ -149,17 +233,24 @@ class AssetService {
   }
 
 //metal hist
-//bugged, make it more universal and just pass two data today and last 15 day data.
   static Future<List<Map<String, dynamic>>> getAssetHistory(
       String assetName) async {
     try {
+      const String cacheKey = 'metal_history_cache';
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? cachedData = prefs.getString(cacheKey);
+
+      if (cachedData != null) {
+        List<Map<String, dynamic>> data =
+            List<Map<String, dynamic>>.from(json.decode(cachedData));
+
+        return data;
+      }
+
       var requestData = {
         'assetName': assetName,
       };
-
-      if (_cache.containsKey('$assetName-history')) {
-        return _cache['$assetName-history']!;
-      }
 
       var url = Uri.parse(
           "${ServerConfig.SERVER_ADDRESS}${ServerConfig.METALHISTORY}");
@@ -180,7 +271,9 @@ class AssetService {
           List<Map<String, dynamic>> data = [
             {'dates': responseData['dates'], 'prices': responseData['prices']}
           ];
-          _cache['$assetName-history'] = data;
+
+          prefs.setString(cacheKey, json.encode(data));
+
           return data;
         } else {
           throw Exception('Invalid backend response structure');
@@ -196,6 +289,17 @@ class AssetService {
 //trending
   static Future<List<Map<String, dynamic>>> gettrending() async {
     try {
+      const String cacheKey = 'trending_cache';
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? cachedData = prefs.getString(cacheKey);
+
+      if (cachedData != null) {
+        List<Map<String, dynamic>> data =
+            List<Map<String, dynamic>>.from(json.decode(cachedData));
+
+        return data;
+      }
       var url =
           Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.TRENDING}");
 
@@ -205,9 +309,13 @@ class AssetService {
           'Content-Type': 'application/json; charset=UTF-8',
         },
       );
+
       if (response.statusCode == 200) {
         List<Map<String, dynamic>> data =
             List<Map<String, dynamic>>.from(json.decode(response.body));
+
+        prefs.setString(cacheKey, json.encode(data));
+
         return data;
       } else {
         throw Exception('Failed to load trending');
@@ -217,12 +325,90 @@ class AssetService {
     }
   }
 
-  static void setupCacheTimer(String symbol) {
-    if (_timer == null) {
-      const Duration refreshDuration = Duration(minutes: 5);
-      _timer = Timer.periodic(refreshDuration, (timer) async {
-        await getassets(symbol);
-      });
+//turnover
+  static Future<List<Map<String, dynamic>>> getturnover() async {
+    try {
+      const String cacheKey = 'turnover_cache';
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? cachedData = prefs.getString(cacheKey);
+
+      if (cachedData != null) {
+        List<Map<String, dynamic>> data =
+            List<Map<String, dynamic>>.from(json.decode(cachedData));
+
+        return data;
+      }
+      var url =
+          Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.TURNOVER}");
+
+      var response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List<Map<String, dynamic>> data =
+            List<Map<String, dynamic>>.from(json.decode(response.body));
+
+        prefs.setString(cacheKey, json.encode(data));
+
+        return data;
+      } else {
+        throw Exception('Failed to load turnover');
+      }
+    } catch (error) {
+      throw Exception('An error occurred: $error');
     }
   }
+
+//top volume
+  static Future<List<Map<String, dynamic>>> getvolume() async {
+    try {
+      const String cacheKey = 'topvolume_cache';
+
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? cachedData = prefs.getString(cacheKey);
+
+      if (cachedData != null) {
+        List<Map<String, dynamic>> data =
+            List<Map<String, dynamic>>.from(json.decode(cachedData));
+
+        return data;
+      }
+      var url =
+          Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.VOLUME}");
+
+      var response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+      );
+
+      if (response.statusCode == 200) {
+        List<Map<String, dynamic>> data =
+            List<Map<String, dynamic>>.from(json.decode(response.body));
+
+        prefs.setString(cacheKey, json.encode(data));
+
+        return data;
+      } else {
+        throw Exception('Failed to load Volume');
+      }
+    } catch (error) {
+      throw Exception('An error occurred: $error');
+    }
+  }
+
+  // static void _startCacheTimer(Function() callback) {
+  //   if (_timer == null) {
+  //     const Duration refreshDuration = Duration(minutes: 5);
+  //     _timer = Timer.periodic(refreshDuration, (timer) async {
+  //       callback();
+  //     });
+  //   }
+  // }
 }
