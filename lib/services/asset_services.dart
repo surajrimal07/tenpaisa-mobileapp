@@ -13,7 +13,7 @@ class AssetService {
 
   static void startGlobalTimer() {
     if (_timer == null) {
-      const Duration refreshDuration = Duration(minutes: 5);
+      const Duration refreshDuration = Duration(minutes: 1);
       _timer = Timer.periodic(refreshDuration, (timer) async {
         await refreshAllFunctions();
       });

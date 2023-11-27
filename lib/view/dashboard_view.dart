@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:page_view_indicators/circle_page_indicator.dart';
+import 'package:paisa/app/common/asset_list.dart';
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/data/portfolio_data.dart';
@@ -106,7 +107,6 @@ Future<VolumeData> fetchVolumeData() async {
     List<Map<String, dynamic>> fetchedVolumeMaps =
         await AssetService.getvolume();
 
-    print(fetchedVolumeMaps);
     List<Asset> fetchedVolume = fetchedVolumeMaps
         .map((map) => Asset(
               symbol: map['symbol'] ?? '',
@@ -129,8 +129,6 @@ Future<CommoData> commData() async {
   try {
     List<Map<String, dynamic>> fetchedTurnoverMaps =
         await AssetService.getcommodity();
-
-    print(fetchedTurnoverMaps);
 
     List<Asset> fetchedCommodities = fetchedTurnoverMaps
         .map((map) => Asset(
@@ -332,7 +330,6 @@ class _MainPageState extends State<DashboardView> {
                   children: [
                     _header(),
                     _card(),
-                    //_menu(),
                     _portfolio(),
                     _watchlist(),
                     _trending(),
@@ -494,6 +491,21 @@ class _MainPageState extends State<DashboardView> {
                 });
               },
               children: [
+                //   AssetList(
+                //   assetList: const [],
+                //   firstitem: "name",
+                //   seconditem: "ltp",
+                //   thirditem: "percentchange",
+                //   trendingList: trendingData.topFive,
+                // ),
+                // AssetList(
+                //   assetList: const [],
+                //   firstitem: "name",
+                //   seconditem: "ltp",
+                //   thirditem: "percentchange",
+                //   trendingList: trendingData.bottomFive,
+                // ),
+
                 _buildGainersPage(trendingData.topFive),
                 _buildLoosersPage(trendingData.bottomFive),
               ],
@@ -695,7 +707,20 @@ class _MainPageState extends State<DashboardView> {
                   _currentPageNotifier1.value = index;
                 });
               },
-              children: [_buildTurnoverPage(), _buildVolumePage()],
+              children: [
+                AssetList(
+                  assetList: turnoverData.turnoverData,
+                  firstitem: "name",
+                  seconditem: "ltp",
+                  thirditem: "turnover",
+                ),
+                AssetList(
+                  assetList: volumeData.volumeData,
+                  firstitem: "name",
+                  seconditem: "ltp",
+                  thirditem: "turnover",
+                ),
+              ],
             ),
           ),
           Padding(
@@ -713,161 +738,161 @@ class _MainPageState extends State<DashboardView> {
     );
   }
 
-  Widget _buildTurnoverPage() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount:
-          turnoverData.turnoverData.length, // Use the length of turnoverData
-      itemBuilder: (context, index) => InkWell(
-        onTap: () {},
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          margin: const EdgeInsets.only(top: 12),
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.04),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  const CircleAvatar(
-                    radius: 20,
-                    backgroundImage: AssetImage(Iconss.equityIcon),
-                  ),
-                  const SizedBox(width: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        turnoverData.turnoverData[index].symbol,
-                        style: GoogleFonts.poppins(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        (() {
-                          List<String> words =
-                              turnoverData.turnoverData[index].name.split(' ');
-                          return words.length > 2
-                              ? words.sublist(0, 2).join(' ')
-                              : turnoverData.turnoverData[index].name;
-                        })(),
-                        style: GoogleFonts.poppins(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'Rs ${turnoverData.turnoverData[index].ltp}',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    turnoverData.turnoverData[index].turnover ?? "",
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _buildTurnoverPage() {
+  //   return ListView.builder(
+  //     shrinkWrap: true,
+  //     physics: const NeverScrollableScrollPhysics(),
+  //     itemCount:
+  //         turnoverData.turnoverData.length, // Use the length of turnoverData
+  //     itemBuilder: (context, index) => InkWell(
+  //       onTap: () {},
+  //       child: Container(
+  //         padding: const EdgeInsets.all(10),
+  //         margin: const EdgeInsets.only(top: 12),
+  //         decoration: BoxDecoration(
+  //           color: Colors.black.withOpacity(0.04),
+  //           borderRadius: BorderRadius.circular(12),
+  //         ),
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Row(
+  //               children: [
+  //                 const CircleAvatar(
+  //                   radius: 20,
+  //                   backgroundImage: AssetImage(Iconss.equityIcon),
+  //                 ),
+  //                 const SizedBox(width: 8),
+  //                 Column(
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   children: [
+  //                     Text(
+  //                       turnoverData.turnoverData[index].symbol,
+  //                       style: GoogleFonts.poppins(
+  //                         fontSize: 15,
+  //                         fontWeight: FontWeight.w600,
+  //                       ),
+  //                     ),
+  //                     Text(
+  //                       (() {
+  //                         List<String> words =
+  //                             turnoverData.turnoverData[index].name.split(' ');
+  //                         return words.length > 2
+  //                             ? words.sublist(0, 2).join(' ')
+  //                             : turnoverData.turnoverData[index].name;
+  //                       })(),
+  //                       style: GoogleFonts.poppins(
+  //                         fontSize: 13,
+  //                         fontWeight: FontWeight.w400,
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 )
+  //               ],
+  //             ),
+  //             Column(
+  //               crossAxisAlignment: CrossAxisAlignment.end,
+  //               children: [
+  //                 Text(
+  //                   'Rs ${turnoverData.turnoverData[index].ltp}',
+  //                   style: GoogleFonts.poppins(
+  //                     fontSize: 16,
+  //                     fontWeight: FontWeight.w600,
+  //                   ),
+  //                 ),
+  //                 Text(
+  //                   turnoverData.turnoverData[index].turnover ?? "",
+  //                   style: GoogleFonts.poppins(
+  //                     fontSize: 12,
+  //                     fontWeight: FontWeight.w600,
+  //                   ),
+  //                 ),
+  //               ],
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  Widget _buildVolumePage() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount:
-          turnoverData.turnoverData.length, // Use the length of turnoverData
-      itemBuilder: (context, index) => InkWell(
-        onTap: () {},
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          margin: const EdgeInsets.only(top: 12),
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.04),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  const CircleAvatar(
-                    radius: 20,
-                    backgroundImage: AssetImage(Iconss.equityIcon),
-                  ),
-                  const SizedBox(width: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        volumeData.volumeData[index].symbol,
-                        style: GoogleFonts.poppins(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        (() {
-                          List<String> words =
-                              volumeData.volumeData[index].name.split(' ');
-                          return words.length > 2
-                              ? words.sublist(0, 2).join(' ')
-                              : volumeData.volumeData[index].name;
-                        })(),
-                        style: GoogleFonts.poppins(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'Rs ${volumeData.volumeData[index].ltp}',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    volumeData.volumeData[index].turnover ?? "",
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _buildVolumePage() {
+  //   return ListView.builder(
+  //     shrinkWrap: true,
+  //     physics: const NeverScrollableScrollPhysics(),
+  //     itemCount:
+  //         turnoverData.turnoverData.length, // Use the length of turnoverData
+  //     itemBuilder: (context, index) => InkWell(
+  //       onTap: () {},
+  //       child: Container(
+  //         padding: const EdgeInsets.all(10),
+  //         margin: const EdgeInsets.only(top: 12),
+  //         decoration: BoxDecoration(
+  //           color: Colors.black.withOpacity(0.04),
+  //           borderRadius: BorderRadius.circular(12),
+  //         ),
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Row(
+  //               children: [
+  //                 const CircleAvatar(
+  //                   radius: 20,
+  //                   backgroundImage: AssetImage(Iconss.equityIcon),
+  //                 ),
+  //                 const SizedBox(width: 8),
+  //                 Column(
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   children: [
+  //                     Text(
+  //                       volumeData.volumeData[index].symbol,
+  //                       style: GoogleFonts.poppins(
+  //                         fontSize: 15,
+  //                         fontWeight: FontWeight.w600,
+  //                       ),
+  //                     ),
+  //                     Text(
+  //                       (() {
+  //                         List<String> words =
+  //                             volumeData.volumeData[index].name.split(' ');
+  //                         return words.length > 2
+  //                             ? words.sublist(0, 2).join(' ')
+  //                             : volumeData.volumeData[index].name;
+  //                       })(),
+  //                       style: GoogleFonts.poppins(
+  //                         fontSize: 13,
+  //                         fontWeight: FontWeight.w400,
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 )
+  //               ],
+  //             ),
+  //             Column(
+  //               crossAxisAlignment: CrossAxisAlignment.end,
+  //               children: [
+  //                 Text(
+  //                   'Rs ${volumeData.volumeData[index].ltp}',
+  //                   style: GoogleFonts.poppins(
+  //                     fontSize: 16,
+  //                     fontWeight: FontWeight.w600,
+  //                   ),
+  //                 ),
+  //                 Text(
+  //                   volumeData.volumeData[index].turnover ?? "",
+  //                   style: GoogleFonts.poppins(
+  //                     fontSize: 12,
+  //                     fontWeight: FontWeight.w600,
+  //                   ),
+  //                 ),
+  //               ],
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Container _watchlist() {
     return Container(
@@ -1019,7 +1044,20 @@ class _MainPageState extends State<DashboardView> {
                   _currentPageNotifier2.value = index;
                 });
               },
-              children: [_buildCommoPage(), _buildMetalPage()],
+              children: [
+                AssetList(
+                  assetList: commoData.commoData,
+                  firstitem: "category",
+                  seconditem: "ltp",
+                  thirditem: "unit",
+                ),
+                AssetList(
+                  assetList: metalData.metalData,
+                  firstitem: "category",
+                  seconditem: "ltp",
+                  thirditem: "unit",
+                ),
+              ],
             ),
           ),
           Padding(
@@ -1037,147 +1075,154 @@ class _MainPageState extends State<DashboardView> {
     );
   }
 
-  Widget _buildCommoPage() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: commoData.commoData.length,
-      itemBuilder: (context, index) => InkWell(
-        onTap: () {},
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          margin: const EdgeInsets.only(top: 12),
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.04),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  const CircleAvatar(
-                    radius: 20,
-                    backgroundImage: AssetImage(Iconss.equityIcon),
-                  ),
-                  const SizedBox(width: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        commoData.commoData[index].name,
-                        style: GoogleFonts.poppins(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        commoData.commoData[index].category ?? "Empty",
-                        style: GoogleFonts.poppins(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    commoData.commoData[index].ltp ?? "",
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    commoData.commoData[index].unit ?? "",
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget _buildCommoPage() {
+  //   return ListView.builder(
+  //     shrinkWrap: true,
+  //     physics: const NeverScrollableScrollPhysics(),
+  //     itemCount: commoData.commoData.length,
+  //     itemBuilder: (context, index) => InkWell(
+  //       onTap: () {},
+  //       child: Container(
+  //         padding: const EdgeInsets.all(10),
+  //         margin: const EdgeInsets.only(top: 12),
+  //         decoration: BoxDecoration(
+  //           color: Colors.black.withOpacity(0.04),
+  //           borderRadius: BorderRadius.circular(12),
+  //         ),
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Row(
+  //               children: [
+  //                 const CircleAvatar(
+  //                   radius: 20,
+  //                   backgroundImage: AssetImage(Iconss.equityIcon),
+  //                 ),
+  //                 const SizedBox(width: 8),
+  //                 Column(
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   children: [
+  //                     Text(
+  //                       commoData.commoData[index].name,
+  //                       style: GoogleFonts.poppins(
+  //                         fontSize: 15,
+  //                         fontWeight: FontWeight.w600,
+  //                       ),
+  //                     ),
+  //                     Text(
+  //                       commoData.commoData[index].category ?? "Empty",
+  //                       style: GoogleFonts.poppins(
+  //                         fontSize: 13,
+  //                         fontWeight: FontWeight.w400,
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 )
+  //               ],
+  //             ),
+  //             Column(
+  //               crossAxisAlignment: CrossAxisAlignment.end,
+  //               children: [
+  //                 Text(
+  //                   commoData.commoData[index].ltp ?? "",
+  //                   style: GoogleFonts.poppins(
+  //                     fontSize: 16,
+  //                     fontWeight: FontWeight.w600,
+  //                   ),
+  //                 ),
+  //                 Text(
+  //                   commoData.commoData[index].unit ?? "",
+  //                   style: GoogleFonts.poppins(
+  //                     fontSize: 12,
+  //                     fontWeight: FontWeight.w400,
+  //                   ),
+  //                 ),
+  //               ],
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  Widget _buildMetalPage() {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: metalData.metalData.length,
-      itemBuilder: (context, index) => InkWell(
-        onTap: () {},
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          margin: const EdgeInsets.only(top: 12),
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.04),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  const CircleAvatar(
-                    radius: 20,
-                    backgroundImage: AssetImage(Iconss.equityIcon),
-                  ),
-                  const SizedBox(width: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        metalData.metalData[index].name,
-                        style: GoogleFonts.poppins(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        metalData.metalData[index].category ?? "Empty",
-                        style: GoogleFonts.poppins(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    metalData.metalData[index].ltp ?? "",
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  Text(
-                    metalData.metalData[index].unit ?? "",
-                    style: GoogleFonts.poppins(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+// Widget _buildCommoPage() {
+//   return AssetList(
+//     assetList: commoData.commoData,
+//     firstitem: commoData.commoData[index].category,
+//   );
+// }
+
+  // Widget _buildMetalPage() {
+  //   return ListView.builder(
+  //     shrinkWrap: true,
+  //     physics: const NeverScrollableScrollPhysics(),
+  //     itemCount: metalData.metalData.length,
+  //     itemBuilder: (context, index) => InkWell(
+  //       onTap: () {},
+  //       child: Container(
+  //         padding: const EdgeInsets.all(10),
+  //         margin: const EdgeInsets.only(top: 12),
+  //         decoration: BoxDecoration(
+  //           color: Colors.black.withOpacity(0.04),
+  //           borderRadius: BorderRadius.circular(12),
+  //         ),
+  //         child: Row(
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Row(
+  //               children: [
+  //                 const CircleAvatar(
+  //                   radius: 20,
+  //                   backgroundImage: AssetImage(Iconss.equityIcon),
+  //                 ),
+  //                 const SizedBox(width: 8),
+  //                 Column(
+  //                   crossAxisAlignment: CrossAxisAlignment.start,
+  //                   children: [
+  //                     Text(
+  //                       metalData.metalData[index].name,
+  //                       style: GoogleFonts.poppins(
+  //                         fontSize: 15,
+  //                         fontWeight: FontWeight.w600,
+  //                       ),
+  //                     ),
+  //                     Text(
+  //                       metalData.metalData[index].category ?? "Empty",
+  //                       style: GoogleFonts.poppins(
+  //                         fontSize: 13,
+  //                         fontWeight: FontWeight.w400,
+  //                       ),
+  //                     ),
+  //                   ],
+  //                 )
+  //               ],
+  //             ),
+  //             Column(
+  //               crossAxisAlignment: CrossAxisAlignment.end,
+  //               children: [
+  //                 Text(
+  //                   metalData.metalData[index].ltp ?? "",
+  //                   style: GoogleFonts.poppins(
+  //                     fontSize: 16,
+  //                     fontWeight: FontWeight.w600,
+  //                   ),
+  //                 ),
+  //                 Text(
+  //                   metalData.metalData[index].unit ?? "",
+  //                   style: GoogleFonts.poppins(
+  //                     fontSize: 12,
+  //                     fontWeight: FontWeight.w400,
+  //                   ),
+  //                 ),
+  //               ],
+  //             )
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Container _portfolio() {
     return Container(
