@@ -1,19 +1,19 @@
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:page_view_indicators/circle_page_indicator.dart';
-import 'package:paisa/app/common/asset_list.dart';
+import 'package:paisa/app/common/dashboard_list.dart';
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/data/portfolio_data.dart';
 import 'package:paisa/model/asset_model.dart';
 import 'package:paisa/services/user_services.dart';
 import 'package:paisa/utils/colors_utils.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:paisa/view/category_view.dart';
 
+import '../app/common/drawer_common.dart';
+import '../app/common/navbar_common.dart';
 import '../services/asset_services.dart';
 import '../utils/icons_utils.dart';
 
@@ -24,427 +24,136 @@ class DashboardView extends StatefulWidget {
   State<DashboardView> createState() => _MainPageState();
 }
 
-class TrendingData {
-  final List<Asset> topFive;
-  final List<Asset> bottomFive;
-  TrendingData(this.topFive, this.bottomFive);
-}
-
-class TurnoverData {
-  final List<Asset> turnoverData;
-  TurnoverData(this.turnoverData);
-}
-
-class VolumeData {
-  final List<Asset> volumeData;
-  VolumeData(this.volumeData);
-}
-
-class CommoData {
-  final List<Asset> commoData;
-  CommoData(this.commoData);
-}
-
-class MetalData {
-  final List<Asset> metalData;
-  MetalData(this.metalData);
-}
-
-Future<TrendingData> fetchTrendingData() async {
-  try {
-    List<Map<String, dynamic>> fetchedTrendingMaps =
-        await AssetService.gettrending();
-
-    List<Asset> fetchedTrending = fetchedTrendingMaps
-        .map((map) => Asset(
-              symbol: map['symbol'] ?? '',
-              name: map['name'] ?? '',
-              percentchange: (map['percentageChange'] ?? 0).toString(),
-              ltp: (map['ltp'] ?? 0.0).toString(),
-            ))
-        .toList();
-
-    List<Asset> topFive = fetchedTrending.take(4).toList();
-
-    List<Asset> bottomFive = fetchedTrending
-        .skip(fetchedTrending.length - 5)
-        .toList()
-        .reversed
-        .toList();
-
-    return TrendingData(topFive, bottomFive);
-  } catch (error) {
-    CustomToast.showToast("Trending data error");
-    rethrow;
-  }
-}
-
-Future<TurnoverData> fetchTurnoverData() async {
-  try {
-    List<Map<String, dynamic>> fetchedTurnoverMaps =
-        await AssetService.getturnover();
-
-    List<Asset> fetchedTurnover = fetchedTurnoverMaps
-        .map((map) => Asset(
-              symbol: map['symbol'] ?? '',
-              name: map['name'] ?? '',
-              turnover: (map['turnover'] ?? 0.0).toStringAsFixed(0) ?? "",
-              ltp: (map['ltp'] ?? 0.0).toString(),
-            ))
-        .toList();
-
-    List<Asset> topFourTurnover = fetchedTurnover.take(4).toList();
-
-    return TurnoverData(topFourTurnover);
-  } catch (error) {
-    CustomToast.showToast("Turnover data error");
-    rethrow;
-  }
-}
-
-Future<VolumeData> fetchVolumeData() async {
-  try {
-    List<Map<String, dynamic>> fetchedVolumeMaps =
-        await AssetService.getvolume();
-
-    List<Asset> fetchedVolume = fetchedVolumeMaps
-        .map((map) => Asset(
-              symbol: map['symbol'] ?? '',
-              name: map['name'] ?? '',
-              turnover: (map['turnover'] ?? 0.0).toString(),
-              ltp: (map['ltp'] ?? 0.0).toString(),
-            ))
-        .toList();
-
-    List<Asset> topFourVolume = fetchedVolume.take(4).toList();
-
-    return VolumeData(topFourVolume);
-  } catch (error) {
-    CustomToast.showToast("Volume data error");
-    rethrow;
-  }
-}
-
-Future<CommoData> commData() async {
-  try {
-    List<Map<String, dynamic>> fetchedTurnoverMaps =
-        await AssetService.getcommodity();
-
-    List<Asset> fetchedCommodities = fetchedTurnoverMaps
-        .map((map) => Asset(
-              symbol: map['name'] ?? '', //no symbol in commodity
-              name: map['name'] ?? '',
-              category: map['category'],
-              unit: map['unit'],
-              ltp: (map['ltp'] is int) ? map['ltp'].toString() : map['ltp'],
-            ))
-        .toList();
-
-    fetchedCommodities.sort((a, b) => a.name.compareTo(b.name));
-
-    return CommoData(fetchedCommodities);
-  } catch (error) {
-    CustomToast.showToast("Commodity data error");
-    rethrow;
-  }
-}
-
-Future<MetalData> metaData() async {
-  try {
-    List<Map<String, dynamic>> fetchedTurnoverMaps =
-        await AssetService.getMetal();
-
-    List<Asset> fetchedCommodities = fetchedTurnoverMaps
-        .map((map) => Asset(
-              symbol: map['name'] ?? '', //no symbol in commodity
-              name: map['name'] ?? '',
-              sector: map['sector'] ?? '',
-              category: map['category'],
-              unit: map['unit'],
-              ltp: (map['ltp'] is int) ? map['ltp'].toString() : map['ltp'],
-            ))
-        .toList();
-
-    fetchedCommodities.sort((a, b) => a.name.compareTo(b.name));
-
-    return MetalData(fetchedCommodities);
-  } catch (error) {
-    CustomToast.showToast("Metal data error");
-    rethrow;
-  }
-}
-
 class _MainPageState extends State<DashboardView> {
   int indexBottomBar = 0;
   String currentName = "";
-  String currentPass = "";
   String currentEmail = "";
   String currentPhone = "";
-  String currentDP = "assets/images/content/default.png";
+  String currentDP = Iconss.defaultdb;
   final ScrollController _scrollController = ScrollController();
-  Color scaffoldBackgroundColor = MyColors.btnColor;
-  List<Asset> fetchedSymbols = [];
-  final _currentPageNotifier = ValueNotifier<int>(0); //pageview
-  final PageController _pageController = PageController(); //pageview
-  final _currentPageNotifier1 = ValueNotifier<int>(0); //pageview
-  final PageController _pageController1 = PageController(); //pageview
-  final _currentPageNotifier2 = ValueNotifier<int>(0); //pageview
-  final PageController _pageController2 = PageController(); //pageview
 
-  DateTime? currentBackPressTime;
+  List<Asset> fetchedSymbols = [];
+
+  final List<PageController> _pageControllers = [
+    PageController(),
+    PageController(),
+    PageController(),
+  ];
+
+  final List<ValueNotifier<int>> _currentPageNotifiers = [
+    ValueNotifier<int>(0),
+    ValueNotifier<int>(0),
+    ValueNotifier<int>(0),
+  ];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   TrendingData trendingData = TrendingData([], []);
   TurnoverData turnoverData = TurnoverData([]);
   VolumeData volumeData = VolumeData([]);
-  CommoData commoData = CommoData([]);
-  MetalData metalData = MetalData([]);
+  CommodityData commodityData = CommodityData([]);
+  MetalsData metalData = MetalsData([]);
 
   @override
   void initState() {
     super.initState();
-    _loadUserData();
     fetchData();
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: MyColors.btnColor,
-      statusBarIconBrightness: Brightness.light,
-      systemNavigationBarColor: MyColors.btnColor,
-      systemNavigationBarIconBrightness: Brightness.light,
-    ));
   }
 
-  // Fetch trending, turnover data
   Future<void> fetchData() async {
     try {
-      TrendingData dataa = await fetchTrendingData();
-      TurnoverData tdata = await fetchTurnoverData();
-      VolumeData vdata = await fetchVolumeData();
-      CommoData cdata = await commData();
-      MetalData mdata = await metaData();
-      List<Asset> symbols = await fetchDatas();
+      TrendingData dataa = await TrendingData.getTrendingData();
+      TurnoverData tdata = await TurnoverData.getTurnoverData();
+      VolumeData vdata = await VolumeData.getVolumeData();
+      List<Asset> cdata = await CommodityData.getCommodityData();
+      List<Asset> mdata = await MetalsData.getMetalsData();
+      List<Asset> symbols = await AssetData.getAssetData();
+      Map<String, dynamic>? userData = await UserService.fetchUserData();
+
+      if (userData != null) {
+        setState(() {
+          currentName = userData['name'];
+          currentEmail = userData['email'];
+          currentPhone = userData['phone'];
+          currentDP = userData['dp'];
+        });
+      }
+
       setState(() {
         trendingData = dataa;
         fetchedSymbols = symbols;
         turnoverData = tdata;
         volumeData = vdata;
-        commoData = cdata;
-        metalData = mdata;
+        commodityData = CommodityData(cdata);
+        metalData = MetalsData(mdata);
       });
     } catch (error) {
       CustomToast.showToast("Error occured fetching data");
     }
   }
 
-  Future<List<Asset>> fetchDatas() async {
-    try {
-      List<Map<String, dynamic>> fetchedSymbolMaps =
-          await AssetService.getassets("allwithdata");
-
-      List<Asset> fetchedSymbols = fetchedSymbolMaps
-          .map((map) => Asset(
-                symbol: map['symbol'],
-                name: map['name'],
-                category: map['category'],
-                sector: map['sector'],
-                eps: map['eps'],
-                bookvalue: map['bookvalue'],
-                pe: map['pe'],
-                ltp: map['ltp'] is double ? map['ltp'].toString() : map['ltp'],
-                percentchange: map['percentchange'],
-                totaltradedquantity: map['totaltradedquantity'],
-                previousclose: map['previousclose'],
-              ))
-          .toList();
-
-      fetchedSymbols.sort((a, b) => a.name.compareTo(b.name));
-
-      return fetchedSymbols;
-    } catch (error) {
-      CustomToast.showToast("asset data error");
-      rethrow;
-    }
-  }
-
-  String getAssetProperty(
-      String symbol, List<Asset> assetList, String property) {
-    Asset? asset = assetList.firstWhere(
-      (element) => element.symbol == symbol,
-      orElse: () => Asset(symbol: symbol, name: 'Unknown'),
+  void _gotocategory(
+      List<Asset> assetList, first, second, third, utils, type, initial) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => CategoryView(
+          context: context,
+          assetList: assetList,
+          firstitem: first,
+          seconditem: second,
+          thirditem: third,
+          gainerList: trendingData.topFive,
+          looserList: trendingData.bottomFive,
+          turnoverList: turnoverData.turnoverData,
+          volumeList: volumeData.volumeData,
+          utils: utils,
+          type: type,
+          initialTabIndex: initial,
+        ),
+      ),
     );
-
-    switch (property) {
-      case 'name':
-        List<String> words = asset.name.split(' ');
-        return words.length > 2 ? words.sublist(0, 2).join(' ') : asset.name;
-      case 'category':
-        return asset.category ?? "No Category";
-      case 'sector':
-        return asset.sector ?? "No Sector";
-      case 'eps':
-        return asset.eps ?? "0.0";
-      case 'bookvalue':
-        return asset.bookvalue ?? "0.0";
-      case 'pe':
-        return asset.pe ?? "";
-      case 'percentchange':
-        return asset.percentchange ?? "0.0";
-      case 'ltp':
-        return asset.ltp ?? "0.0";
-      case 'unit':
-        return asset.unit ?? "0.0";
-      case 'totaltradedquantity':
-        return asset.totaltradedquantity ?? "0.0";
-      case 'previousclose':
-        return asset.previousclose ?? "0.0";
-      case 'turnover':
-        return asset.turnover ?? "0.0";
-      default:
-        return 'Unknown';
-    }
-  }
-
-  Future<void> _loadUserData() async {
-    Map<String, dynamic>? userData = await UserService.fetchUserData();
-
-    if (userData != null) {
-      setState(() {
-        currentName = userData['name'];
-        currentEmail = userData['email'];
-        currentPass = userData['pass'];
-        currentPhone = userData['phone'];
-        currentDP = userData['dp'];
-      });
-    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-        onWillPop: _onBackPressed,
-        child: Scaffold(
-            key: _scaffoldKey,
-            body: SafeArea(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                controller: _scrollController,
-                child: Column(
-                  children: [
-                    _header(),
-                    _card(),
-                    _portfolio(),
-                    _watchlist(),
-                    _trending(),
-                    _turnover(),
-                    _commodities(),
-                    _mySummary()
-                  ],
-                ),
-              ),
-            ),
-            drawer: Drawer(
-              child: ListView(
-                children: [
-                  UserAccountsDrawerHeader(
-                    margin: const EdgeInsets.all(0),
-                    decoration: const BoxDecoration(color: MyColors.btnColor),
-                    accountName: Text(currentName),
-                    accountEmail: Text(currentEmail),
-                    currentAccountPictureSize: const Size(60, 60),
-                    currentAccountPicture: CircleAvatar(
-                      backgroundImage: AssetImage(currentDP),
-                    ),
-                  ),
-                  ListTile(
-                    title: const Text('My Profile'),
-                    leading: const Icon(CupertinoIcons.person),
-                    onTap: () {
-                      Navigator.pushNamed(context, AppRoute.profileRoute);
-                    },
-                  ),
-                  const ListTile(
-                    title: Text('Themes'),
-                    leading: Icon(CupertinoIcons.color_filter),
-                  ),
-                  const ListTile(
-                    title: Text('Fonts'),
-                    leading: Icon(Icons.font_download_outlined),
-                  ),
-                  const ListTile(
-                    title: Text('Favorites'),
-                    leading: Icon(CupertinoIcons.heart),
-                  ),
-                  const ListTile(
-                    title: Text('Settings'),
-                    leading: Icon(CupertinoIcons.settings),
-                  ),
-                  const ListTile(
-                    title: Text('Exit'),
-                    leading: Icon(Icons.exit_to_app),
-                  )
-                ],
-              ),
-            ),
-            bottomNavigationBar: SalomonBottomBar(
-              backgroundColor: MyColors.btnColor,
-              margin: const EdgeInsets.all(6),
-              //curve: Curves.bounceIn,
-              currentIndex: indexBottomBar,
-              onTap: (i) {
-                if (i == 4) {
-                  Navigator.pushNamed(context, AppRoute.profileRoute);
-                } else if (i == 2) {
-                  Navigator.pushNamed(context, AppRoute.portRoute);
-                } else if (i == 1) {
-                  Navigator.pushNamed(context, AppRoute.searchRoute);
-                } else if (i == 3) {
-                  Navigator.pushNamed(context, AppRoute.walletRoute);
-                } else {
-                  setState(() => indexBottomBar = i);
-                }
-              },
-              items: [
-                /// Home
-                SalomonBottomBarItem(
-                  icon: const Icon(Iconsax.home),
-                  title: const Text("Home"),
-                  selectedColor: Colors.white,
-                  unselectedColor: Colors.white70,
-                ),
-
-                /// Search
-                SalomonBottomBarItem(
-                  icon: const Icon(Iconsax.global_search),
-                  title: const Text("Search"),
-                  selectedColor: Colors.white,
-                  unselectedColor: Colors.white70,
-                ),
-
-                /// Likes
-                SalomonBottomBarItem(
-                  icon: const Icon(Iconsax.document),
-                  title: const Text("Portfolio"),
-                  selectedColor: Colors.white,
-                  unselectedColor: Colors.white70,
-                ),
-
-                SalomonBottomBarItem(
-                  icon: const Icon(Iconsax.wallet_1),
-                  title: const Text("Wallet"),
-                  selectedColor: Colors.white,
-                  unselectedColor: Colors.white70,
-                ),
-
-                /// Profile
-                SalomonBottomBarItem(
-                  icon: const Icon(Iconsax.profile_circle),
-                  title: const Text("Profile"),
-                  selectedColor: Colors.white,
-                  unselectedColor: Colors.white70,
-                ),
+    return Scaffold(
+        key: _scaffoldKey,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            //physics: const BouncingScrollPhysics(),
+            controller: _scrollController,
+            child: Column(
+              children: [
+                _header(),
+                _card(),
+                _portfolio(),
+                _watchlist(),
+                _trending(),
+                _turnover(),
+                _commodities(),
+                _mySummary()
               ],
-            )));
+            ),
+          ),
+        ),
+        drawer: const CommonDrawer(),
+        bottomNavigationBar: CommonBottomNavigationBar(
+          currentIndex: indexBottomBar,
+          onTap: (index) {
+            if (index == 4) {
+              Navigator.pushNamed(context, AppRoute.profileRoute);
+            } else if (index == 2) {
+              Navigator.pushNamed(context, AppRoute.portRoute);
+            } else if (index == 1) {
+              Navigator.pushNamed(context, AppRoute.searchRoute);
+            } else if (index == 3) {
+              Navigator.pushNamed(context, AppRoute.wishlistRoute);
+            } else {
+              setState(() => indexBottomBar = index);
+            }
+          },
+        ));
   }
 
-//
   Container _trending() {
     return Container(
       margin: const EdgeInsets.only(left: 16, right: 16, top: 8, bottom: 8),
@@ -462,14 +171,24 @@ class _MainPageState extends State<DashboardView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                _currentPageNotifier.value == 0 ? 'Top Gainers' : 'Top Loosers',
+                _currentPageNotifiers[0].value == 0
+                    ? 'Top Gainers'
+                    : 'Top Loosers',
                 style: GoogleFonts.poppins(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                 ),
               ),
               MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  _gotocategory(const [],
+                      "name",
+                      "ltp",
+                      "percentchange",
+                      "percentchange",
+                      false,
+                      _currentPageNotifiers[0].value == 0 ? 0 : 1);
+                },
                 child: Text(
                   'View All',
                   style: GoogleFonts.poppins(
@@ -484,30 +203,33 @@ class _MainPageState extends State<DashboardView> {
           SizedBox(
             height: 300,
             child: PageView(
-              controller: _pageController,
+              controller: _pageControllers[0],
               onPageChanged: (int index) {
                 setState(() {
-                  _currentPageNotifier.value = index;
+                  _currentPageNotifiers[0].value = index;
                 });
               },
               children: [
-                //   AssetList(
-                //   assetList: const [],
-                //   firstitem: "name",
-                //   seconditem: "ltp",
-                //   thirditem: "percentchange",
-                //   trendingList: trendingData.topFive,
-                // ),
-                // AssetList(
-                //   assetList: const [],
-                //   firstitem: "name",
-                //   seconditem: "ltp",
-                //   thirditem: "percentchange",
-                //   trendingList: trendingData.bottomFive,
-                // ),
-
-                _buildGainersPage(trendingData.topFive),
-                _buildLoosersPage(trendingData.bottomFive),
+                DashboardList(
+                  context: context,
+                  assetList: const [],
+                  firstitem: "name",
+                  seconditem: "ltp",
+                  thirditem: "percentchange",
+                  trendingList: trendingData.topFive,
+                  utils: "percentchange",
+                  type: false,
+                ),
+                DashboardList(
+                  context: context,
+                  assetList: const [],
+                  firstitem: "name",
+                  seconditem: "ltp",
+                  thirditem: "percentchange",
+                  trendingList: trendingData.bottomFive,
+                  utils: "percentchange",
+                  type: false,
+                ),
               ],
             ),
           ),
@@ -517,145 +239,11 @@ class _MainPageState extends State<DashboardView> {
               dotColor: Colors.grey,
               selectedDotColor: MyColors.btnColor,
               itemCount: 2,
-              currentPageNotifier: _currentPageNotifier,
+              currentPageNotifier: _currentPageNotifiers[0],
               size: 8.0,
             ),
           ),
         ],
-      ),
-    );
-  }
-//
-
-  Widget _buildGainersPage(List<Asset> topFive) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: topFive.length,
-      itemBuilder: (context, index) => InkWell(
-        onTap: () {},
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          margin: const EdgeInsets.only(top: 12),
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.04),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  const CircleAvatar(
-                    radius: 20,
-                    backgroundImage: AssetImage(Iconss.equityIcon),
-                  ),
-                  const SizedBox(width: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        topFive[index].symbol,
-                        style: GoogleFonts.poppins(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        getAssetProperty(
-                            topFive[index].symbol, fetchedSymbols, 'name'),
-                        style: GoogleFonts.poppins(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'Rs ${topFive[index].ltp}',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  _buildArrowAndPercentage(topFive[index].percentchange),
-                ],
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  //
-  Widget _buildLoosersPage(List<Asset> bottomFive) {
-    return ListView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      itemCount: bottomFive.length,
-      itemBuilder: (context, index) => InkWell(
-        onTap: () {},
-        child: Container(
-          padding: const EdgeInsets.all(10),
-          margin: const EdgeInsets.only(top: 12),
-          decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.04),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Row(
-                children: [
-                  const CircleAvatar(
-                    radius: 20,
-                    backgroundImage: AssetImage(Iconss.equityIcon),
-                  ),
-                  const SizedBox(width: 8),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        bottomFive[index].symbol,
-                        style: GoogleFonts.poppins(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      Text(
-                        getAssetProperty(
-                            bottomFive[index].symbol, fetchedSymbols, 'name'),
-                        style: GoogleFonts.poppins(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w400,
-                        ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'Rs ${bottomFive[index].ltp}',
-                    style: GoogleFonts.poppins(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  _buildArrowAndPercentage(bottomFive[index].percentchange),
-                ],
-              )
-            ],
-          ),
-        ),
       ),
     );
   }
@@ -677,7 +265,7 @@ class _MainPageState extends State<DashboardView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                _currentPageNotifier1.value == 0
+                _currentPageNotifiers[1].value == 0
                     ? 'Top Turnover'
                     : 'Top Volume',
                 style: GoogleFonts.poppins(
@@ -686,7 +274,18 @@ class _MainPageState extends State<DashboardView> {
                 ),
               ),
               MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  _gotocategory(
+                      _currentPageNotifiers[1].value == 0
+                          ? turnoverData.turnoverData
+                          : volumeData.volumeData,
+                      "name",
+                      "ltp",
+                      "turnover",
+                      "", //uttils
+                      false,
+                      _currentPageNotifiers[1].value == 0 ? 2 : 3);
+                },
                 child: Text(
                   'View All',
                   style: GoogleFonts.poppins(
@@ -701,24 +300,28 @@ class _MainPageState extends State<DashboardView> {
           SizedBox(
             height: 300,
             child: PageView(
-              controller: _pageController1,
+              controller: _pageControllers[1],
               onPageChanged: (int index) {
                 setState(() {
-                  _currentPageNotifier1.value = index;
+                  _currentPageNotifiers[1].value = index;
                 });
               },
               children: [
-                AssetList(
+                DashboardList(
+                  context: context,
                   assetList: turnoverData.turnoverData,
                   firstitem: "name",
                   seconditem: "ltp",
                   thirditem: "turnover",
+                  type: false,
                 ),
-                AssetList(
+                DashboardList(
+                  context: context,
                   assetList: volumeData.volumeData,
                   firstitem: "name",
                   seconditem: "ltp",
                   thirditem: "turnover",
+                  type: false,
                 ),
               ],
             ),
@@ -729,7 +332,7 @@ class _MainPageState extends State<DashboardView> {
               dotColor: Colors.grey,
               selectedDotColor: MyColors.btnColor,
               itemCount: 2,
-              currentPageNotifier: _currentPageNotifier1,
+              currentPageNotifier: _currentPageNotifiers[1],
               size: 8.0,
             ),
           ),
@@ -737,162 +340,6 @@ class _MainPageState extends State<DashboardView> {
       ),
     );
   }
-
-  // Widget _buildTurnoverPage() {
-  //   return ListView.builder(
-  //     shrinkWrap: true,
-  //     physics: const NeverScrollableScrollPhysics(),
-  //     itemCount:
-  //         turnoverData.turnoverData.length, // Use the length of turnoverData
-  //     itemBuilder: (context, index) => InkWell(
-  //       onTap: () {},
-  //       child: Container(
-  //         padding: const EdgeInsets.all(10),
-  //         margin: const EdgeInsets.only(top: 12),
-  //         decoration: BoxDecoration(
-  //           color: Colors.black.withOpacity(0.04),
-  //           borderRadius: BorderRadius.circular(12),
-  //         ),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Row(
-  //               children: [
-  //                 const CircleAvatar(
-  //                   radius: 20,
-  //                   backgroundImage: AssetImage(Iconss.equityIcon),
-  //                 ),
-  //                 const SizedBox(width: 8),
-  //                 Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     Text(
-  //                       turnoverData.turnoverData[index].symbol,
-  //                       style: GoogleFonts.poppins(
-  //                         fontSize: 15,
-  //                         fontWeight: FontWeight.w600,
-  //                       ),
-  //                     ),
-  //                     Text(
-  //                       (() {
-  //                         List<String> words =
-  //                             turnoverData.turnoverData[index].name.split(' ');
-  //                         return words.length > 2
-  //                             ? words.sublist(0, 2).join(' ')
-  //                             : turnoverData.turnoverData[index].name;
-  //                       })(),
-  //                       style: GoogleFonts.poppins(
-  //                         fontSize: 13,
-  //                         fontWeight: FontWeight.w400,
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 )
-  //               ],
-  //             ),
-  //             Column(
-  //               crossAxisAlignment: CrossAxisAlignment.end,
-  //               children: [
-  //                 Text(
-  //                   'Rs ${turnoverData.turnoverData[index].ltp}',
-  //                   style: GoogleFonts.poppins(
-  //                     fontSize: 16,
-  //                     fontWeight: FontWeight.w600,
-  //                   ),
-  //                 ),
-  //                 Text(
-  //                   turnoverData.turnoverData[index].turnover ?? "",
-  //                   style: GoogleFonts.poppins(
-  //                     fontSize: 12,
-  //                     fontWeight: FontWeight.w600,
-  //                   ),
-  //                 ),
-  //               ],
-  //             )
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // Widget _buildVolumePage() {
-  //   return ListView.builder(
-  //     shrinkWrap: true,
-  //     physics: const NeverScrollableScrollPhysics(),
-  //     itemCount:
-  //         turnoverData.turnoverData.length, // Use the length of turnoverData
-  //     itemBuilder: (context, index) => InkWell(
-  //       onTap: () {},
-  //       child: Container(
-  //         padding: const EdgeInsets.all(10),
-  //         margin: const EdgeInsets.only(top: 12),
-  //         decoration: BoxDecoration(
-  //           color: Colors.black.withOpacity(0.04),
-  //           borderRadius: BorderRadius.circular(12),
-  //         ),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Row(
-  //               children: [
-  //                 const CircleAvatar(
-  //                   radius: 20,
-  //                   backgroundImage: AssetImage(Iconss.equityIcon),
-  //                 ),
-  //                 const SizedBox(width: 8),
-  //                 Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     Text(
-  //                       volumeData.volumeData[index].symbol,
-  //                       style: GoogleFonts.poppins(
-  //                         fontSize: 15,
-  //                         fontWeight: FontWeight.w600,
-  //                       ),
-  //                     ),
-  //                     Text(
-  //                       (() {
-  //                         List<String> words =
-  //                             volumeData.volumeData[index].name.split(' ');
-  //                         return words.length > 2
-  //                             ? words.sublist(0, 2).join(' ')
-  //                             : volumeData.volumeData[index].name;
-  //                       })(),
-  //                       style: GoogleFonts.poppins(
-  //                         fontSize: 13,
-  //                         fontWeight: FontWeight.w400,
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 )
-  //               ],
-  //             ),
-  //             Column(
-  //               crossAxisAlignment: CrossAxisAlignment.end,
-  //               children: [
-  //                 Text(
-  //                   'Rs ${volumeData.volumeData[index].ltp}',
-  //                   style: GoogleFonts.poppins(
-  //                     fontSize: 16,
-  //                     fontWeight: FontWeight.w600,
-  //                   ),
-  //                 ),
-  //                 Text(
-  //                   volumeData.volumeData[index].turnover ?? "",
-  //                   style: GoogleFonts.poppins(
-  //                     fontSize: 12,
-  //                     fontWeight: FontWeight.w600,
-  //                   ),
-  //                 ),
-  //               ],
-  //             )
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Container _watchlist() {
     return Container(
@@ -1006,8 +453,7 @@ class _MainPageState extends State<DashboardView> {
       margin: const EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-            color: Colors.black, width: 0.1), // Adjust width as needed
+        border: Border.all(color: Colors.black, width: 0.1),
       ),
       padding: const EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
       child: Column(
@@ -1016,46 +462,52 @@ class _MainPageState extends State<DashboardView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                _currentPageNotifier2.value == 0 ? 'Commodities' : 'Top Metals',
+                _currentPageNotifiers[2].value == 0
+                    ? 'Commodities'
+                    : 'Top Metals',
                 style: GoogleFonts.poppins(
                   fontSize: 20,
                   fontWeight: FontWeight.w600,
                 ),
               ),
-              MaterialButton(
-                onPressed: () {},
-                child: Text(
-                  'View All',
-                  style: GoogleFonts.poppins(
-                    color: MyColors.primaryColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              )
+              // MaterialButton(
+              //   onPressed: () {},
+              //   child: Text(
+              //     'View All',
+              //     style: GoogleFonts.poppins(
+              //       color: MyColors.primaryColor,
+              //       fontSize: 14,
+              //       fontWeight: FontWeight.w400,
+              //     ),
+              //   ),
+              // )
             ],
           ),
           SizedBox(
             height: 300,
             child: PageView(
-              controller: _pageController2,
+              controller: _pageControllers[2],
               onPageChanged: (int index) {
                 setState(() {
-                  _currentPageNotifier2.value = index;
+                  _currentPageNotifiers[2].value = index;
                 });
               },
               children: [
-                AssetList(
-                  assetList: commoData.commoData,
+                DashboardList(
+                  context: context,
+                  assetList: commodityData.commodityData,
                   firstitem: "category",
                   seconditem: "ltp",
                   thirditem: "unit",
+                  type: true,
                 ),
-                AssetList(
+                DashboardList(
+                  context: context,
                   assetList: metalData.metalData,
                   firstitem: "category",
                   seconditem: "ltp",
                   thirditem: "unit",
+                  type: true,
                 ),
               ],
             ),
@@ -1066,7 +518,7 @@ class _MainPageState extends State<DashboardView> {
               dotColor: Colors.grey,
               selectedDotColor: MyColors.btnColor,
               itemCount: 2,
-              currentPageNotifier: _currentPageNotifier1,
+              currentPageNotifier: _currentPageNotifiers[2],
               size: 8.0,
             ),
           ),
@@ -1074,155 +526,6 @@ class _MainPageState extends State<DashboardView> {
       ),
     );
   }
-
-  // Widget _buildCommoPage() {
-  //   return ListView.builder(
-  //     shrinkWrap: true,
-  //     physics: const NeverScrollableScrollPhysics(),
-  //     itemCount: commoData.commoData.length,
-  //     itemBuilder: (context, index) => InkWell(
-  //       onTap: () {},
-  //       child: Container(
-  //         padding: const EdgeInsets.all(10),
-  //         margin: const EdgeInsets.only(top: 12),
-  //         decoration: BoxDecoration(
-  //           color: Colors.black.withOpacity(0.04),
-  //           borderRadius: BorderRadius.circular(12),
-  //         ),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Row(
-  //               children: [
-  //                 const CircleAvatar(
-  //                   radius: 20,
-  //                   backgroundImage: AssetImage(Iconss.equityIcon),
-  //                 ),
-  //                 const SizedBox(width: 8),
-  //                 Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     Text(
-  //                       commoData.commoData[index].name,
-  //                       style: GoogleFonts.poppins(
-  //                         fontSize: 15,
-  //                         fontWeight: FontWeight.w600,
-  //                       ),
-  //                     ),
-  //                     Text(
-  //                       commoData.commoData[index].category ?? "Empty",
-  //                       style: GoogleFonts.poppins(
-  //                         fontSize: 13,
-  //                         fontWeight: FontWeight.w400,
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 )
-  //               ],
-  //             ),
-  //             Column(
-  //               crossAxisAlignment: CrossAxisAlignment.end,
-  //               children: [
-  //                 Text(
-  //                   commoData.commoData[index].ltp ?? "",
-  //                   style: GoogleFonts.poppins(
-  //                     fontSize: 16,
-  //                     fontWeight: FontWeight.w600,
-  //                   ),
-  //                 ),
-  //                 Text(
-  //                   commoData.commoData[index].unit ?? "",
-  //                   style: GoogleFonts.poppins(
-  //                     fontSize: 12,
-  //                     fontWeight: FontWeight.w400,
-  //                   ),
-  //                 ),
-  //               ],
-  //             )
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-// Widget _buildCommoPage() {
-//   return AssetList(
-//     assetList: commoData.commoData,
-//     firstitem: commoData.commoData[index].category,
-//   );
-// }
-
-  // Widget _buildMetalPage() {
-  //   return ListView.builder(
-  //     shrinkWrap: true,
-  //     physics: const NeverScrollableScrollPhysics(),
-  //     itemCount: metalData.metalData.length,
-  //     itemBuilder: (context, index) => InkWell(
-  //       onTap: () {},
-  //       child: Container(
-  //         padding: const EdgeInsets.all(10),
-  //         margin: const EdgeInsets.only(top: 12),
-  //         decoration: BoxDecoration(
-  //           color: Colors.black.withOpacity(0.04),
-  //           borderRadius: BorderRadius.circular(12),
-  //         ),
-  //         child: Row(
-  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-  //           children: [
-  //             Row(
-  //               children: [
-  //                 const CircleAvatar(
-  //                   radius: 20,
-  //                   backgroundImage: AssetImage(Iconss.equityIcon),
-  //                 ),
-  //                 const SizedBox(width: 8),
-  //                 Column(
-  //                   crossAxisAlignment: CrossAxisAlignment.start,
-  //                   children: [
-  //                     Text(
-  //                       metalData.metalData[index].name,
-  //                       style: GoogleFonts.poppins(
-  //                         fontSize: 15,
-  //                         fontWeight: FontWeight.w600,
-  //                       ),
-  //                     ),
-  //                     Text(
-  //                       metalData.metalData[index].category ?? "Empty",
-  //                       style: GoogleFonts.poppins(
-  //                         fontSize: 13,
-  //                         fontWeight: FontWeight.w400,
-  //                       ),
-  //                     ),
-  //                   ],
-  //                 )
-  //               ],
-  //             ),
-  //             Column(
-  //               crossAxisAlignment: CrossAxisAlignment.end,
-  //               children: [
-  //                 Text(
-  //                   metalData.metalData[index].ltp ?? "",
-  //                   style: GoogleFonts.poppins(
-  //                     fontSize: 16,
-  //                     fontWeight: FontWeight.w600,
-  //                   ),
-  //                 ),
-  //                 Text(
-  //                   metalData.metalData[index].unit ?? "",
-  //                   style: GoogleFonts.poppins(
-  //                     fontSize: 12,
-  //                     fontWeight: FontWeight.w400,
-  //                   ),
-  //                 ),
-  //               ],
-  //             )
-  //           ],
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
 
   Container _portfolio() {
     return Container(
@@ -1459,9 +762,9 @@ class _MainPageState extends State<DashboardView> {
             ),
           ),
           Expanded(
-            flex: 3, // Allocate 1/4 of the space for the line chart
+            flex: 3,
             child: SizedBox(
-              height: 75, // Set your desired height for the chart
+              height: 75,
               child: LineChart(
                 LineChartData(
                   gridData: FlGridData(show: false),
@@ -1507,7 +810,7 @@ class _MainPageState extends State<DashboardView> {
     return Container(
         padding: const EdgeInsets.all(0),
         decoration: const BoxDecoration(
-          color: MyColors.btnColor, // Set to your desired navy blue color
+          color: MyColors.btnColor,
         ),
         child: Builder(
           builder: (BuildContext context) {
@@ -1524,7 +827,6 @@ class _MainPageState extends State<DashboardView> {
                         if (_scaffoldKey.currentState != null) {
                           _scaffoldKey.currentState!.openDrawer();
                         }
-                        // Add functionality for the hamburger menu button
                       },
                       icon: const Icon(Iconsax.menu_1),
                       color: Colors.white,
@@ -1539,8 +841,7 @@ class _MainPageState extends State<DashboardView> {
                           child: Container(
                             decoration: const BoxDecoration(
                               shape: BoxShape.circle,
-                              color:
-                                  Colors.white, // Set the color of the circle
+                              color: Colors.white,
                             ),
                             padding: const EdgeInsets.all(1.2),
                             child: CircleAvatar(
@@ -1624,54 +925,5 @@ class _MainPageState extends State<DashboardView> {
             );
           },
         ));
-  }
-
-  Future<bool> _onBackPressed() async {
-    DateTime now = DateTime.now();
-
-    if (currentBackPressTime == null ||
-        now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
-      currentBackPressTime = now;
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Press back again to exit'),
-          duration: Duration(seconds: 2),
-        ),
-      );
-      return false;
-    }
-    return true;
-  }
-
-  Widget _buildArrowAndPercentage(String? percentChange) {
-    double change = double.tryParse(percentChange ?? '0.0') ?? 0.0;
-
-    IconData arrowIcon = Icons.arrow_upward;
-    Color arrowColor = Colors.green;
-
-    if (change < 0) {
-      arrowIcon = Icons.arrow_downward;
-      arrowColor = Colors.red;
-    }
-
-    String formattedChange = change.toStringAsFixed(1);
-
-    return Row(
-      children: [
-        Icon(
-          arrowIcon,
-          color: arrowColor,
-          size: 16,
-        ),
-        const SizedBox(width: 4),
-        Text(
-          '$formattedChange%',
-          style: GoogleFonts.poppins(
-            color: arrowColor,
-            fontSize: 13,
-          ),
-        ),
-      ],
-    );
   }
 }

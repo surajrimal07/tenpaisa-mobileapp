@@ -13,8 +13,7 @@ class ProfileView extends StatefulWidget {
 }
 
 class ProfileViewState extends State<ProfileView> {
-  int indexBottomBar =
-      4; // Variable to hold the current index of SalomonBottomBar
+  int indexBottomBar = 4;
 
   @override
   Widget build(BuildContext context) {

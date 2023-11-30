@@ -1,48 +1,23 @@
-import 'dart:convert';
-
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'package:paisa/app/toast/flutter_toast.dart';
-import 'package:paisa/utils/serverconfig_utils.dart';
-//import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
+import 'package:paisa/services/news_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class NewsView extends StatefulWidget {
   const NewsView({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _NewsViewState createState() => _NewsViewState();
+  NewsViewState createState() => NewsViewState();
 }
 
-class _NewsViewState extends State<NewsView> {
-  int indexBottomBar = 0;
-  List<dynamic> newsList = [];
+class NewsViewState extends State<NewsView> {
+  late Future<List<dynamic>> newsFuture;
 
   @override
   void initState() {
     super.initState();
-    fetchNews();
-    WebView.platform = SurfaceAndroidWebView();
-  }
-
-  Future<void> fetchNews() async {
-    var url = Uri.parse('${ServerConfig.SERVER_ADDRESS}${ServerConfig.NEWS}');
-
-    try {
-      var response = await http.get(url);
-      if (response.statusCode == 200) {
-        setState(() {
-          newsList = json.decode(response.body);
-        });
-      } else {
-        CustomToast.showToast("Failed to load news");
-      }
-    } catch (error) {
-      CustomToast.showToast('Error fetching data: $error');
-    }
+    newsFuture = News.fetchNews();
   }
 
   @override
@@ -53,22 +28,48 @@ class _NewsViewState extends State<NewsView> {
         backgroundColor: Theme.of(context).primaryColor,
       ),
       body: RefreshIndicator(
-        onRefresh: fetchNews,
-        child: ListView.builder(
-          itemCount: newsList.length,
-          itemBuilder: (context, index) {
-            final url = newsList[index]['link'];
-            return Column(
-              children: [
-                const SizedBox(height: 4),
-                const SizedBox(height: 4),
-                AnyLinkPreview(
-                  urlLaunchMode: LaunchMode.inAppBrowserView,
-                  displayDirection: UIDirection.uiDirectionHorizontal,
-                  link: url,
-                ),
-              ],
-            );
+        onRefresh: () {
+          SharedPreferences prefs;
+          return SharedPreferences.getInstance().then((value) {
+            prefs = value;
+            prefs.remove('news_cache');
+          }).then((_) {
+            setState(() {
+              newsFuture = News.fetchNews();
+            });
+          });
+        },
+        child: FutureBuilder(
+          future: newsFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text('Error: ${snapshot.error}'),
+              );
+            } else {
+              List<dynamic> newsList = snapshot.data as List<dynamic>;
+              return ListView.builder(
+                itemCount: newsList.length,
+                itemBuilder: (context, index) {
+                  final url = newsList[index]['link'];
+                  return Column(
+                    children: [
+                      const SizedBox(height: 4),
+                      const SizedBox(height: 4),
+                      AnyLinkPreview(
+                        urlLaunchMode: LaunchMode.inAppBrowserView,
+                        displayDirection: UIDirection.uiDirectionHorizontal,
+                        link: url,
+                      ),
+                    ],
+                  );
+                },
+              );
+            }
           },
         ),
       ),

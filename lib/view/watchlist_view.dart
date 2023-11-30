@@ -7,14 +7,14 @@ import 'package:paisa/app/common/navbar_common.dart';
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/utils/colors_utils.dart';
 
-class WalletView extends StatefulWidget {
-  const WalletView({super.key});
+class WishlistView extends StatefulWidget {
+  const WishlistView({super.key});
 
   @override
-  _WalletScreenState createState() => _WalletScreenState();
+  _WishlistScreenState createState() => _WishlistScreenState();
 }
 
-class _WalletScreenState extends State<WalletView> {
+class _WishlistScreenState extends State<WishlistView> {
   int indexBottomBar = 3;
   @override
   void initState() {
@@ -41,7 +41,7 @@ class _WalletScreenState extends State<WalletView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Wallet',
+          'Watchlist',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
         ),
         centerTitle: true,
@@ -64,7 +64,7 @@ class _WalletScreenState extends State<WalletView> {
           color: Colors.white,
           padding: const EdgeInsets.all(16),
           child: const Text(
-            'No Wallet found',
+            'No Wishlist found',
             style: TextStyle(fontSize: 18, color: Colors.black),
           ),
         ),
@@ -80,7 +80,7 @@ class _WalletScreenState extends State<WalletView> {
           } else if (i == 4) {
             Navigator.pushNamed(context, AppRoute.profileRoute);
           } else if (i == 3) {
-            Navigator.pushNamed(context, AppRoute.walletRoute);
+            Navigator.pushNamed(context, AppRoute.wishlistRoute);
           } else if (i == 1) {
             Navigator.pushNamed(context, AppRoute.searchRoute);
           } else if (i == 2) {

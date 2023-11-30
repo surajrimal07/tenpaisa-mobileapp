@@ -53,45 +53,6 @@ class UserService {
     return completer.future;
   }
 
-// //save token
-//   static Future<void> saveUserToken(String email, String pass) async {
-//     var completer = Completer<void>();
-
-//     var userToken = "";
-//     try {
-//       userToken = await UserService.createToken();
-//     } catch (error) {
-//       print("Failed to generate token");
-//     }
-
-//     try {
-//       var url =
-//           Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.SAVE_TOKEN}");
-
-//       var requestBody = {'email': email, 'token': userToken};
-
-//       var response = await http.post(
-//         url,
-//         headers: <String, String>{
-//           'Content-Type': 'application/json; charset=UTF-8',
-//         },
-//         body: jsonEncode(requestBody),
-//       );
-
-//       if (response.statusCode == 200) {
-//         completer.complete();
-
-//         SharedPreferences prefs = await SharedPreferences.getInstance();
-//         await prefs.setString('userToken', userToken);
-//       } else {
-//         completer.completeError("400");
-//       }
-//     } catch (e) {
-//       completer.completeError("500");
-//     }
-//     return completer.future;
-//   }
-
   //save token
   static Future<void> saveUserToken() async {
     var completer = Completer<void>();
@@ -153,13 +114,21 @@ class UserService {
 //fetch user data
   static Future<Map<String, dynamic>?> fetchUserData() async {
     try {
+      // const String cacheKey = 'user_cache';
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // String? cachedData = prefs.getString(cacheKey);
+
+      // if (cachedData != null) {
+      //   Map<String, dynamic> userData = json.decode(cachedData);
+
+      //   return userData;
+      // }
+
       final UserService userService = UserService();
       await userService._loadUserToken();
 
       if (userService.userToken == null || userService.userToken!.isEmpty) {
         CustomToast.showToast('User not logged in');
-
-//force user to go to sign in screen
         return null;
       }
 
@@ -180,6 +149,8 @@ class UserService {
         final userData = json.decode(res.body);
 
         String imageBaseUrl = 'assets/images/content/';
+
+        //prefs.setString(cacheKey, json.encode(userData));
 
         return {
           'name': userData['username'],
@@ -251,7 +222,6 @@ class UserService {
       'value': value
     };
 
-    //print(requestBody);
     var res = await http.post(
       url,
       headers: <String, String>{
@@ -288,7 +258,6 @@ class UserService {
         },
         body: jsonEncode(requestBody),
       );
-      //print(res);
 
       if (res.statusCode == 200) {
         UserService.deleteUserToken();

@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:paisa/app/common/drawer_common.dart';
+import 'package:paisa/app/common/navbar_common.dart';
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/services/portfolio_services.dart'; // Import your PortfolioService
 import 'package:paisa/utils/colors_utils.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 
 class PortfolioView extends StatefulWidget {
   const PortfolioView({super.key});
 
   @override
-  _PortfolioScreenState createState() => _PortfolioScreenState();
+  PortfolioScreenState createState() => PortfolioScreenState();
 }
 
-class _PortfolioScreenState extends State<PortfolioView> {
+class PortfolioScreenState extends State<PortfolioView> {
   int indexBottomBar = 2;
 
   List<Map<String, dynamic>> portfolioData = [];
@@ -86,8 +86,8 @@ class _PortfolioScreenState extends State<PortfolioView> {
                 ),
         ),
       ),
-      bottomNavigationBar: SalomonBottomBar(
-        backgroundColor: MyColors.btnColor,
+      drawer: const CommonDrawer(),
+      bottomNavigationBar: CommonBottomNavigationBar(
         currentIndex: indexBottomBar,
         onTap: (i) {
           if (i == 2) {
@@ -97,45 +97,13 @@ class _PortfolioScreenState extends State<PortfolioView> {
           } else if (i == 4) {
             Navigator.pushNamed(context, AppRoute.profileRoute);
           } else if (i == 3) {
-            Navigator.pushNamed(context, AppRoute.walletRoute);
+            Navigator.pushNamed(context, AppRoute.wishlistRoute);
           } else if (i == 1) {
             Navigator.pushNamed(context, AppRoute.searchRoute);
           } else {
             setState(() => indexBottomBar = i);
           }
         },
-        items: [
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.home),
-            title: const Text("Home"),
-            selectedColor: Colors.white,
-            unselectedColor: Colors.white70,
-          ),
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.global_search),
-            title: const Text("Search"),
-            selectedColor: Colors.white,
-            unselectedColor: Colors.white70,
-          ),
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.document),
-            title: const Text("Portfolio"),
-            selectedColor: Colors.white,
-            unselectedColor: Colors.white70,
-          ),
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.wallet_1),
-            title: const Text("Wallet"),
-            selectedColor: Colors.white,
-            unselectedColor: Colors.white70,
-          ),
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.profile_circle),
-            title: const Text("Profile"),
-            selectedColor: Colors.white,
-            unselectedColor: Colors.white70,
-          ),
-        ],
       ),
     );
   }

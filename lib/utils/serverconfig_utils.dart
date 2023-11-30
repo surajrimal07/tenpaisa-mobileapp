@@ -1,8 +1,8 @@
 class ServerConfig {
   static const String HTTPS = "http://";
   static const String PORT = ":5000";
-  static const String ADDRESS = "192.168.1.73";
-  //static const String ADDRESS = "10.1.8.10"; // Change me
+  static const String ADDRESS = "192.168.101.9";
+  //static const String ADDRESS = "10.1.8.9"; // Change me
   static const String SERVER_ADDRESS = "$HTTPS$ADDRESS$PORT";
   static const String SOCKET_ADDRESS = "ws://$ADDRESS:8081";
 
@@ -27,4 +27,9 @@ class ServerConfig {
   static const String METAL = "/api/metalprices";
   static const String TURNOVER = "/api/turnover";
   static const String VOLUME = "/api/topvolume";
+  //portfolio
+  static const String CREATE_PORTFOLIO = "/api/newport";
+  static const String ADD_STOCK_TO_PORTFOLIO = "/api/addstock";
+  static const String REM_STOCK_TO_PORTFOLIO = "/api/remstock";
+  static const String DELETE_PORTFOLIO = "/api/delport";
 }

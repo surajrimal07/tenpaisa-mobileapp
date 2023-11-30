@@ -4,13 +4,12 @@ import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:iconsax/iconsax.dart';
-//import 'package:image_picker/image_picker.dart';
+import 'package:paisa/app/common/drawer_common.dart';
+import 'package:paisa/app/common/navbar_common.dart';
 import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/services/websocket_services.dart';
 import 'package:paisa/utils/colors_utils.dart';
-import 'package:salomon_bottom_bar/salomon_bottom_bar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../services/user_services.dart';
@@ -36,44 +35,16 @@ class _ProfileViewState extends State<AccountView> {
   final TextEditingController newEmailController = TextEditingController();
   final TextEditingController newPhoneController = TextEditingController();
   final TextEditingController newPassController = TextEditingController();
-//updating image is broken, needs more logic,
-  //XFile? _pickedImage; // Initialize with null
-
-  // Future<void> _pickImage() async {
-  //   final ImagePicker picker = ImagePicker();
-  //   final XFile? pickedImage =
-  //       await picker.pickImage(source: ImageSource.gallery);
-
-  //   if (pickedImage != null) {
-  //     //bool success = await UserService.uploadProfilePicture(pickedImage.path);
-
-  //     // if (success) {
-  //     //   // Update the user's profile picture URL
-  //     //   //await UserService.updateUserProfilePictureUrl();
-
-  //     //   setState(() {
-  //     //     // Get the updated profile picture URL
-  //     //     //currentDP = UserService.getUpdatedProfilePictureUrl();
-  //     //   });
-  //     // } else {
-  //     //   CustomToast.showToast("Failed to upload profile picture");
-  //     // }
-  //   }
-  // }
 
   @override
   void initState() {
     super.initState();
     _loadUserData();
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor:
-          MyColors.btnColor, // Status bar color set to a dark blue shade
-      statusBarIconBrightness:
-          Brightness.light, // Adjust status bar icon colors
-      systemNavigationBarColor:
-          MyColors.btnColor, // Navigation bar color set to the same blue shade
-      systemNavigationBarIconBrightness:
-          Brightness.light, // Adjust navigation bar icon colors
+      statusBarColor: MyColors.btnColor,
+      statusBarIconBrightness: Brightness.light,
+      systemNavigationBarColor: MyColors.btnColor,
+      systemNavigationBarIconBrightness: Brightness.light,
     ));
   }
 
@@ -193,8 +164,8 @@ class _ProfileViewState extends State<AccountView> {
           ],
         ),
       ),
-      bottomNavigationBar: SalomonBottomBar(
-        backgroundColor: MyColors.btnColor,
+      drawer: const CommonDrawer(),
+      bottomNavigationBar: CommonBottomNavigationBar(
         currentIndex: indexBottomBar,
         onTap: (i) {
           if (i == 4) {
@@ -206,43 +177,11 @@ class _ProfileViewState extends State<AccountView> {
           } else if (i == 1) {
             Navigator.pushNamed(context, AppRoute.searchRoute);
           } else if (i == 3) {
-            Navigator.pushNamed(context, AppRoute.walletRoute);
+            Navigator.pushNamed(context, AppRoute.wishlistRoute);
           } else {
             setState(() => indexBottomBar = i);
           }
         },
-        items: [
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.home),
-            title: const Text("Home"),
-            selectedColor: Colors.white,
-            unselectedColor: Colors.white70,
-          ),
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.global_search),
-            title: const Text("Search"),
-            selectedColor: Colors.white,
-            unselectedColor: Colors.white70,
-          ),
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.document),
-            title: const Text("Portfolio"),
-            selectedColor: Colors.white,
-            unselectedColor: Colors.white70,
-          ),
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.wallet_1),
-            title: const Text("Wallet"),
-            selectedColor: Colors.white,
-            unselectedColor: Colors.white70,
-          ),
-          SalomonBottomBarItem(
-            icon: const Icon(Iconsax.profile_circle),
-            title: const Text("Profile"),
-            selectedColor: Colors.white,
-            unselectedColor: Colors.white70,
-          ),
-        ],
       ),
     );
   }
@@ -258,12 +197,7 @@ class _ProfileViewState extends State<AccountView> {
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 await prefs.remove('userToken');
-
-                //String? checktoken = prefs.getString('userToken');
-                //print("is token null after logged out: $checktoken");
                 CustomToast.showToast("Logging out");
-
-                //Navigator.pushReplacementNamed(context, AppRoute.signinRoute);
                 Navigator.pushNamedAndRemoveUntil(
                   context,
                   AppRoute.signinRoute,
@@ -334,7 +268,6 @@ class _ProfileViewState extends State<AccountView> {
                         CustomToast.showToast("Name Updated");
                       } catch (error) {
                         CustomToast.showToast("Error occured");
-                        //print("Error: $error");
                       }
 
                       Navigator.of(context).pop();
@@ -486,7 +419,6 @@ class _ProfileViewState extends State<AccountView> {
                         newPasswordController.clear();
                         Navigator.of(context).pop();
                       } else {
-                        // Update the error text to display the error below the text field
                         setState(() {
                           passwordError = 'Password cannot be empty';
                         });
