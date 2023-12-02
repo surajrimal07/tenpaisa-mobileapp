@@ -114,15 +114,6 @@ class UserService {
 //fetch user data
   static Future<Map<String, dynamic>?> fetchUserData() async {
     try {
-      // const String cacheKey = 'user_cache';
-      // SharedPreferences prefs = await SharedPreferences.getInstance();
-      // String? cachedData = prefs.getString(cacheKey);
-
-      // if (cachedData != null) {
-      //   Map<String, dynamic> userData = json.decode(cachedData);
-
-      //   return userData;
-      // }
 
       final UserService userService = UserService();
       await userService._loadUserToken();
@@ -149,8 +140,6 @@ class UserService {
         final userData = json.decode(res.body);
 
         String imageBaseUrl = 'assets/images/content/';
-
-        //prefs.setString(cacheKey, json.encode(userData));
 
         return {
           'name': userData['username'],

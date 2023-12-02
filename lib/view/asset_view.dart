@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/services/asset_services.dart';
+import 'package:paisa/services/portfolio_services.dart';
 import 'package:paisa/utils/colors_utils.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -26,12 +27,25 @@ class AssetView extends StatefulWidget {
 class _AssetViewState extends State<AssetView> {
   Asset? fetchedAsset;
   bool isWishlistTapped = false;
+  List<Map<String, dynamic>> portfolioData = [];
 
   @override
   void initState() {
     super.initState();
+    _loadPortfolioData();
     if (!widget.fromCommodityPage) {
       fetchData(widget.assetData.symbol);
+    }
+  }
+
+  _loadPortfolioData() async {
+    try {
+      List<Map<String, dynamic>> data = await PortfolioService.getPortfolio();
+      setState(() {
+        portfolioData = data;
+      });
+    } catch (error) {
+      CustomToast.showToast("Portfolio Error");
     }
   }
 
@@ -317,7 +331,8 @@ class _AssetViewState extends State<AssetView> {
                                   children: [
                                     ElevatedButton(
                                       onPressed: () {
-                                        // Placeholder for Buy button action
+                                        showAddStockDialog(
+                                            context, stockData.symbol);
                                       },
                                       style: ElevatedButton.styleFrom(
                                         shape: RoundedRectangleBorder(
@@ -378,6 +393,136 @@ class _AssetViewState extends State<AssetView> {
                           ),
                         ),
                       ])));
+  }
+
+  void showAddStockDialog(BuildContext context, String stocksymbol) async {
+    String? selectedPortfolioId;
+
+    TextEditingController quantityController = TextEditingController();
+    TextEditingController priceController = TextEditingController();
+
+    GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    FocusNode quantityFocus = FocusNode();
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text("Add Stock to Portfolio"),
+              content: Form(
+                key: formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    DropdownButtonFormField<String>(
+                      hint: const Text('Select Portfolio'),
+                      value: selectedPortfolioId,
+                      items: portfolioData.map((portfolio) {
+                        return DropdownMenuItem<String>(
+                          value: portfolio['id'].toString(),
+                          child: Text(portfolio['name']),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          selectedPortfolioId = value;
+                        });
+                      },
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please select a portfolio';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: quantityController,
+                      focusNode: quantityFocus,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(labelText: 'Quantity'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a quantity';
+                        }
+                        if (int.tryParse(value) == null) {
+                          return 'Please enter a valid quantity';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: priceController,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(labelText: 'Price'),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a price';
+                        }
+                        if (double.tryParse(value) == null) {
+                          return 'Please enter a valid price';
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              actions: [
+                ElevatedButton(
+                  onPressed: () {
+                    if (formKey.currentState!.validate()) {
+                      if (selectedPortfolioId != null) {
+                        int quantity =
+                            int.tryParse(quantityController.text) ?? 0;
+                        double price =
+                            double.tryParse(priceController.text) ?? 0.0;
+                        addStockToPortfolio(
+                            selectedPortfolioId!, stocksymbol, quantity, price);
+                        Navigator.pop(context);
+                      } else {
+                        CustomToast.showToast('Please select a portfolio');
+                      }
+                    }
+                  },
+                  child: const Text('Save'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: const Text('Cancel'),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  // Future<List<String>> getStockSuggestions(String pattern) async {
+  //   List<String> stockSymbols = (await AssetData.getAssetData())
+  //       .map((asset) => asset.symbol.toString())
+  //       .toList();
+
+  //   return stockSymbols
+  //       .where((symbol) => symbol.toLowerCase().contains(pattern.toLowerCase()))
+  //       .toList();
+  // }
+
+  void addStockToPortfolio(
+      String ptid, String stSymbol, int qt, double pr) async {
+    try {
+      await PortfolioService.addtoPort(
+          int.parse(ptid), stSymbol, qt, pr.toInt());
+      CustomToast.showToast("Stock added successfully");
+      setState(() {});
+    } catch (error) {
+      CustomToast.showToast("Error occured");
+    }
   }
 
   Widget _buildDetailItem(String label, String value) {

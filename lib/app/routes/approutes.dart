@@ -1,5 +1,5 @@
 import 'package:paisa/view/account_view.dart';
-import 'package:paisa/view/category_view.dart';
+//import 'package:paisa/view/category_view.dart';
 import 'package:paisa/view/dashboard_view.dart';
 import 'package:paisa/view/forget_view.dart';
 import 'package:paisa/view/news_view.dart';

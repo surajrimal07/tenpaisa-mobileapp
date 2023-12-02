@@ -38,7 +38,8 @@ dependencies:
   salomon_bottom_bar: ^3.3.2
   crypto: ^3.0.1
   babstrap_settings_screen: ^0.1.6
-  #palette_generator: ^0.3.3+3
+  flutter_slidable: ^3.0.1
+  autocomplete_textfield: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -49,14 +50,6 @@ dev_dependencies:
   # Icons
   api_cache_manager: ^1.0.1
   snippet_coder_utils: ^1.0.14
-
-# flutter_native_splash:
-#   background_image: "assets/images/appsplash.png"
-#   android: true
-#   ios: true
-#   android_gravity: center
-#   ios_content_mode: center
-#   fullscreen: true
 
 #--------------- ./ PACKAGES END ------------------#
 

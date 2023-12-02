@@ -8,6 +8,7 @@ import 'package:paisa/app/routes/approutes.dart';
 import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/data/portfolio_data.dart';
 import 'package:paisa/model/asset_model.dart';
+import 'package:paisa/services/portfolio_services.dart';
 import 'package:paisa/services/user_services.dart';
 import 'package:paisa/utils/colors_utils.dart';
 import 'package:paisa/view/category_view.dart';
@@ -33,6 +34,7 @@ class _MainPageState extends State<DashboardView> {
   final ScrollController _scrollController = ScrollController();
 
   List<Asset> fetchedSymbols = [];
+  List<Map<String, dynamic>> portfolioData = [];
 
   final List<PageController> _pageControllers = [
     PageController(),
@@ -56,6 +58,7 @@ class _MainPageState extends State<DashboardView> {
   void initState() {
     super.initState();
     fetchData();
+    _loadPortfolioData();
   }
 
   Future<void> fetchData() async {
@@ -87,6 +90,18 @@ class _MainPageState extends State<DashboardView> {
       });
     } catch (error) {
       CustomToast.showToast("Error occured fetching data");
+    }
+  }
+
+  _loadPortfolioData() async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    try {
+      List<Map<String, dynamic>> data = await PortfolioService.getPortfolio();
+      setState(() {
+        portfolioData = data;
+      });
+    } catch (error) {
+      CustomToast.showToast("Portfolio Error");
     }
   }
 
@@ -698,6 +713,11 @@ class _MainPageState extends State<DashboardView> {
   }
 
   Container _card() {
+    num totalPortfolioValue = 0;
+    for (var portfolio in portfolioData) {
+      totalPortfolioValue += portfolio['portfoliovalue'] ?? 0;
+    }
+
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: const BoxDecoration(
@@ -724,7 +744,7 @@ class _MainPageState extends State<DashboardView> {
                     textAlign: TextAlign.left,
                   ),
                   Text(
-                    'Rs 112,550.00',
+                    'Rs ${totalPortfolioValue.toString()}',
                     style: GoogleFonts.poppins(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,

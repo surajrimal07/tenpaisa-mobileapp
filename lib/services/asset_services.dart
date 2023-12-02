@@ -579,6 +579,7 @@ class SingleAssetData {
 
 class AssetData {
   static Future<List<Asset>> getAssetData() async {
+    print("Asset data request");
     try {
       List<Map<String, dynamic>> fetchedSymbolMaps =
           await AssetService.getassets("allwithdata");
