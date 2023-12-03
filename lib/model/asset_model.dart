@@ -8,7 +8,7 @@ class Asset {
   String? pe;
   String? percentchange;
   String? ltp;
-  String? unit; //optional
+  String? unit;
   String? totaltradedquantity;
   String? previousclose;
   String? turnover;

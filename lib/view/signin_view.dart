@@ -86,11 +86,12 @@ class _SigninState extends State<SigninView> {
             left: 0,
             right: 0,
             top: 0,
-            child: Image.asset(
-              'assets/images/blite.png',
-              fit: BoxFit.cover,
-              //width: MediaQuery.of(context).size.width,
-            ),
+            child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.25,
+                child: Image.asset(
+                  'assets/images/blite.png',
+                  fit: BoxFit.fitWidth,
+                )),
           ),
           Container(
             alignment: Alignment.center,
@@ -237,7 +238,6 @@ class _SigninState extends State<SigninView> {
 
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    //padding: const EdgeInsets.fromLTRB(40, 0, 35, 0),
                     child: Row(
                       children: [
                         Row(
@@ -260,11 +260,10 @@ class _SigninState extends State<SigninView> {
                             ),
                           ],
                         ),
-                        const Spacer(), // Adds spacing between Remember me and Forgot Password
+                        const Spacer(),
                         InkWell(
                           onTap: () {
-                            Navigator.pushNamed(
-                                context, AppRoute.forgotRoute); // error
+                            Navigator.pushNamed(context, AppRoute.forgotRoute);
                           },
                           child: Text(
                             "Forgot Password",
@@ -309,7 +308,8 @@ class _SigninState extends State<SigninView> {
 
                   //
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(85, 15, 0, 0),
+                    padding: EdgeInsets.fromLTRB(
+                        MediaQuery.of(context).size.width * 0.40, 15, 0, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,

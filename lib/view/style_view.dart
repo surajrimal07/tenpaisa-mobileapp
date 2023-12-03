@@ -25,7 +25,7 @@ class _StyleViewState extends State<StyleView> {
     String valueAsString = _selectedValue.toString();
 
     try {
-      await UserService.updateUser("style", valueAsString,"");
+      await UserService.updateUser("style", valueAsString, "");
       CustomToast.showToast("Saved Successfully");
       // ignore: use_build_context_synchronously
       Navigator.pushNamedAndRemoveUntil(
@@ -52,7 +52,12 @@ class _StyleViewState extends State<StyleView> {
               left: 0,
               right: 0,
               top: 0,
-              child: Image.asset('assets/images/blite.png', fit: BoxFit.cover),
+              child: SizedBox(
+                  height: MediaQuery.of(context).size.height * 0.25,
+                  child: Image.asset(
+                    'assets/images/blite.png',
+                    fit: BoxFit.fitWidth,
+                  )),
             ),
             Container(
               alignment: Alignment.center,
@@ -86,7 +91,6 @@ class _StyleViewState extends State<StyleView> {
                     const SizedBox(
                       height: 3,
                     ),
-                    // List of radio buttons
                     Column(
                       children: [
                         RadioListTile<int>(
@@ -161,7 +165,8 @@ class _StyleViewState extends State<StyleView> {
                       height: 16,
                     ),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(55, 5, 16, 0),
+                      padding: EdgeInsets.fromLTRB(
+                          MediaQuery.of(context).size.height * 0.65, 5, 16, 0),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -210,10 +215,6 @@ class _StyleViewState extends State<StyleView> {
                                 } else {
                                   CustomToast.showToast("Please select");
                                 }
-
-                                //save();
-                                //save choice to database
-                                // save usertoken to shared preferenses
                               },
                               child: Text(
                                 "Continue",

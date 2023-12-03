@@ -143,7 +143,12 @@ class _MyVerifyState extends State<OtpView> {
             left: 0,
             right: 0,
             top: 0,
-            child: Image.asset('assets/images/blite.png', fit: BoxFit.cover),
+            child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.25,
+                child: Image.asset(
+                  'assets/images/blite.png',
+                  fit: BoxFit.fitWidth,
+                )),
           ),
           Container(
             margin: const EdgeInsets.only(left: 25, right: 25),
@@ -199,7 +204,8 @@ class _MyVerifyState extends State<OtpView> {
                                 fontSize: 18,
                               )))),
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(50, 20, 0, 0),
+                    padding: EdgeInsets.fromLTRB(
+                        MediaQuery.of(context).size.height * 0.65, 20, 0, 0),
                     child: Row(
                       children: [
                         Text(

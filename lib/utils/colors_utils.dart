@@ -11,14 +11,14 @@ class MyColors {
   static const Color secondaryColor = Color(0xff1b1f28);
 }
 
-class HexColor extends Color {
-  static int _getColorFromHex(String hexColor) {
-    hexColor = hexColor.toUpperCase().replaceAll("#", "");
-    if (hexColor.length == 6) {
-      hexColor = "FF$hexColor";
-    }
-    return int.parse(hexColor, radix: 16);
-  }
+// class HexColor extends Color {
+//   static int _getColorFromHex(String hexColor) {
+//     hexColor = hexColor.toUpperCase().replaceAll("#", "");
+//     if (hexColor.length == 6) {
+//       hexColor = "FF$hexColor";
+//     }
+//     return int.parse(hexColor, radix: 16);
+//   }
 
-  HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
-}
+//   HexColor(final String hexColor) : super(_getColorFromHex(hexColor));
+// }

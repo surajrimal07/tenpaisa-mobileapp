@@ -3,7 +3,6 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:paisa/app/routes/approutes.dart';
-import 'package:paisa/app/toast/flutter_toast.dart';
 import 'package:paisa/services/notification_services.dart';
 import 'package:paisa/services/websocket_services.dart';
 import 'package:paisa/utils/colors_utils.dart';
@@ -75,8 +74,8 @@ class _SplashScreenState extends State<SplashView> {
       NotificationServices.showNotification(
           receivedTitle, receivedDescription, receivedImage, url);
     } else {
-      //print("Noti Service: Auth ERROR");
-      CustomToast.showToast("Noti: Auth Error");
+      print("Noti Service: Auth ERROR");
+      //CustomToast.showToast("Noti: Auth Error");
     }
   }
 
@@ -88,10 +87,7 @@ class _SplashScreenState extends State<SplashView> {
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
-            colors: [
-              MyColors.btnColor,
-              MyColors.btnColor
-            ], // Set your desired gradient colors
+            colors: [MyColors.btnColor, MyColors.btnColor],
           ),
         ),
         child: Center(

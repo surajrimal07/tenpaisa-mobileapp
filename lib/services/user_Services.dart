@@ -114,7 +114,6 @@ class UserService {
 //fetch user data
   static Future<Map<String, dynamic>?> fetchUserData() async {
     try {
-
       final UserService userService = UserService();
       await userService._loadUserToken();
 
@@ -131,9 +130,8 @@ class UserService {
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
-        body: jsonEncode(<String, String>{
-          'token': userService.userToken ?? ''
-        }), //just to avoid ? null error, however usertoken will never be null here
+        body:
+            jsonEncode(<String, String>{'token': userService.userToken ?? ''}),
       );
 
       if (res.statusCode == 200) {
@@ -150,10 +148,11 @@ class UserService {
               (userData['picture'] ??
                   'default.png'), //"assets/images/content/default.png",
           'style': userData['style'] ?? 0,
+          'defaultport': userData['defaultport'], //untested
         };
       } else {
         CustomToast.showToast('Failed to fetch user data: ${res.statusCode}');
-        return null; //return statuscode here
+        return null;
       }
     } catch (error) {
       CustomToast.showToast('Error fetching user data: $error');

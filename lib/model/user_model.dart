@@ -5,6 +5,14 @@ class User {
   String email;
   String password;
   String invstyle;
-  User(this.name, this.picture, this.phone, this.email, this.password,
-      this.invstyle);
+  int defaultport;
+  User(
+    this.name,
+    this.picture,
+    this.phone,
+    this.email,
+    this.password,
+    this.invstyle, {
+    this.defaultport = 1,
+  });
 }

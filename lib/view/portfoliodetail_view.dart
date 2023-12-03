@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:paisa/app/common/drawer_common.dart';
 import 'package:paisa/app/common/navbar_common.dart';
 import 'package:paisa/app/routes/approutes.dart';
@@ -13,7 +14,7 @@ import 'package:paisa/utils/colors_utils.dart';
 class PortfoliodetailView extends StatefulWidget {
   const PortfoliodetailView({super.key, required this.portfolioId});
 
-  final String portfolioId; // Assuming portfolioId is of type int
+  final String portfolioId;
 
   @override
   _PortfoliodetailState createState() => _PortfoliodetailState();
@@ -87,8 +88,7 @@ class _PortfoliodetailState extends State<PortfoliodetailView> {
               return [
                 PopupMenuItem<String>(
                   value: 'addAsset',
-                  onTap: () => showAddStockDialog(context,
-                      portid: portfolioData[0]['id'].toString()),
+                  onTap: () => showAddStockDialog(context),
                   child: const Text('Add Asset'),
                 ),
                 PopupMenuItem<String>(
@@ -150,6 +150,18 @@ class _PortfoliodetailState extends State<PortfoliodetailView> {
           }
         },
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showAddStockDialog(context);
+        },
+        foregroundColor: Colors.white,
+        backgroundColor: MyColors.btnColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(90.0),
+        ),
+        child: const Icon(Icons.add_outlined),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
@@ -250,9 +262,27 @@ class _PortfoliodetailState extends State<PortfoliodetailView> {
               ],
             )
           else
-            const Text(
-              'No stocks found',
-              style: TextStyle(fontSize: 16, color: Colors.black),
+            Container(
+              margin: const EdgeInsets.only(top: 8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/logos/empty.png',
+                    height: 100,
+                    width: 100,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    'Empty Portfolio, try adding stock to the portfolio',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
         ],
       ),
@@ -444,8 +474,8 @@ class _PortfoliodetailState extends State<PortfoliodetailView> {
     }
   }
 
-  void showAddStockDialog(BuildContext context, {String? portid}) async {
-    String? selectedPortfolioId = portid;
+  void showAddStockDialog(BuildContext context) async {
+    String? selectedPortfolioId = portfolioData[0]['id'].toString();
     String? selectedStockSymbol;
 
     TextEditingController quantityController = TextEditingController();
@@ -469,27 +499,27 @@ class _PortfoliodetailState extends State<PortfoliodetailView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    DropdownButtonFormField<String>(
-                      hint: const Text('Select Portfolio'),
-                      value: selectedPortfolioId,
-                      items: portfolioData.map((portfolio) {
-                        return DropdownMenuItem<String>(
-                          value: portfolio['id'].toString(),
-                          child: Text(portfolio['name']),
-                        );
-                      }).toList(),
-                      onChanged: (value) {
-                        setState(() {
-                          selectedPortfolioId = value;
-                        });
-                      },
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please select a portfolio';
-                        }
-                        return null;
-                      },
-                    ),
+                    // DropdownButtonFormField<String>(
+                    //   hint: const Text('Select Portfolio'),
+                    //   value: selectedPortfolioId,
+                    //   items: portfolioData.map((portfolio) {
+                    //     return DropdownMenuItem<String>(
+                    //       value: portfolio['id'].toString(),
+                    //       child: Text(portfolio['name']),
+                    //     );
+                    //   }).toList(),
+                    //   onChanged: (value) {
+                    //     setState(() {
+                    //       selectedPortfolioId = value;
+                    //     });
+                    //   },
+                    //   validator: (value) {
+                    //     if (value == null || value.isEmpty) {
+                    //       return 'Please select a portfolio';
+                    //     }
+                    //     return null;
+                    //   },
+                    // ),
                     LayoutBuilder(
                       builder: (context, constraints) {
                         return RawAutocomplete<String>(
@@ -592,13 +622,12 @@ class _PortfoliodetailState extends State<PortfoliodetailView> {
                 ElevatedButton(
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
-                      if (selectedPortfolioId != null &&
-                          selectedStockSymbol != null) {
+                      if (selectedStockSymbol != null) {
                         int quantity =
                             int.tryParse(quantityController.text) ?? 0;
                         double price =
                             double.tryParse(priceController.text) ?? 0.0;
-                        addStockToPortfolio(selectedPortfolioId!,
+                        addStockToPortfolio(selectedPortfolioId,
                             selectedStockSymbol!, quantity, price);
                         Navigator.pop(context);
                       } else {

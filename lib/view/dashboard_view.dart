@@ -12,6 +12,7 @@ import 'package:paisa/services/portfolio_services.dart';
 import 'package:paisa/services/user_services.dart';
 import 'package:paisa/utils/colors_utils.dart';
 import 'package:paisa/view/category_view.dart';
+import 'package:paisa/view/portfoliodetail_view.dart';
 
 import '../app/common/drawer_common.dart';
 import '../app/common/navbar_common.dart';
@@ -30,6 +31,8 @@ class _MainPageState extends State<DashboardView> {
   String currentName = "";
   String currentEmail = "";
   String currentPhone = "";
+  int currentPort = 0;
+
   String currentDP = Iconss.defaultdb;
   final ScrollController _scrollController = ScrollController();
 
@@ -61,15 +64,20 @@ class _MainPageState extends State<DashboardView> {
     _loadPortfolioData();
   }
 
+  Future<void> _handleRefresh() async {
+    fetchData();
+    _loadPortfolioData();
+  }
+
   Future<void> fetchData() async {
     try {
+      Map<String, dynamic>? userData = await UserService.fetchUserData();
       TrendingData dataa = await TrendingData.getTrendingData();
       TurnoverData tdata = await TurnoverData.getTurnoverData();
       VolumeData vdata = await VolumeData.getVolumeData();
       List<Asset> cdata = await CommodityData.getCommodityData();
       List<Asset> mdata = await MetalsData.getMetalsData();
       List<Asset> symbols = await AssetData.getAssetData();
-      Map<String, dynamic>? userData = await UserService.fetchUserData();
 
       if (userData != null) {
         setState(() {
@@ -77,6 +85,7 @@ class _MainPageState extends State<DashboardView> {
           currentEmail = userData['email'];
           currentPhone = userData['phone'];
           currentDP = userData['dp'];
+          currentPort = userData['defaultport'];
         });
       }
 
@@ -94,14 +103,18 @@ class _MainPageState extends State<DashboardView> {
   }
 
   _loadPortfolioData() async {
-    await Future.delayed(const Duration(milliseconds: 100));
+    await Future.delayed(const Duration(milliseconds: 400));
     try {
       List<Map<String, dynamic>> data = await PortfolioService.getPortfolio();
+
+      List<Map<String, dynamic>> filteredPortfolio =
+          data.where((portfolio) => portfolio['id'] == currentPort).toList();
+
       setState(() {
-        portfolioData = data;
+        portfolioData = filteredPortfolio;
       });
     } catch (error) {
-      CustomToast.showToast("Portfolio Error");
+      print("--------We got a portfolio errror--------");
     }
   }
 
@@ -132,8 +145,10 @@ class _MainPageState extends State<DashboardView> {
   Widget build(BuildContext context) {
     return Scaffold(
         key: _scaffoldKey,
-        body: SafeArea(
-          child: SingleChildScrollView(
+        body: RefreshIndicator(
+          onRefresh: _handleRefresh,
+          child: SafeArea(
+              child: SingleChildScrollView(
             //physics: const BouncingScrollPhysics(),
             controller: _scrollController,
             child: Column(
@@ -148,7 +163,7 @@ class _MainPageState extends State<DashboardView> {
                 _mySummary()
               ],
             ),
-          ),
+          )),
         ),
         drawer: const CommonDrawer(),
         bottomNavigationBar: CommonBottomNavigationBar(
@@ -543,7 +558,44 @@ class _MainPageState extends State<DashboardView> {
   }
 
   Container _portfolio() {
+    List<Map<String, dynamic>> stocks = portfolioData.isNotEmpty
+        ? (portfolioData[0]['stocks'] as List<dynamic>)
+            .cast<Map<String, dynamic>>()
+        : [];
+
+    Future<String> fetchMissingData(String symbol, String property) async {
+      List<Asset> assetList = await AssetData.getAssetData();
+
+      Asset? asset = assetList.firstWhere(
+        (element) => element.symbol == symbol,
+        orElse: () => Asset(symbol: symbol, name: 'Unknown'),
+      );
+
+      switch (property) {
+        case 'name':
+          String companyName = asset.name.split(' ').take(2).join(' ');
+          return companyName.length > 8
+              ? '${companyName.substring(0, 6)}..'
+              : companyName;
+        case 'ltp':
+          return asset.ltp ?? "0.0";
+        case 'percentchange':
+          String percentChange = asset.percentchange ?? "0.0";
+          return '${double.parse(percentChange).toStringAsFixed(1)}%';
+        default:
+          return 'Unknown';
+      }
+    }
+
     return Container(
+      margin: const EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.black,
+          width: 0.1,
+        ),
+      ),
       padding: const EdgeInsets.only(left: 10, right: 10, top: 8, bottom: 8),
       child: Column(
         children: [
@@ -551,96 +603,189 @@ class _MainPageState extends State<DashboardView> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'My Portfolio',
+                portfolioData.isNotEmpty
+                    ? 'My Portfolio ${portfolioData[0]['name']}'
+                    : 'My Portfolio',
                 style: GoogleFonts.poppins(
-                    fontSize: 20, fontWeight: FontWeight.w600),
+                  fontSize: 20,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               MaterialButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PortfoliodetailView(
+                        portfolioId: currentPort.toString(),
+                      ),
+                    ),
+                  );
+                },
                 child: Text(
                   'View All',
                   style: GoogleFonts.poppins(
-                      color: MyColors.primaryColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400),
+                    color: MyColors.primaryColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
-              )
+              ),
             ],
           ),
-          SizedBox(
-            height: 125,
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: stockPortfolio.length,
-              scrollDirection: Axis.horizontal,
-              itemBuilder: (context, index) => InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, AppRoute.assetRoute);
-                },
-                child: Container(
-                  padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.only(right: 10),
-                  height: 125,
-                  width: 150,
-                  decoration: BoxDecoration(
-                      color: HexColor('${stockPortfolio[index].color}')
-                          .withOpacity(0.12),
-                      borderRadius: BorderRadius.circular(16)),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          const CircleAvatar(
-                            radius: 20,
-                            backgroundImage: AssetImage(Iconss.equityIcon),
-                          ),
-                          const SizedBox(width: 8),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                '${stockPortfolio[index].symbol}',
+          if (stocks.isEmpty || portfolioData.isEmpty)
+            Container(
+              margin: const EdgeInsets.only(top: 8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/logos/empty.png',
+                    height: 100,
+                    width: 100,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    portfolioData.isEmpty
+                        ? 'Please create a new portfolio'
+                        : stocks.isEmpty
+                            ? 'Empty Portfolio, try adding stock to the portfolio'
+                            : '',
+                    style: GoogleFonts.poppins(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
+            ),
+          if (stocks.isNotEmpty && portfolioData.isNotEmpty)
+            SizedBox(
+              height: 125,
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemCount: stocks.length,
+                scrollDirection: Axis.horizontal,
+                itemBuilder: (context, index) => InkWell(
+                  onTap: () {
+                    // Handle stock item tap if needed
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(10),
+                    margin: const EdgeInsets.only(right: 10),
+                    height: 125,
+                    width: 150,
+                    decoration: BoxDecoration(
+                      color: MyColors.btnColor.withOpacity(0.12),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            const CircleAvatar(
+                              radius: 20,
+                              backgroundImage: AssetImage(Iconss.equityIcon),
+                            ),
+                            const SizedBox(width: 8),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${stocks[index]['symbol']}',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                                FutureBuilder<String>(
+                                  future: fetchMissingData(
+                                      stocks[index]['symbol'], 'name'),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const SizedBox(
+                                        width: 10,
+                                        child: LinearProgressIndicator(),
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return Text('Error: ${snapshot.error}');
+                                    } else {
+                                      final companyName =
+                                          snapshot.data ?? 'Unknown';
+                                      return Text(
+                                        companyName,
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.w400,
+                                        ),
+                                      );
+                                    }
+                                  },
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 9),
+                        FutureBuilder<String>(
+                          future:
+                              fetchMissingData(stocks[index]['symbol'], 'ltp'),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const SizedBox(
+                                width: 10,
+                                child: LinearProgressIndicator(),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              final ltp = snapshot.data ?? '0.0';
+                              return Text(
+                                'Rs $ltp',
                                 style: GoogleFonts.poppins(
-                                    fontSize: 15, fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                '${stockPortfolio[index].name}',
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                        const SizedBox(height: 5),
+                        FutureBuilder<String>(
+                          future: fetchMissingData(
+                              stocks[index]['symbol'], 'percentchange'),
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return const SizedBox(
+                                width: 10,
+                                child: LinearProgressIndicator(),
+                              );
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              final percentChange = snapshot.data;
+                              return Text(
+                                '$percentChange',
                                 style: GoogleFonts.poppins(
-                                    fontSize: 14, fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          )
-                        ],
-                      ),
-                      const SizedBox(height: 9),
-                      Text(
-                        '${stockPortfolio[index].price}',
-                        style: GoogleFonts.poppins(
-                            fontSize: 17, fontWeight: FontWeight.w600),
-                      ),
-                      const SizedBox(height: 5),
-                      Row(
-                        children: [
-                          const Icon(
-                            Iconsax.arrow_up_1,
-                            size: 18,
-                          ),
-                          const SizedBox(width: 4),
-                          Text(
-                            '${stockPortfolio[index].change}',
-                            style: GoogleFonts.poppins(
-                                fontSize: 12, fontWeight: FontWeight.w400),
-                          ),
-                        ],
-                      )
-                    ],
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
             ),
-          )
         ],
       ),
     );
@@ -721,14 +866,13 @@ class _MainPageState extends State<DashboardView> {
     return Container(
       padding: const EdgeInsets.all(8),
       decoration: const BoxDecoration(
-        color: MyColors.btnColor, // Set to your desired navy blue color
-        //borderRadius: BorderRadius.circular(16),
+        color: MyColors.btnColor,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            flex: 3, // Allocate 3/4 of the space for the portfolio details
+            flex: 3,
             child: Container(
               padding: const EdgeInsets.only(right: 16),
               child: Column(
@@ -744,7 +888,9 @@ class _MainPageState extends State<DashboardView> {
                     textAlign: TextAlign.left,
                   ),
                   Text(
-                    'Rs ${totalPortfolioValue.toString()}',
+                    totalPortfolioValue != 0
+                        ? 'Rs ${totalPortfolioValue.toString()}'
+                        : 'Add Assets',
                     style: GoogleFonts.poppins(
                       fontSize: 22,
                       fontWeight: FontWeight.w700,
@@ -756,18 +902,25 @@ class _MainPageState extends State<DashboardView> {
                   RichText(
                     text: TextSpan(
                       children: [
-                        const WidgetSpan(
+                        WidgetSpan(
                           child: Padding(
-                            padding: EdgeInsets.only(right: 4),
+                            padding: const EdgeInsets.only(right: 4),
                             child: Icon(
-                              Iconsax.arrow_up_1,
+                              portfolioData.isNotEmpty
+                                  ? portfolioData.first['stocks']
+                                              .first['netgainloss'] >
+                                          0
+                                      ? Iconsax.arrow_up_1
+                                      : Iconsax.arrow_down_2
+                                  : Iconsax.empty_wallet_add,
                               size: 18,
                               color: Colors.white,
                             ),
                           ),
                         ),
                         TextSpan(
-                          text: '+4.5% this week',
+                          text:
+                              'Rs ${portfolioData.isNotEmpty ? portfolioData.first['stocks'].first['netgainloss'].toStringAsFixed(0) : '0'}',
                           style: GoogleFonts.poppins(
                             color: Colors.white,
                             fontSize: 13,

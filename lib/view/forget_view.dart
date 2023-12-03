@@ -102,8 +102,12 @@ class _ForgotState extends State<ForgotView> {
                 left: 0,
                 right: 0,
                 top: 0,
-                child:
-                    Image.asset('assets/images/blite.png', fit: BoxFit.cover),
+                child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.25,
+                    child: Image.asset(
+                      'assets/images/blite.png',
+                      fit: BoxFit.fitWidth,
+                    )),
               ),
               Container(
                 alignment: Alignment.center,
@@ -356,7 +360,8 @@ class _ForgotState extends State<ForgotView> {
 
                       //
                       Padding(
-                        padding: const EdgeInsets.fromLTRB(125, 15, 0, 0),
+                        padding: EdgeInsets.fromLTRB(
+                            MediaQuery.of(context).size.width * 0.45, 15, 0, 0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -384,7 +389,7 @@ class _ForgotState extends State<ForgotView> {
                             InkWell(
                               onTap: () {
                                 Navigator.pushNamed(
-                                    context, AppRoute.signupRoute); //error
+                                    context, AppRoute.signupRoute);
                               },
                               child: Text(
                                 "Sign Up",

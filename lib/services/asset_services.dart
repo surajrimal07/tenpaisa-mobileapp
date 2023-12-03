@@ -32,8 +32,6 @@ class AssetService {
       // await getsingleasset('NABIL');
 
       //print("getassets('allwithdata')");
-      prefs.remove('asset_cache');
-      await getassets('allwithdata');
 
       //print("getcommodity");
       prefs.remove('commodity_cache');
@@ -93,17 +91,17 @@ class AssetService {
 // new approach to save cache in shared preferenses
   static Future<List<Map<String, dynamic>>> getassets(String symbol) async {
     try {
-      const String cacheKey = 'asset_cache';
+      // const String cacheKey = 'asset_cache';
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? cachedData = prefs.getString(cacheKey);
+      // SharedPreferences prefs = await SharedPreferences.getInstance();
+      // String? cachedData = prefs.getString(cacheKey);
 
-      if (cachedData != null) {
-        List<Map<String, dynamic>> data =
-            List<Map<String, dynamic>>.from(json.decode(cachedData));
+      // if (cachedData != null) {
+      //   List<Map<String, dynamic>> data =
+      //       List<Map<String, dynamic>>.from(json.decode(cachedData));
 
-        return data;
-      }
+      //   return data;
+      // }
 
       var url =
           Uri.parse("${ServerConfig.SERVER_ADDRESS}${ServerConfig.GET_ASSET}");
@@ -124,8 +122,7 @@ class AssetService {
         List<Map<String, dynamic>> data =
             List<Map<String, dynamic>>.from(json.decode(response.body));
 
-        prefs.setString(cacheKey, json.encode(data));
-
+        //prefs.setString(cacheKey, json.encode(data));
         return data;
       } else {
         throw Exception('Failed to load symbols');

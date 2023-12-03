@@ -44,7 +44,8 @@ class PortfolioScreenState extends State<PortfolioView> {
         portfolioData = data;
       });
     } catch (error) {
-      CustomToast.showToast("Portfolio Error");
+      print("--------We got a portfolio errror--------");
+      //CustomToast.showToast("Portfolio Error");
     }
   }
 
@@ -74,11 +75,12 @@ class PortfolioScreenState extends State<PortfolioView> {
       body: RefreshIndicator(
         onRefresh: _handleRefresh,
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Center(
             child: Container(
               color: Colors.white,
               padding: const EdgeInsets.all(5),
-              child: portfolioData.isNotEmpty
+              child: portfolioData.isNotEmpty || _hasStocks()
                   ? Column(
                       children: [
                         if (portfolioData.isNotEmpty) _buildSummaryCard(),
@@ -86,9 +88,24 @@ class PortfolioScreenState extends State<PortfolioView> {
                           _buildPortfolioContainer(portfolio),
                       ],
                     )
-                  : const Text(
-                      'No portfolio',
-                      style: TextStyle(fontSize: 18, color: Colors.black),
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          'assets/logos/empty.png',
+                          height: 200,
+                          width: 200,
+                        ),
+                        const SizedBox(height: 16),
+                        const Text(
+                          'Empty Portfolio or Asset, try adding portfolio and assets.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ],
                     ),
             ),
           ),
@@ -233,6 +250,12 @@ class PortfolioScreenState extends State<PortfolioView> {
     );
   }
 
+  bool _hasStocks() {
+    return portfolioData.any((portfolio) =>
+        portfolio['stocks'] != null &&
+        (portfolio['stocks'] as List).isNotEmpty);
+  }
+
   _buildPortfolioContainer(Map<String, dynamic> portfolio) {
     List<dynamic> gainLossRecords = portfolio['gainLossRecords'];
     Map<String, dynamic>? lastRecord =
@@ -246,7 +269,6 @@ class PortfolioScreenState extends State<PortfolioView> {
 
     return GestureDetector(
         onTap: () {
-          // Navigate to PortfolioDetailView when tapped
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -284,44 +306,17 @@ class PortfolioScreenState extends State<PortfolioView> {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        '(Rs ${lastRecord?['portgainloss']})',
+                        lastRecord?['portgainloss'] != null
+                            ? 'Rs ${lastRecord?['portgainloss']}'
+                            : '',
                         style: const TextStyle(
-                          fontSize: 14, // Adjust the font size as needed
-                          fontWeight: FontWeight
-                              .normal, // You can adjust other styles here
+                          fontSize: 14,
+                          fontWeight: FontWeight.normal,
                         ),
                       ),
                     ],
                   ),
                   PopupMenuButton<String>(
-                    // onSelected: (value) {
-                    //   // Handle the selected menu item
-                    //   switch (value) {
-                    //     case 'rename':
-                    //       // Handle rename portfolio
-                    //       break;
-                    //     case 'addAsset':
-                    //       // Handle add asset
-                    //       break;
-                    //     case 'removeAsset':
-                    //       // Handle remove asset
-                    //       break;
-                    //     case 'deletePortfolio':
-                    //       // Handle delete portfolio
-                    //       break;
-                    //     case 'comparePortfolio':
-                    //       // Handle compare portfolio
-                    //       break;
-                    //     case 'view':
-                    //       // Navigate to PortfolioDetailView()
-                    //       Navigator.push(
-                    //         context,
-                    //         MaterialPageRoute(
-                    //             builder: (context) => const PortfoliodetailView()),
-                    //       );
-                    //       break;
-                    //   }
-                    // },
                     itemBuilder: (BuildContext context) {
                       return [
                         PopupMenuItem<String>(
@@ -344,6 +339,11 @@ class PortfolioScreenState extends State<PortfolioView> {
                           value: 'rename',
                           child: const Text('Rename Portfolio'),
                           onTap: () => _showEditDialog(portfolio),
+                        ),
+                        PopupMenuItem<String>(
+                          value: 'setdefault',
+                          child: const Text('Make Default'),
+                          onTap: () => _makedefault(portfolio),
                         ),
                         PopupMenuItem<String>(
                           value: 'view',
@@ -491,6 +491,45 @@ class PortfolioScreenState extends State<PortfolioView> {
     }
   }
 
+  void _makedefault(Map<String, dynamic> portfolio) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text("Confirm Make Default?"),
+          content:
+              const Text("Are you sure? This will make your portfolio default"),
+          actions: [
+            ElevatedButton(
+              onPressed: () async {
+                try {
+                  await PortfolioService.setdetault(portfolio['id']);
+                  await _loadPortfolioData();
+                  CustomToast.showToast("Added default");
+                  Navigator.pop(context);
+                } catch (error) {
+                  if (error == "301") {
+                    CustomToast.showToast("Portfolio is already default");
+                  } else {
+                    CustomToast.showToast("Failed to add default");
+                  }
+                  Navigator.pop(context);
+                }
+              },
+              child: const Text('Yes'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _showDeleteDialog(Map<String, dynamic> portfolio) {
     showDialog(
       context: context,
@@ -504,6 +543,7 @@ class PortfolioScreenState extends State<PortfolioView> {
               onPressed: () async {
                 try {
                   await PortfolioService.deleteport(portfolio['id']);
+                  //_handleRefresh();
                   await _loadPortfolioData();
                   CustomToast.showToast("Portfolio deleted");
                   Navigator.pop(context);

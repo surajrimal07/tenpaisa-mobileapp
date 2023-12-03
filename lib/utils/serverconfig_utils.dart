@@ -1,8 +1,8 @@
 class ServerConfig {
   static const String HTTPS = "http://";
   static const String PORT = ":5000";
-  static const String ADDRESS = "192.168.101.12";
-  //static const String ADDRESS = "10.1.8.9"; // Change me
+  static const String ADDRESS = "192.168.101.15";
+  //static const String ADDRESS = "10.12.1.60"; // Change me
   static const String SERVER_ADDRESS = "$HTTPS$ADDRESS$PORT";
   static const String SOCKET_ADDRESS = "ws://$ADDRESS:8081";
 
@@ -33,4 +33,6 @@ class ServerConfig {
   static const String DELETE_PORTFOLIO = "/api/delport";
   static const String GET_PORT = "/api/getallportforuser";
   static const String REM_PORT = "/api/renameportfolio";
+  static const String ADD_DEFAULT_PORT = "/api/adddefaultport";
+  static const String REM_DEFAULT_PORT = "/api/removedefaultport";
 }

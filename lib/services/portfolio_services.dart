@@ -206,4 +206,40 @@ class PortfolioService {
       throw Exception('An error occurred: $error');
     }
   }
+
+//set default portfolio
+  static Future<void> setdetault(int id) async {
+    final UserService userService = UserService();
+    var completer = Completer<void>();
+
+    try {
+      var url = Uri.parse(
+          "${ServerConfig.SERVER_ADDRESS}${ServerConfig.ADD_DEFAULT_PORT}");
+
+      var requestBody = {
+        'token': userService.userToken,
+        'id': id,
+      };
+
+      var response = await http.post(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        var responseData = json.decode(response.body);
+        return responseData['message'];
+      } else if (response.statusCode == 301) {
+        completer.completeError("301");
+      } else {
+        completer.completeError("400");
+      }
+    } catch (error) {
+      throw Exception('An error occurred: $error');
+    }
+    return completer.future;
+  }
 }
