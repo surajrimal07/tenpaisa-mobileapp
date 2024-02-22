@@ -7,37 +7,46 @@ A Smart Investment App made for Softwarica College of IT & E-Commerce, Coventry 
 
 ## Overview
 
-The Smart Investment Application is a state-of-the-art application that gives users the knowledge and insights they need to maximize their investment strategy. Utilizing technology, data analytics, and intelligent systems, this ground-breaking program offers users individualized investment suggestions, portfolio management, and real-time market analysis.
+The Smart Investment Application is a cutting-edge platform designed to empower users with the knowledge and insights necessary to optimize their investment strategies. Leveraging advanced technology, data analytics, and intelligent systems, this innovative application offers tailored investment recommendations, robust portfolio management tools, and real-time market analysis.
 
-## Features
+## Key Features
 
-- User registration and portfolio management: user registration, login, etc.
- 
-- Investment dashboard: a dashboard displaying an overview of the user's investment portfolios. End-of-day updates on investment opportunities, gains, and losses
- 
-- Diverse asset classes: The app supports multiple asset classes like bonds, mutual funds, stocks, SIPs, IPOs, FPOs, etc. The app also provides detailed information and research on each investment   asset class or opportunity.
- 
-- Portfolio tracking: ability to add, edit, and remove investments or portfolios. Portfolio performance charts and graphs.
- 
-- Portfolio rebalancing: portfolio rebalancing recommendations Ability to rebalance portfolios based on user criteria.
- 
-- Research and Analysis: Market news and updates, financial asset comparison, and research
-  Investment recommendations are based on user preferences and goals.
- 
-- Goal Planning: Set financial goals (e.g retirement, children's education, buying a house).
-  Track progress towards achieving those goals.
+- **User Registration and Portfolio Management**: Seamlessly register users and provide comprehensive portfolio management functionalities including login capabilities.
 
-- Portfolio Comparison: comparing portfolios in terms of their dividend yield, yearly returns, capital appreciation, and liquidity.
- 
-- Transaction History: View the transaction history for all investments.
- 
-- Financial News and Insights: Up-to-date financial news and articles; data aggregation from third-party related news sites
- 
-- Personalized Recommendations: Simple algorithm-driven investment recommendations based on the user's financial criteria and goals
- 
-- Demo buy sell: The app facilitates easy buying and selling of available asset classes and listed securities for learning purposes.
- 
-- Stock search and sorting: The app facilitates users looking up stocks and investment opportunities.
+- **Investment Dashboard**: Access a dynamic dashboard providing a comprehensive overview of users' investment portfolios. Receive timely updates on investment opportunities, gains, and losses.
+
+- **Diverse Asset Classes**: Support for a wide range of asset classes including bonds, mutual funds, stocks, SIPs, IPOs, FPOs, etc. Gain access to detailed information and research on each investment opportunity.
+
+- **Portfolio Tracking**: Effortlessly add, edit, and remove investments or portfolios. Visualize portfolio performance through intuitive charts and graphs.
+
+- **Portfolio Rebalancing**: Receive recommendations for portfolio rebalancing based on user-defined criteria to optimize investment strategies.
+
+- **Research and Analysis**: Stay informed with market news, updates, and financial asset comparison. Investment recommendations are tailored to individual user preferences and goals.
+
+- **Goal Planning**: Set and track financial goals such as retirement planning, saving for children's education, or purchasing a house.
+
+- **Portfolio Comparison**: Compare portfolios based on various metrics including dividend yield, yearly returns, capital appreciation, and liquidity.
+
+- **Financial News and Insights**: Stay up-to-date with the latest financial news and articles sourced from third-party news sites.
+
+- **Personalized Recommendations**: Receive algorithm-driven investment recommendations based on user-specific financial criteria and goals.
+
+- **Demo Buy-Sell**: Practice buying and selling of available asset classes and listed securities for educational purposes.
+
+- **Stock Search and Sorting**: Effortlessly search and sort through stocks and investment opportunities to make informed decisions.
+
+- **Watchlist**: Create and manage watchlists to monitor specific stocks or assets of interest. Easily add or remove stocks from watchlists for tracking purposes.
+
+- **Wallet Management**: Enable users to create and manage virtual wallets within the app. Users can add funds to their wallets for investment purposes.
+
+- **Funds Deposit**: Allow users to deposit funds into their wallets securely using various payment methods.
+
+- **Demo Buy-Sell**: Facilitate simulated buying and selling of assets using funds from the wallet. Users can practice investment strategies and learn without risking real money.
+
+- **Learning Mode**: Provide a dedicated learning mode within the app, allowing users to explore features and functionalities in a risk-free environment.
+
+- **Financial Recommendations**: Offer personalized financial recommendations specifically tailored to users' portfolios. These recommendations are based on data analytics and user-defined investment goals.
+
 
 ## Screenshots
 <img src="public/about us.png?raw=true" width="400"/> <img src="public/add new wallet.png?raw=true" width="400"/>
