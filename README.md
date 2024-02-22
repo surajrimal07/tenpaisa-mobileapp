@@ -31,8 +31,6 @@ The Smart Investment Application is a cutting-edge platform designed to empower 
 
 - **Personalized Recommendations**: Receive algorithm-driven investment recommendations based on user-specific financial criteria and goals.
 
-- **Demo Buy-Sell**: Practice buying and selling of available asset classes and listed securities for educational purposes.
-
 - **Stock Search and Sorting**: Effortlessly search and sort through stocks and investment opportunities to make informed decisions.
 
 - **Watchlist**: Create and manage watchlists to monitor specific stocks or assets of interest. Easily add or remove stocks from watchlists for tracking purposes.
@@ -45,75 +43,101 @@ The Smart Investment Application is a cutting-edge platform designed to empower 
 
 - **Learning Mode**: Provide a dedicated learning mode within the app, allowing users to explore features and functionalities in a risk-free environment.
 
-- **Financial Recommendations**: Offer personalized financial recommendations specifically tailored to users' portfolios. These recommendations are based on data analytics and user-defined investment goals.
+- **Financial Recommendations**: Offer personalized financial recommendations specifically tailored to users' portfolios. These recommendations are based on data analytics and user-defined investment goals. (For learning         purpose only)
 
 
 ## Screenshots
 
 <p align="center">
-  <img src="public/about us.png?raw=true" width="250"/> <img src="public/add new wallet.png?raw=true" width="250"/> <img src="public/add stock.png?raw=true" width="250"/>
+  <img src="public/about us.png?raw=true" width="250"/> <img src="public/add money to wallet.png?raw=true" width="250"/> <img src="public/add stock .png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/adding money.png?raw=true" width="250"/> <img src="public/camera permission.png?raw=true" width="250"/> <img src="public/dark mode portfolio.png?raw=true" width="250"/>
+  <img src="public/add stock dialog 2.png?raw=true" width="250"/> <img src="public/add stock dialog.png?raw=true" width="250"/> <img src="public/add stock to portfolio.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/dark mode profile.png?raw=true" width="250"/> <img src="public/dark mode.png?raw=true" width="250"/> <img src="public/dashboard.png?raw=true" width="250"/>
+  <img src="public/adding wallet to user wallet.png?raw=true" width="250"/> <img src="public/asset search.png?raw=true" width="250"/> <img src="public/balance check while adding stock.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/data sources.png?raw=true" width="250"/> <img src="public/drawer.png?raw=true" width="250"/> <img src="public/empty portfolio.png?raw=true" width="250"/>
+  <img src="public/camera permission.png?raw=true" width="250"/> <img src="public/commodity list.png?raw=true" width="250"/> <img src="public/currency rates.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/fingerprint login option.png?raw=true" width="250"/> <img src="public/fingerprint unavailable.png?raw=true" width="250"/> <img src="public/fingerprint.png?raw=true" width="250"/>
+  <img src="public/dashboard dark mode.png?raw=true" width="250"/> <img src="public/dashboard list 1.png?raw=true" width="250"/> <img src="public/dashboard list 2.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/fingerptint enabled login.png?raw=true" width="250"/> <img src="public/forget pass step 1.png?raw=true" width="250"/> <img src="public/forget pass step 2.png?raw=true" width="250"/>
+  <img src="public/dashboard summary 2.png?raw=true" width="250"/> <img src="public/dashboard summary.png?raw=true" width="250"/> <img src="public/dashboard.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/forget pass step 3.png?raw=true" width="250"/> <img src="public/forget password.png?raw=true" width="250"/> <img src="public/gainers list.png?raw=true" width="250"/>
+  <img src="public/data sources.png?raw=true" width="250"/> <img src="public/drawer.png?raw=true" width="250"/> <img src="public/email validation and change email.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/image upload options.png?raw=true" width="250"/> <img src="public/in app chart.png?raw=true" width="250"/> <img src="public/in app webview.png?raw=true" width="250"/>
+  <img src="public/email verification.png?raw=true" width="250"/> <img src="public/empty notification.png?raw=true" width="250"/> <img src="public/empty portfolio.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/individual portfolio menu.png?raw=true" width="250"/> <img src="public/individual summary.png?raw=true" width="250"/> <img src="public/khalti wallet added.png?raw=true" width="250"/>
+  <img src="public/empty wallet.png?raw=true" width="250"/> <img src="public/empty watchlist.png?raw=true" width="250"/> <img src="public/fingerprint dialog.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/live financial news.png?raw=true" width="250"/> <img src="public/login.png?raw=true" width="250"/> <img src="public/market summary.png?raw=true" width="250"/>
+  <img src="public/fingerprint enabled.png?raw=true" width="250"/> <img src="public/fingerprint logging.png?raw=true" width="250"/> <img src="public/fingerprint login.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/money added.png?raw=true" width="250"/> <img src="public/notification permission.png?raw=true" width="250"/> <img src="public/notification view.png?raw=true" width="250"/>
+  <img src="public/forget password.png?raw=true" width="250"/> <img src="public/image source model.png?raw=true" width="250"/> <img src="public/in app webview 2.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/nrb currency data.png?raw=true" width="250"/> <img src="public/nrb data.png?raw=true" width="250"/> <img src="public/onboarding.png?raw=true" width="250"/>
+  <img src="public/inapp webview loading.png?raw=true" width="250"/> <img src="public/inapp webview.png?raw=true" width="250"/> <img src="public/individual portfolio 1.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/password reset success.png?raw=true" width="250"/> <img src="public/portfolio compare.png?raw=true" width="250"/> <img src="public/portfolio dark mode.png?raw=true" width="250"/>
+  <img src="public/individual portfolio charts.png?raw=true" width="250"/> <img src="public/individual portfolio options.png?raw=true" width="250"/> <img src="public/individual portfolio.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/portfolio graphs.png?raw=true" width="250"/> <img src="public/portfolio pie chart.png?raw=true" width="250"/> <img src="public/profile 1.png?raw=true" width="250"/>
+  <img src="public/live financial news.png?raw=true" width="250"/> <img src="public/loading.png?raw=true" width="250"/> <img src="public/login screen with fingerprint enabled.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/profile 2.png?raw=true" width="250"/> <img src="public/profile 3.png?raw=true" width="250"/> <img src="public/profile updated.png?raw=true" width="250"/>
+  <img src="public/login.png?raw=true" width="250"/> <img src="public/logout.png?raw=true" width="250"/> <img src="public/metals list.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/remove stock from portfolio.png?raw=true" width="250"/> <img src="public/search result.png?raw=true" width="250"/> <img src="public/search.png?raw=true" width="250"/>
+  <img src="public/name change.png?raw=true" width="250"/> <img src="public/nepse live chart.png?raw=true" width="250"/> <img src="public/news detailed.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/shake to logout dialog.png?raw=true" width="250"/> <img src="public/shake to logout.png?raw=true" width="250"/> <img src="public/stock detail view.png?raw=true" width="250"/>
+  <img src="public/news in notification shade.png?raw=true" width="250"/> <img src="public/notification permission.png?raw=true" width="250"/> <img src="public/nrb indicator.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/stock details.png?raw=true" width="250"/> <img src="public/stock options.png?raw=true" width="250"/> <img src="public/top gainers.png?raw=true" width="250"/>
+  <img src="public/onboarding.png?raw=true" width="250"/> <img src="public/otp input.png?raw=true" width="250"/> <img src="public/password reset success.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/update user.png?raw=true" width="250"/> <img src="public/updating profile.png?raw=true" width="250"/> <img src="public/wallet.png?raw=true" width="250"/>
+  <img src="public/portfolio chart 1.png?raw=true" width="250"/> <img src="public/portfolio chart 2.png?raw=true" width="250"/> <img src="public/portfolio charts 2.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/watchlist menu.png?raw=true" width="250"/> <img src="public/watchlist.png?raw=true" width="250"/> <img src="public/world market list.png?raw=true" width="250"/>
+  <img src="public/portfolio charts 3.png?raw=true" width="250"/> <img src="public/portfolio charts 4.png?raw=true" width="250"/> <img src="public/portfolio compare 2.png?raw=true" width="250"/>
+</p>
+<p align="center">
+  <img src="public/portfolio compare.png?raw=true" width="250"/> <img src="public/portfolio dark mode.png?raw=true" width="250"/> <img src="public/portfolio options.png?raw=true" width="250"/>
+</p>
+<p align="center">
+  <img src="public/profile 1.png?raw=true" width="250"/> <img src="public/profile 2.png?raw=true" width="250"/> <img src="public/profile 3.png?raw=true" width="250"/>
+</p>
+<p align="center">
+  <img src="public/profile dark mode 2.png?raw=true" width="250"/> <img src="public/profile dark mode.png?raw=true" width="250"/> <img src="public/remove stock from watchlist.png?raw=true" width="250"/>
+</p>
+<p align="center">
+  <img src="public/search screen.png?raw=true" width="250"/> <img src="public/shake to logout dialog.png?raw=true" width="250"/> <img src="public/shake to logout enabled.png?raw=true" width="250"/>
+</p>
+<p align="center">
+  <img src="public/signup.png?raw=true" width="250"/> <img src="public/splash.png?raw=true" width="250"/> <img src="public/stock added to portfolio.png?raw=true" width="250"/>
+</p>
+<p align="center">
+  <img src="public/stock details options.png?raw=true" width="250"/> <img src="public/stock details.png?raw=true" width="250"/> <img src="public/stock selection dropdown.png?raw=true" width="250"/>
+</p>
+<p align="center">
+  <img src="public/stocks list.png?raw=true" width="250"/> <img src="public/style selection.png?raw=true" width="250"/> <img src="public/top gainers list.png?raw=true" width="250"/>
+</p>
+<p align="center">
+  <img src="public/us market .png?raw=true" width="250"/> <img src="public/wallet money added.png?raw=true" width="250"/> <img src="public/wallet.png?raw=true" width="250"/>
+</p>
+<p align="center">
+  <img src="public/watchlist options.png?raw=true" width="250"/> <img src="public/watchlist.png?raw=true" width="250"/> <img src="public/world market list.png?raw=true" width="250"/>
 </p>
 <p align="center">
   <img src="public/world market.png?raw=true" width="250"/>
 </p>
-
 
 ## Prerequisites
 
@@ -126,10 +150,8 @@ Before you start, make sure you have the following installed:
 - Database: You'll need a MongoDB database system or MongoDB Atlas, to store user and financial data. Make sure you have 'paisa' database with 'users' collection [official website](https://www.mongodb.com/try/download/community).
 
 ## TODO
-- Charts, Notification Listener, wacc, loss gains and other financial calculations. 
-- Complete asset View, portfolio view.
-- Recommendation system.
-- Fetch live data (working on it).
+- Roboust notification system.
+- code optimizations
 
 ## What Works?
 - Login Screen (connected to MongoDB)
@@ -137,6 +159,10 @@ Before you start, make sure you have the following installed:
 - OTP Screen (EMail OTP, uses [Google Mail Service](mail.google.com) service)
 - Password reset, user data update.
 - Live stock prices.
+- Portfolio recommendation system (it's very basic).
+- live nepse charts, and notification.
+- Automatic loss gains calculations.
+- Compare portfolio and suggest portfolio based on returns.
 - live metals prices.
 - Live Nepse Index (web socket)
 - live commodities prices (vegetables for now).
@@ -151,15 +177,21 @@ Before you start, make sure you have the following installed:
 - Watchlist, create watchlist, edit watchlist, delete watchlist, add asset to watchlist, edit and delete asset from watchlist.
 - Wacc calculation, portfolio adjustment, asset news, asset advance candlestick chart (usages third party service).
 - Portfolio detailed view, comparision and portfolio recommendation.
-- Recommendation system (very basic).
+- Recommendation system (very basic) based on user goals.
+- live NRB data like exchange rates and CD Ratios.
+- Live International Market data like crypto, stock and currency market data.
 
 - ## Technology Used
 -  Web Socket
--  JSON & JSON web token-  React JS
+-  JSON
 -  Mongo DB
 -  Testing
 -  Web scarping
 -  Cloud deployment
+-  State management
+-  Clean architecture
+-  Hive
+-  Repository concepts
 
 ## Getting Started
 
