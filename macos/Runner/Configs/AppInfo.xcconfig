@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = paisa
+PRODUCT_NAME = tenpaisa
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.surajrimal.paisa.paisa
+PRODUCT_BUNDLE_IDENTIFIER = com.paisa.suraj.tenpaisa
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2023 com.surajrimal.paisa. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2023 com.paisa.suraj. All rights reserved.

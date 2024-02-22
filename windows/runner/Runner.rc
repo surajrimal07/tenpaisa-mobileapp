@@ -89,13 +89,13 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.surajrimal.paisa" "\0"
-            VALUE "FileDescription", "paisa" "\0"
+            VALUE "CompanyName", "com.paisa.suraj" "\0"
+            VALUE "FileDescription", "tenpaisa" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "paisa" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2023 com.surajrimal.paisa. All rights reserved." "\0"
-            VALUE "OriginalFilename", "paisa.exe" "\0"
-            VALUE "ProductName", "paisa" "\0"
+            VALUE "InternalName", "tenpaisa" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2023 com.paisa.suraj. All rights reserved." "\0"
+            VALUE "OriginalFilename", "tenpaisa.exe" "\0"
+            VALUE "ProductName", "tenpaisa" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
