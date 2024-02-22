@@ -31,8 +31,6 @@ The Smart Investment Application is a cutting-edge platform designed to empower 
 
 - **Personalized Recommendations**: Receive algorithm-driven investment recommendations based on user-specific financial criteria and goals.
 
-- **Demo Buy-Sell**: Practice buying and selling of available asset classes and listed securities for educational purposes.
-
 - **Stock Search and Sorting**: Effortlessly search and sort through stocks and investment opportunities to make informed decisions.
 
 - **Watchlist**: Create and manage watchlists to monitor specific stocks or assets of interest. Easily add or remove stocks from watchlists for tracking purposes.
@@ -45,7 +43,7 @@ The Smart Investment Application is a cutting-edge platform designed to empower 
 
 - **Learning Mode**: Provide a dedicated learning mode within the app, allowing users to explore features and functionalities in a risk-free environment.
 
-- **Financial Recommendations**: Offer personalized financial recommendations specifically tailored to users' portfolios. These recommendations are based on data analytics and user-defined investment goals.
+- **Financial Recommendations**: Offer personalized financial recommendations specifically tailored to users' portfolios. These recommendations are based on data analytics and user-defined investment goals. (For learning         purpose only)
 
 
 ## Screenshots
