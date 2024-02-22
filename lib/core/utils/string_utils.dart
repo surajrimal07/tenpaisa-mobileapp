@@ -522,3 +522,16 @@ class UrlStrings {
   static const authorFacebook = 'https://www.fb.me/MeetTheFlash';
   static const generalWorldMarket = 'https://www.tradingview.com/markets/';
 }
+
+class SubsString {
+  static const premiumSubs = 'Premium Subscription';
+  static const premiumSubsText =
+      'You are already a premium member. Thank you for purchasing Premium package and supporting the application.';
+  static const purchasePremium = 'Purchase Premium';
+  static const choosePackage = 'Choose Subscription Package:';
+  static const thankYou =
+      'Thank you for purchasing Premium package and supporting the application.';
+  static const noBalance =
+      'Insufficient balance. Please add funds to your account.';
+  static const subsNotSelected = 'Please select a subscription package';
+}

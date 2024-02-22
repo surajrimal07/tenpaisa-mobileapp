@@ -23,6 +23,8 @@ import 'package:paisa/feathures/auth/presentation/widget/namechange_dialog.dart'
 import 'package:paisa/feathures/auth/presentation/widget/password_change.dart';
 import 'package:paisa/feathures/auth/presentation/widget/phone_change_dialog.dart';
 import 'package:paisa/feathures/auth/presentation/widget/shake_logout.dart';
+import 'package:paisa/feathures/auth/presentation/widget/stylechange_dialog.dart';
+import 'package:paisa/feathures/auth/presentation/widget/subscription_dialog.dart';
 import 'package:paisa/feathures/common/animated_page_transition.dart';
 import 'package:paisa/feathures/home/presentation/view/wallet_view.dart';
 import 'package:paisa/feathures/home/presentation/widget/about_us.dart';
@@ -211,18 +213,14 @@ class ProfileViewState extends ConsumerState<AccountView> {
                       'Rs: ${ref.watch(authEntityProvider.select((it) => it.userAmount))}',
                 ),
                 SettingsItem(
-                  onTap: () {
-                    CustomToast.showToast(ProfileStrings.comingSoon);
-                  },
+                  onTap: () => showInvChangeDialog(),
                   icons: Icons.type_specimen_outlined,
                   title: ProfileStrings.accountGoal,
                   subtitle: decodeInvStyle(ref.watch(
                       authEntityProvider.select((it) => it.invstyle ?? 0))),
                 ),
                 SettingsItem(
-                  onTap: () {
-                    CustomToast.showToast(ProfileStrings.comingSoon);
-                  },
+                  onTap: () => showPremiumDialog(),
                   icons: Icons.workspace_premium_outlined,
                   title: ProfileStrings.premium,
                   subtitle: ref
@@ -409,6 +407,24 @@ class ProfileViewState extends ConsumerState<AccountView> {
       context: context,
       builder: (BuildContext context) {
         return const ChangeNameDialog();
+      },
+    );
+  }
+
+  Future<void> showInvChangeDialog() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const InvestmentStyleChangeDialog();
+      },
+    );
+  }
+
+  Future<void> showPremiumDialog() async {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const PremiumSubscriptionDialog();
       },
     );
   }

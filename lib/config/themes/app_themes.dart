@@ -173,9 +173,10 @@ class AppTheme {
 
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
-        backgroundColor: AppColors.primaryColor,
-      ),
+          foregroundColor: Colors.white,
+          backgroundColor: AppColors.primaryColor,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0))),
     ),
 
     colorScheme: const ColorScheme.light(primary: AppColors.primaryColor),
@@ -276,9 +277,10 @@ class AppTheme {
         ),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.grey[900],
-      ),
+          foregroundColor: Colors.white,
+          backgroundColor: Colors.grey[900],
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0))),
     ),
     cardTheme: const CardTheme(
       color: Color(0xFF1F1F1F),
