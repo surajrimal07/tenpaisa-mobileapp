@@ -136,7 +136,7 @@ The Smart Investment Application is a cutting-edge platform designed to empower 
   <img src="public/watchlist options.png?raw=true" width="250"/> <img src="public/watchlist.png?raw=true" width="250"/> <img src="public/world market list.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/world market.png?raw=true" width="250"/>
+  <img src="public/world market live chart.png?raw=true" width="250"/> <img src="public/crypto market list.png?raw=true" width="250"/>
 </p>
 
 ## Prerequisites
@@ -151,27 +151,29 @@ Before you start, make sure you have the following installed:
 
 ## TODO
 - Roboust notification system.
-- code optimizations
+- Code optimizations.
+- Hive and offline fixes.
+- 
 
 ## What Works?
 - Login Screen (connected to MongoDB)
 - Signup Screen & email verification (uses [Google Mail Service](mail.google.com) service) (connected to MongoDB)
 - OTP Screen (EMail OTP, uses [Google Mail Service](mail.google.com) service)
-- Password reset, user data update.
+- Password reset, user data and profile picture update.
 - Live stock prices.
 - Portfolio recommendation system (it's very basic).
 - live nepse charts, and notification.
 - Automatic loss gains calculations.
 - Compare portfolio and suggest portfolio based on returns.
-- live metals prices.
-- Live Nepse Index (web socket)
+- live metals and oil prices.
+- Live Nepse Index, turnover and pointchange data. (web socket)
 - live commodities prices (vegetables for now).
-- User authorization system works.
+- User authorization system.
 - Proper navigation and routing.
-- Account deletion.
-- live financial news.
+- Account, portflio and watchlist deletion.
+- live financial news and notification.
 - Web socket for live notifications.
-- Top gainers, loosers, transaction,volume and turnover.
+- Top gainers, loosers, transaction,volume and turnover data.
 - AssetView, indetail View, asset related notifications.
 - Portfolio, create portfolio, edit portfolio, delete portfolio, add asset to portfolio, edit and delete asset from portfolio.
 - Watchlist, create watchlist, edit watchlist, delete watchlist, add asset to watchlist, edit and delete asset from watchlist.
@@ -190,7 +192,7 @@ Before you start, make sure you have the following installed:
 -  Cloud deployment
 -  State management
 -  Clean architecture
--  Hive
+-  Hive for storage
 -  Repository concepts
 
 ## Getting Started
