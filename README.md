@@ -84,6 +84,14 @@ Before you start, make sure you have the following installed:
 - Portfolio detailed view, comparision and portfolio recommendation.
 - Recommendation system (very basic).
 
+- ## Technology Used
+-  Web Socket
+-  JSON & JSON web token-  React JS
+-  Mongo DB
+-  Testing
+-  Web scarping
+-  Cloud deployment
+
 ## Getting Started
 
 1. Clone the repository:
