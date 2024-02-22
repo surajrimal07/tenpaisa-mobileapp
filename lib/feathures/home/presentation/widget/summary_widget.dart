@@ -106,7 +106,7 @@ class MySummaryContainer extends ConsumerWidget {
                             style: AppTextStyles.boldTextStyle,
                           ),
                           BuildColoredText(
-                            text: index.index[0].index.toString(),
+                            text: index.index[0].pointChange.toString(),
                             value: index.index[0].percentageChange,
                             textStyle: AppTextStyles.normalTextStyle,
                           ).build(),
