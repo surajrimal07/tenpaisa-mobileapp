@@ -64,18 +64,25 @@ Before you start, make sure you have the following installed:
 - Fetch live data (working on it).
 
 ## What Works?
-- Splash Screen
-- Onboarding Screen With Onboarding logic (Showing Onboarding only first time)
 - Login Screen (connected to MongoDB)
-- Signup Screen (connected to MongoDB)
-- OTP Screen (EMail OTP, uses [ethereal.email](ethereal.email) service)
+- Signup Screen & email verification (uses [Google Mail Service](mail.google.com) service) (connected to MongoDB)
+- OTP Screen (EMail OTP, uses [Google Mail Service](mail.google.com) service)
 - Password reset, user data update.
-- Live asset prices (limited asset).
-- Live notification.
-- User token system works.
+- Live stock prices.
+- live metals prices.
+- live commodities prices (vegetables for now).
+- User authorization system works.
 - Proper navigation and routing.
 - Account deletion.
-- Web socket
+- live financial news.
+- Web socket for live notifications.
+- Top gainers, loosers, transaction,volume and turnover.
+- AssetView, indetail View, asset related notifications.
+- Portfolio, create portfolio, edit portfolio, delete portfolio, add asset to portfolio, edit and delete asset from portfolio.
+- Watchlist, create watchlist, edit watchlist, delete watchlist, add asset to watchlist, edit and delete asset from watchlist.
+- Wacc calculation, portfolio adjustment, asset news, asset advance candlestick chart (usages third party service).
+- Portfolio detailed view, comparision and portfolio recommendation.
+- Recommendation system (very basic).
 
 ## Getting Started
 
