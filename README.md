@@ -136,7 +136,13 @@ The Smart Investment Application is a cutting-edge platform designed to empower 
   <img src="public/watchlist options.png?raw=true" width="250"/> <img src="public/watchlist.png?raw=true" width="250"/> <img src="public/world market list.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/world market live chart.png?raw=true" width="250"/> <img src="public/crypto market list.png?raw=true" width="250"/>
+  <img src="public/world market live chart.png?raw=true" width="250"/> <img src="public/crypto market list.png?raw=true" width="250"/> <img src="public/free user.png?raw=true" width="250"/>
+</p>
+<p align="center">
+  <img src="public/premium packages.png?raw=true" width="250"/> <img src="public/no balance.png?raw=true" width="250"/> <img src="public/premium account.png?raw=true" width="250"/>
+</p>
+<p align="center">
+  <img src="public/after premium.png?raw=true" width="250"/>
 </p>
 
 ## Prerequisites
