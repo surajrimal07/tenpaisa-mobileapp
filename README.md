@@ -51,67 +51,67 @@ The Smart Investment Application is a cutting-edge platform designed to empower 
 ## Screenshots
 
 <p align="center">
-  <img src="public/about us.png?raw=true" width="300"/> <img src="public/add new wallet.png?raw=true" width="300"/> <img src="public/add stock.png?raw=true" width="300"/>
+  <img src="public/about us.png?raw=true" width="250"/> <img src="public/add new wallet.png?raw=true" width="250"/> <img src="public/add stock.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/adding money.png?raw=true" width="300"/> <img src="public/camera permission.png?raw=true" width="300"/> <img src="public/dark mode portfolio.png?raw=true" width="300"/>
+  <img src="public/adding money.png?raw=true" width="250"/> <img src="public/camera permission.png?raw=true" width="250"/> <img src="public/dark mode portfolio.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/dark mode profile.png?raw=true" width="300"/> <img src="public/dark mode.png?raw=true" width="300"/> <img src="public/dashboard.png?raw=true" width="300"/>
+  <img src="public/dark mode profile.png?raw=true" width="250"/> <img src="public/dark mode.png?raw=true" width="250"/> <img src="public/dashboard.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/data sources.png?raw=true" width="300"/> <img src="public/drawer.png?raw=true" width="300"/> <img src="public/empty portfolio.png?raw=true" width="300"/>
+  <img src="public/data sources.png?raw=true" width="250"/> <img src="public/drawer.png?raw=true" width="250"/> <img src="public/empty portfolio.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/fingerprint login option.png?raw=true" width="300"/> <img src="public/fingerprint unavailable.png?raw=true" width="300"/> <img src="public/fingerprint.png?raw=true" width="300"/>
+  <img src="public/fingerprint login option.png?raw=true" width="250"/> <img src="public/fingerprint unavailable.png?raw=true" width="250"/> <img src="public/fingerprint.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/fingerptint enabled login.png?raw=true" width="300"/> <img src="public/forget pass step 1.png?raw=true" width="300"/> <img src="public/forget pass step 2.png?raw=true" width="300"/>
+  <img src="public/fingerptint enabled login.png?raw=true" width="250"/> <img src="public/forget pass step 1.png?raw=true" width="250"/> <img src="public/forget pass step 2.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/forget pass step 3.png?raw=true" width="300"/> <img src="public/forget password.png?raw=true" width="300"/> <img src="public/gainers list.png?raw=true" width="300"/>
+  <img src="public/forget pass step 3.png?raw=true" width="250"/> <img src="public/forget password.png?raw=true" width="250"/> <img src="public/gainers list.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/image upload options.png?raw=true" width="300"/> <img src="public/in app chart.png?raw=true" width="300"/> <img src="public/in app webview.png?raw=true" width="300"/>
+  <img src="public/image upload options.png?raw=true" width="250"/> <img src="public/in app chart.png?raw=true" width="250"/> <img src="public/in app webview.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/individual portfolio menu.png?raw=true" width="300"/> <img src="public/individual summary.png?raw=true" width="300"/> <img src="public/khalti wallet added.png?raw=true" width="300"/>
+  <img src="public/individual portfolio menu.png?raw=true" width="250"/> <img src="public/individual summary.png?raw=true" width="250"/> <img src="public/khalti wallet added.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/live financial news.png?raw=true" width="300"/> <img src="public/login.png?raw=true" width="300"/> <img src="public/market summary.png?raw=true" width="300"/>
+  <img src="public/live financial news.png?raw=true" width="250"/> <img src="public/login.png?raw=true" width="250"/> <img src="public/market summary.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/money added.png?raw=true" width="300"/> <img src="public/notification permission.png?raw=true" width="300"/> <img src="public/notification view.png?raw=true" width="300"/>
+  <img src="public/money added.png?raw=true" width="250"/> <img src="public/notification permission.png?raw=true" width="250"/> <img src="public/notification view.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/nrb currency data.png?raw=true" width="300"/> <img src="public/nrb data.png?raw=true" width="300"/> <img src="public/onboarding.png?raw=true" width="300"/>
+  <img src="public/nrb currency data.png?raw=true" width="250"/> <img src="public/nrb data.png?raw=true" width="250"/> <img src="public/onboarding.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/password reset success.png?raw=true" width="300"/> <img src="public/portfolio compare.png?raw=true" width="300"/> <img src="public/portfolio dark mode.png?raw=true" width="300"/>
+  <img src="public/password reset success.png?raw=true" width="250"/> <img src="public/portfolio compare.png?raw=true" width="250"/> <img src="public/portfolio dark mode.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/portfolio graphs.png?raw=true" width="300"/> <img src="public/portfolio pie chart.png?raw=true" width="300"/> <img src="public/profile 1.png?raw=true" width="300"/>
+  <img src="public/portfolio graphs.png?raw=true" width="250"/> <img src="public/portfolio pie chart.png?raw=true" width="250"/> <img src="public/profile 1.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/profile 2.png?raw=true" width="300"/> <img src="public/profile 3.png?raw=true" width="300"/> <img src="public/profile updated.png?raw=true" width="300"/>
+  <img src="public/profile 2.png?raw=true" width="250"/> <img src="public/profile 3.png?raw=true" width="250"/> <img src="public/profile updated.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/remove stock from portfolio.png?raw=true" width="300"/> <img src="public/search result.png?raw=true" width="300"/> <img src="public/search.png?raw=true" width="300"/>
+  <img src="public/remove stock from portfolio.png?raw=true" width="250"/> <img src="public/search result.png?raw=true" width="250"/> <img src="public/search.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/shake to logout dialog.png?raw=true" width="300"/> <img src="public/shake to logout.png?raw=true" width="300"/> <img src="public/stock detail view.png?raw=true" width="300"/>
+  <img src="public/shake to logout dialog.png?raw=true" width="250"/> <img src="public/shake to logout.png?raw=true" width="250"/> <img src="public/stock detail view.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/stock details.png?raw=true" width="300"/> <img src="public/stock options.png?raw=true" width="300"/> <img src="public/top gainers.png?raw=true" width="300"/>
+  <img src="public/stock details.png?raw=true" width="250"/> <img src="public/stock options.png?raw=true" width="250"/> <img src="public/top gainers.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/update user.png?raw=true" width="300"/> <img src="public/updating profile.png?raw=true" width="300"/> <img src="public/wallet.png?raw=true" width="300"/>
+  <img src="public/update user.png?raw=true" width="250"/> <img src="public/updating profile.png?raw=true" width="250"/> <img src="public/wallet.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/watchlist menu.png?raw=true" width="300"/> <img src="public/watchlist.png?raw=true" width="300"/> <img src="public/world market list.png?raw=true" width="300"/>
+  <img src="public/watchlist menu.png?raw=true" width="250"/> <img src="public/watchlist.png?raw=true" width="250"/> <img src="public/world market list.png?raw=true" width="250"/>
 </p>
 <p align="center">
-  <img src="public/world market.png?raw=true" width="300"/>
+  <img src="public/world market.png?raw=true" width="250"/>
 </p>
 
 
