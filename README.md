@@ -70,6 +70,7 @@ Before you start, make sure you have the following installed:
 - Password reset, user data update.
 - Live stock prices.
 - live metals prices.
+- Live Nepse Index (web socket)
 - live commodities prices (vegetables for now).
 - User authorization system works.
 - Proper navigation and routing.
