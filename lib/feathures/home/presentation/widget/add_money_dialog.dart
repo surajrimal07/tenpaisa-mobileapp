@@ -5,6 +5,7 @@ import 'package:paisa/core/utils/string_utils.dart';
 import 'package:paisa/feathures/auth/domain/entity/auth_entity.dart';
 import 'package:paisa/feathures/auth/presentation/view_model/auth_view_model.dart';
 import 'package:paisa/feathures/auth/presentation/widget/input_controllers.dart';
+import 'package:paisa/feathures/common/button_circular_loading.dart';
 
 class LoadMoneyDialog extends ConsumerStatefulWidget {
   const LoadMoneyDialog({super.key});
@@ -12,13 +13,6 @@ class LoadMoneyDialog extends ConsumerStatefulWidget {
   @override
   LoadMoneyDialogState createState() => LoadMoneyDialogState();
 }
-
-// String? validateRadioButtons(int? selectedOption) {
-//   if (selectedOption == null) {
-//     return 'Please select a wallet';
-//   }
-//   return null;
-// }
 
 class LoadMoneyDialogState extends ConsumerState<LoadMoneyDialog> {
   int? _selectedOption;
@@ -142,7 +136,9 @@ class LoadMoneyDialogState extends ConsumerState<LoadMoneyDialog> {
                   customType: Type.error);
             }
           },
-          child: const Text(WalletStrings.proccedText),
+          child: state.isLoading
+              ? const ButtonLoading()
+              : const Text(WalletStrings.proccedText),
         ),
         if (walletValue == 1 || walletValue == 2 || walletValue == 3)
           ElevatedButton(

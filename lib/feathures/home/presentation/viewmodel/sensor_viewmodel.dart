@@ -155,7 +155,8 @@ class ShakeDetectionViewModel extends ChangeNotifier {
 
     _shakeEnabled = await userSharedPrefs.isShakeEnabled(null);
     //   print("Is shake enabled: $_shakeEnabled");
-    notifyListeners(); //-- this throws error if shake to enable is disabled
+    // notifyListeners(); //-- this throws error if shake to enable is disabled
+    //find it challenging to fix it
 
     if (_shakeEnabled) {
 //      print("Shake enabled");
@@ -193,7 +194,7 @@ class ShakeDetectionViewModel extends ChangeNotifier {
     } else {
       _accelerometerSubscription?.cancel();
       _isListening = false;
-      super.dispose();
+      //super.dispose(); // causes exceptions //so moved it below
     }
   }
 

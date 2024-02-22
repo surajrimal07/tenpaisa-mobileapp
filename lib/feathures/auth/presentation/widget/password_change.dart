@@ -15,7 +15,6 @@ class PasswordChangeDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    //final formKey = GlobalKey<FormState>();
     final formKey = ref.watch(formKeyProvider);
 
     final passwordController = ref.watch(passwordControllerProvider);
@@ -40,9 +39,9 @@ class PasswordChangeDialog extends ConsumerWidget {
                 labelText: 'New Password',
               ),
               validator: (value) {
-                if (value == null ||
-                    value.isEmpty ||
-                    !RegExp(r'^[a-zA-Z]+ [a-zA-Z]+$').hasMatch(value)) {
+                //proper validation would be
+                // || !RegExp(r'^[a-zA-Z]+ [a-zA-Z]+$').hasMatch(value)
+                if (value == null || value.isEmpty) {
                   return 'Please enter a valid password';
                 }
                 return null;
@@ -61,7 +60,7 @@ class PasswordChangeDialog extends ConsumerWidget {
                     .read(authViewModelProvider.notifier)
                     .updateUser(auth.email, "password", newPassword, ref);
 
-                if (!state.isLoading && state.error == null) {
+                if (!state.isLoading) {
                   Future.delayed(const Duration(milliseconds: 500), () {
                     passwordController.clear();
                     Navigator.pop(context);

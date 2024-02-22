@@ -200,8 +200,7 @@ class AuthViewModel extends StateNotifier<LoginState> {
         state = state.copyWith(isLoading: false, error: null);
         //show success dialog
         //then redirect
-
-        // redirect ? nav.routeToAndReplaceAll(AppRoute.homeRoute) : null;
+        redirect ? nav.routeToAndReplaceAll(AppRoute.homeRoute) : null;
       },
     );
   }

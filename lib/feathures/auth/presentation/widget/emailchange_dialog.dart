@@ -19,7 +19,6 @@ class EmailChangeDialog extends ConsumerWidget {
     final emailController = ref.watch(emailControllerProvider);
     final auth = ref.watch(authEntityProvider);
     final state = ref.watch(authViewModelProvider);
-    //GlobalKey<FormState> formKey = GlobalKey<FormState>();
     final formKey = ref.watch(formKeyProvider);
 
     return AlertDialog(
@@ -58,18 +57,13 @@ class EmailChangeDialog extends ConsumerWidget {
                   .read(authViewModelProvider.notifier)
                   .updateUser(auth.email, "email", emailController.text, ref);
 
-              if (!state.isLoading && state.error == null) {
+              if (!state.isLoading) {
                 Future.delayed(const Duration(milliseconds: 500), () {
                   emailController.clear();
                   Navigator.pop(context);
                 });
-                // emailController.clear();
-                // Navigator.pop(context);
               }
             }
-
-            // print("state.isLoading: ${state.isLoading}");
-            // print("state.error: ${state.error}");
           },
           child: state.isLoading
               ? const ButtonLoading()
