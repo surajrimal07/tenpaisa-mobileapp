@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:paisa/config/constants/appsize_constants.dart';
 import 'package:paisa/config/themes/app_themes.dart';
+import 'package:paisa/core/network/detector_network.dart';
 import 'package:paisa/core/utils/string_utils.dart';
 import 'package:paisa/feathures/common/animated_page_transition.dart';
 import 'package:paisa/feathures/common/loading_indicator.dart';
@@ -36,6 +37,8 @@ class AssetViewState extends ConsumerState<AssetView> {
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(stockViewModelProvider);
+    final connectivityStatus = ref.watch(connectivityStatusProvider);
+    final bool connected = connectivityStatus == ConnectivityStatus.isConnected;
 
     return Scaffold(
         backgroundColor: Colors.black,
@@ -77,7 +80,7 @@ class AssetViewState extends ConsumerState<AssetView> {
                       size: 50,
                       showText: true,
                       text: StockStrings.loadingWatchlist))
-              : _buildAssetDetails(),
+              : _buildAssetDetails(connected),
         ),
         floatingActionButton: _buildPopupMenuButton());
   }
@@ -94,21 +97,32 @@ class AssetViewState extends ConsumerState<AssetView> {
     );
   }
 
-  Widget _buildAssetDetails() {
+  Widget _buildAssetDetails(connected) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _buildStockInfo(),
-        SizedBox(
-          height: Sizes.dynamicHeight(60),
-          child: Hero(
-            tag: 'stockInfo_${widget.stockEntity.name}',
-            child: WebView(
-              initialUrl: _getWebViewUrl(widget.stockEntity.symbol),
-              javascriptMode: JavascriptMode.unrestricted,
-            ),
-          ),
-        ),
+        connected
+            ? SizedBox(
+                height: Sizes.dynamicHeight(60),
+                child: Hero(
+                  tag: 'stockInfo_${widget.stockEntity.name}',
+                  child: WebView(
+                    initialUrl: _getWebViewUrl(widget.stockEntity.symbol),
+                    javascriptMode: JavascriptMode.unrestricted,
+                  ),
+                ),
+              )
+            : const SizedBox(
+                child: Text(
+                  textAlign: TextAlign.center,
+                  'No internet available for the chart',
+                  style: TextStyle(
+                    color: Colors.red,
+                    fontSize: 20, //
+                  ),
+                ),
+              ),
         SizedBox(height: Sizes.dynamicHeight(1)),
         _buildAdvanceChartButton(),
         _buildSectionTitle("Asset's Data"),
@@ -219,8 +233,6 @@ class AssetViewState extends ConsumerState<AssetView> {
                   url: _getWebViewUrl(widget.stockEntity.symbol),
                   name: widget.stockEntity.symbol,
                 ));
-
-            //_launchURL(context, widget.stockEntity.symbol);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primaryColor,
@@ -423,36 +435,4 @@ class AssetViewState extends ConsumerState<AssetView> {
       },
     );
   }
-
-  // void _launchURL(BuildContext context, sym) {
-  //   SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: []);
-  //   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-  //     statusBarColor: Colors.transparent,
-  //     statusBarIconBrightness: Brightness.light,
-  //   ));
-
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => AnnotatedRegion<SystemUiOverlayStyle>(
-  //         value: const SystemUiOverlayStyle(
-  //           statusBarColor: Colors.transparent,
-  //           statusBarIconBrightness: Brightness.light,
-  //         ),
-  //         child: Scaffold(
-  //           body: WebView(
-  //             gestureNavigationEnabled: true,
-  //             zoomEnabled: true,
-  //             initialUrl: _getWebViewUrl(sym),
-  //             javascriptMode: JavascriptMode.unrestricted,
-  //           ),
-  //         ),
-  //       ),
-  //     ),
-  //   ).then((value) {
-  //     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-  //         overlays: SystemUiOverlay.values);
-  //     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
-  //   });
-  // }
 }

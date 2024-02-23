@@ -7,7 +7,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:paisa/config/themes/app_themes.dart';
 import 'package:paisa/core/network/detector_network.dart';
 import 'package:paisa/core/utils/string_utils.dart';
-import 'package:paisa/feathures/auth/domain/entity/auth_entity.dart';
 import 'package:paisa/feathures/auth/presentation/view/profile_view.dart';
 import 'package:paisa/feathures/common/animated_page_transition.dart';
 import 'package:paisa/feathures/common/connection_restored.dart';
@@ -92,26 +91,26 @@ class _HomeViewState extends ConsumerState<HomeView> {
         onTap: (index) {
           ref.read(selectedIndexProvider.notifier).state = index;
         },
-        items: [
-          const BottomNavigationBarItem(
-              icon: Icon(size: 25, Iconsax.home), label: "Home"),
-          const BottomNavigationBarItem(
-              icon: Icon(size: 25, Iconsax.global_search), label: "Search"),
-          const BottomNavigationBarItem(
-              icon: Icon(size: 25, Iconsax.document), label: "Portfolio"),
-          const BottomNavigationBarItem(
-              icon: Icon(size: 25, Iconsax.wallet_1), label: "Watchlist"),
+        items: const [
           BottomNavigationBarItem(
-            icon: CircleAvatar(
-                radius: 12.2,
-                backgroundImage: NetworkImage(
-                  ref.watch(authEntityProvider.select((it) => it.picture))!,
-                )),
-            label: "Profile",
-          ),
-
+              icon: Icon(size: 25, Iconsax.home), label: "Home"),
+          BottomNavigationBarItem(
+              icon: Icon(size: 25, Iconsax.global_search), label: "Search"),
+          BottomNavigationBarItem(
+              icon: Icon(size: 25, Iconsax.document), label: "Portfolio"),
+          BottomNavigationBarItem(
+              icon: Icon(size: 25, Iconsax.wallet_1), label: "Watchlist"),
           // BottomNavigationBarItem(
-          //     icon: Icon(size: 25, Iconsax.profile_circle), label: "Profile"),
+          //   icon: CircleAvatar(
+          //       radius: 12.2,
+          //       backgroundImage: NetworkImage(
+          //         ref.watch(authEntityProvider.select((it) => it.picture))!,
+          //       )),
+          //   label: "Profile",
+          // ),
+
+          BottomNavigationBarItem(
+              icon: Icon(size: 25, Iconsax.profile_circle), label: "Profile"),
         ],
         currentIndex: selectedIndex,
       ),

@@ -92,7 +92,8 @@ class _PremiumSubscriptionDialogState
       actions: [
         ElevatedButton(
           onPressed: () async {
-            if (formKey.currentState?.validate() == true) {
+            if (formKey.currentState!.validate()) {
+              //if (formKey.currentState?.validate() == true) {
               final userAmount =
                   ref.watch(authEntityProvider.select((it) => it.userAmount));
 

@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:core';
 
 import 'package:flutter/foundation.dart';
@@ -127,16 +129,17 @@ class HiveService {
   Future<void> addCategoriesData(CategoriesHiveModel categoriesData) async {
     var box = await Hive.openBox<CategoriesHiveModel>(
         HiveTableConstant.categoriesBox);
+    await box.clear();
     await box.put(categoriesData.categoriesId, categoriesData);
     print("Categories Data Cached");
-    box.close();
+    await box.close();
   }
 
   Future<CategoriesHiveModel?> getCategoriesData(bool refresh) async {
     var box = await Hive.openBox<CategoriesHiveModel>(
         HiveTableConstant.categoriesBox);
     var categoriesData = box.values.first;
-    box.close();
+    await box.close();
     return categoriesData;
   }
 
@@ -146,13 +149,13 @@ class HiveService {
         await Hive.openBox<List<StocksHiveModel>>(HiveTableConstant.stocksBox);
     await box.put(HiveTableConstant.stocksTableId, stockData);
     print("Stocks Data Cached");
-    box.close();
+    await box.close();
   }
 
   Future<List<StocksHiveModel>> getStocksData(bool refresh) async {
     var box = await Hive.openBox<StocksHiveModel>(HiveTableConstant.stocksBox);
-    var stockData = box.values.toList();
-    box.close();
+    List<StocksHiveModel> stockData = box.values.toList();
+    await box.close();
     return stockData;
   }
   // ======================== Index All Data ========================
@@ -160,16 +163,20 @@ class HiveService {
   Future<void> addIndexData(List<IndexHiveModel> indexData) async {
     var box =
         await Hive.openBox<List<IndexHiveModel>>(HiveTableConstant.indexBox);
-    await box.put(HiveTableConstant.indexTableId, indexData);
+    await box.clear();
+    box.put(HiveTableConstant.indexTableId, indexData);
     print("Index Data Cached");
-    box.close();
+    await box.close();
   }
 
   Future<List<IndexHiveModel>> getIndexData(bool refresh) async {
-    var box = await Hive.openBox<IndexHiveModel>(HiveTableConstant.indexBox);
-    var indexData = box.values.toList();
-    box.close();
-    print("index data from cache is $indexData");
+    var box = await Hive.openBox(HiveTableConstant.indexBox);
+    List<IndexHiveModel> indexData = await box.get(
+        HiveTableConstant.indexTableId,
+        defaultValue: [])!.cast<IndexHiveModel>();
+
+    await box.close();
+    // print("index data from cache is $indexData");
     return indexData;
   }
 
@@ -183,9 +190,10 @@ class HiveService {
   }
 
   Future<List<MetalsHiveModel>> getMetalsData() async {
-    var box = await Hive.openBox<MetalsHiveModel>(HiveTableConstant.metalBox);
-    var metalsData = box.values.toList();
-    box.close();
+    var box = await Hive.openBox(HiveTableConstant.metalBox);
+    List<MetalsHiveModel> metalsData = box.get(HiveTableConstant.metalTableId,
+        defaultValue: [])!.cast<MetalsHiveModel>();
+    await box.close();
     return metalsData;
   }
 
@@ -194,16 +202,20 @@ class HiveService {
   Future<void> addCommodity(List<CommodityLocalHiveModel> commodityData) async {
     var box = await Hive.openBox<List<CommodityLocalHiveModel>>(
         HiveTableConstant.commodityBox);
+    await box.clear();
     print("Commodity Data Cached");
     await box.put(HiveTableConstant.commodityTableId, commodityData);
-    box.close();
+    await box.close();
   }
 
   Future<List<CommodityLocalHiveModel>> getcommodity() async {
-    var box = await Hive.openBox<CommodityLocalHiveModel>(
-        HiveTableConstant.commodityBox);
-    var commodityData = box.values.toList();
-    box.close();
+    var box = await Hive.openBox(HiveTableConstant.commodityBox);
+    List<CommodityLocalHiveModel> commodityData = box.get(
+        HiveTableConstant.commodityTableId,
+        defaultValue: [])!.cast<CommodityLocalHiveModel>();
+    await box.close();
+    //print("index data from cache is $commodityData");
+
     return commodityData;
   }
 
@@ -212,17 +224,19 @@ class HiveService {
   Future<void> addWatchlistData(List<WatchListLocalModel> watchlist) async {
     var box = await Hive.openBox<List<WatchListLocalModel>>(
         HiveTableConstant.wathistbox);
+    await box.clear();
     await box.put(HiveTableConstant.watchlistTableId, watchlist);
     print("Watchlist Data Cached");
-    box.close();
+    await box.close();
   }
 
   Future<List<WatchListLocalModel>> getWatchlistData(String email) async {
-    var box =
-        await Hive.openBox<WatchListLocalModel>(HiveTableConstant.wathistbox);
-    var watchlist =
-        box.values.where((element) => element.user == email).toList();
-    box.close();
+    var box = await Hive.openBox(HiveTableConstant.wathistbox);
+    List<WatchListLocalModel> watchlist = box.values
+        .where((element) => element.user == email)
+        .toList()
+        .cast<WatchListLocalModel>();
+    await box.close();
     return watchlist;
   }
 

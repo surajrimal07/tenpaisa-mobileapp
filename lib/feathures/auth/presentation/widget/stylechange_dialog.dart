@@ -61,9 +61,8 @@ class InvestmentStyleChangeDialog extends ConsumerWidget {
       actions: [
         ElevatedButton(
           onPressed: () async {
-            if (formKey.currentState?.validate() == true) {
-              ref.read(authViewModelProvider).resetError();
-
+            if (formKey.currentState!.validate()) {
+              //if (formKey.currentState?.validate() == true) {
               await ref.read(authViewModelProvider.notifier).updateUser(
                   auth.email, "style", investmentStyleController.text, ref);
 

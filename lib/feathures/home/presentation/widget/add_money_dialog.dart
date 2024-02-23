@@ -112,7 +112,8 @@ class LoadMoneyDialogState extends ConsumerState<LoadMoneyDialog> {
         ElevatedButton(
           onPressed: () {
             if (_selectedOption != null) {
-              if (formKey.currentState?.validate() == true) {
+              if (formKey.currentState!.validate()) {
+              //if (formKey.currentState?.validate() == true) {
                 final oldBalance = auth.userAmount ?? 0;
                 final newBalance =
                     int.parse(balanceController.text) + oldBalance;
