@@ -75,13 +75,16 @@ dependencies:
   flutter_typeahead: ^5.2.0 #for search bar, type and search functionality
   #shimmer: ^3.0.0
   animations: ^2.0.11 #for page transition animation
+  mockito: ^5.4.4 # for testing
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  integration_test:
+    sdk: flutter
+
   flutter_lints: ^3.0.0
-  api_cache_manager: ^1.0.1
   snippet_coder_utils: ^1.0.14
   json_serializable: ^6.7.1
   build_runner: ^2.4.7

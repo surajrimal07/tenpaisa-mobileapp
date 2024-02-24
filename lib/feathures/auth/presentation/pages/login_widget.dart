@@ -85,11 +85,6 @@ class SignInState extends ConsumerState<SigninView> with FieldValidator {
                           SizedBox(
                               width: Sizes.dynamicWidth(5),
                               height: Sizes.dynamicHeight(0.5)),
-                          // const Text(
-                          //   LoginStrings.loginText,
-                          //   style:
-                          //       TextStyle(fontSize: 28.0, color: Colors.black),
-                          // ),
                           SizedBox(
                               width: Sizes.dynamicWidth(3),
                               height: Sizes.dynamicHeight(0.5)),
@@ -110,11 +105,6 @@ class SignInState extends ConsumerState<SigninView> with FieldValidator {
                                     textStyle: GoogleFonts.poppins(
                                       fontSize: 28,
                                     )),
-
-                                // TypewriterAnimatedText('10Paisa is Secure',
-                                //     speed: const Duration(milliseconds: 50)),
-                                // TypewriterAnimatedText('10Paisa is Reliable',
-                                //     speed: const Duration(milliseconds: 50)),
                               ],
                               pause: const Duration(milliseconds: 1000),
                               repeatForever: true,
@@ -122,14 +112,6 @@ class SignInState extends ConsumerState<SigninView> with FieldValidator {
                           ),
                         ],
                       ),
-                      // Text(
-                      //   LoginStrings.loginText,
-                      //   style: GoogleFonts.poppins(
-                      //     fontWeight: FontWeight.normal,
-                      //     fontSize: 28,
-                      //     color: Colors.black,
-                      //   ),
-                      // ),
                       Text(
                         LoginStrings.loginSubText,
                         style: GoogleFonts.poppins(

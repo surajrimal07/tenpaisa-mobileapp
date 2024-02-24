@@ -5,21 +5,13 @@ import 'package:paisa/core/network/hive_service.dart';
 import 'package:paisa/feathures/portfolio/data/dto/get_portfolio_dto.dart';
 import 'package:paisa/feathures/portfolio/data/model/portfolio_combined_local_model.dart';
 
-final portfolioLocalDataSource = Provider<PortfolioHiveDataSource>((ref) =>
-    PortfolioHiveDataSource(ref.read(hiveServiceProvider),
-        ref.read(portfolioLocalCombinedModelProvider)));
+final portfolioLocalDataSource = Provider<PortfolioHiveDataSource>(
+    (ref) => PortfolioHiveDataSource(ref.read(hiveServiceProvider)));
 
 class PortfolioHiveDataSource {
   final HiveService _hiveService;
-  final PortfolioLocalCombinedModel _portfolioHiveModel;
 
-  PortfolioHiveDataSource(this._hiveService, this._portfolioHiveModel);
-
-  Future<void> addPortfolioData(PortfolioCombined portfolioData) async {
-    final portfolioHivedata =
-        _portfolioHiveModel.toHiveModel(portfolioData); //addto hive
-    await _hiveService.addPortfolioData(portfolioHivedata);
-  }
+  PortfolioHiveDataSource(this._hiveService);
 
   Future<Either<Failure, PortfolioCombined>> getPortfolio(String email) async {
     try {

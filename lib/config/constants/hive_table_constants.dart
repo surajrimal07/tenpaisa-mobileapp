@@ -84,4 +84,7 @@ class HiveTableConstant {
 
   static const int portfolioCombinedTableId = 27;
   static const String portfolioCombinedBox = 'portfolioCombinedBox';
+
+  static const int shortTermInterestTableId = 28;
+  static const String shortTermInterestBox = 'shortTermInterestBox';
 }

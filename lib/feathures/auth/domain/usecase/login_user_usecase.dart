@@ -44,7 +44,7 @@ class LoginUserUseCase {
           userSharedPrefs.setUserPass(authEntity.password),
           userSharedPrefs.setRememberMe(rememberme),
           userSharedPrefs.setLoggedIn(),
-          authCache.saveAuthData(authEntity)
+          authCache.saveAuthData(authEntity) //this is wrong
         ]);
         return Right(authEntity);
       },

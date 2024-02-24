@@ -108,6 +108,7 @@ class SignupState extends ConsumerState<SignupView> with FieldValidator {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: TextFormField(
+                        key: const Key('username_field'), //for testing
                         controller: nameController,
                         keyboardType: TextInputType.name,
                         textInputAction: TextInputAction.next,
@@ -132,6 +133,7 @@ class SignupState extends ConsumerState<SignupView> with FieldValidator {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: TextFormField(
+                        key: const Key('phone_field'),
                         controller: phoneController,
                         keyboardType: TextInputType.phone,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -156,6 +158,7 @@ class SignupState extends ConsumerState<SignupView> with FieldValidator {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: TextFormField(
+                        key: const Key('email_field'),
                         keyboardType: TextInputType.emailAddress,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         textInputAction: TextInputAction.next,
@@ -180,6 +183,7 @@ class SignupState extends ConsumerState<SignupView> with FieldValidator {
                     Padding(
                       padding: const EdgeInsets.all(16.0),
                       child: TextFormField(
+                        key: const Key('password_field'),
                         controller: passwordController,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         keyboardType: TextInputType.visiblePassword,
@@ -213,10 +217,8 @@ class SignupState extends ConsumerState<SignupView> with FieldValidator {
                           Row(
                             children: [
                               Checkbox(
+                                key: const Key('remember_me_checkbox'),
                                 focusNode: FocusNode(),
-                                // shape: RoundedRectangleBorder(
-                                //   borderRadius: BorderRadius.circular(18),
-                                // ),
                                 activeColor: AppColors.primaryColor,
                                 checkColor: Colors.white,
                                 value: rememberMe,
@@ -243,6 +245,7 @@ class SignupState extends ConsumerState<SignupView> with FieldValidator {
                         height: Sizes.dynamicHeight(7),
                         width: Sizes.dynamicWidth(80),
                         child: TextButton(
+                          key: const Key('signup_button'),
                           style: TextButton.styleFrom(
                             backgroundColor: AppColors.primaryColor,
                             shape: RoundedRectangleBorder(
@@ -309,6 +312,7 @@ class SignupState extends ConsumerState<SignupView> with FieldValidator {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
+                            key: const Key('already_account_text'),
                             RegisterStrings.alreadyAccount,
                             style: GoogleFonts.poppins(
                               color: Colors.black,
@@ -324,6 +328,7 @@ class SignupState extends ConsumerState<SignupView> with FieldValidator {
                                   AuthScreen.login;
                             },
                             child: Text(
+                              key: const Key('signin_text'),
                               RegisterStrings.signin,
                               style: GoogleFonts.poppins(
                                 color: AppColors.primaryColor,

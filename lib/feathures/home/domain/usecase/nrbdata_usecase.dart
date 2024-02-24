@@ -21,7 +21,9 @@ class NrbDataUseCase {
     return result.fold(
       (failure) => Left(failure),
       (nrbData) async {
-        await nrbCache.addNrbData(nrbData);
+        //  print("printing nrb data");
+        //print(nrbData);
+        //await nrbCache.addNrbData(nrbData);
         return Right(nrbData);
       },
     );
