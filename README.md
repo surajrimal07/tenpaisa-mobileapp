@@ -5,6 +5,8 @@
 
 A Smart Investment App made for Softwarica College of IT & E-Commerce, Coventry University
 
+Try Webversion live at [Live](https://tenpaisa.tech/)
+
 ## Overview
 
 The Smart Investment Application is a cutting-edge platform designed to empower users with the knowledge and insights necessary to optimize their investment strategies. Leveraging advanced technology, data analytics, and intelligent systems, this innovative application offers tailored investment recommendations, robust portfolio management tools, and real-time market analysis.
