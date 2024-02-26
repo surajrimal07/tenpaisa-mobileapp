@@ -9,61 +9,6 @@ final notificationServiceProvider = Provider<NotificationServices>((ref) {
 });
 
 class NotificationServices {
-  // Future<void> initialize() async {
-  //   await initializeAwesomeNotifications();
-  // }
-
-//commented becaused i moved it to main
-  // Future<void> initializeAwesomeNotifications() async {
-  //   await AwesomeNotifications().initialize(
-  //     'resource://raw/ic_launcher',
-  //     [
-  //       NotificationChannel(
-  //         channelGroupKey: 'basic_channel_group',
-  //         channelKey: 'basic_channel',
-  //         channelName: 'stocknews',
-  //         channelDescription: 'Stock News',
-  //         playSound: true,
-  //         onlyAlertOnce: true,
-  //         groupAlertBehavior: GroupAlertBehavior.Children,
-  //         importance: NotificationImportance.Max,
-  //         defaultPrivacy: NotificationPrivacy.Public,
-  //         defaultColor: AppColors.btnColor,
-  //         channelShowBadge: true,
-  //         defaultRingtoneType: DefaultRingtoneType.Notification,
-  //       ),
-  //     ],
-  //     debug: false,
-  //   );
-  // }
-
-  // static Future<void> initialize() async {
-  //   await initializeAwesomeNotifications();
-  // }
-
-  // static Future<void> initializeAwesomeNotifications() async {
-  //   await AwesomeNotifications().initialize(
-  //     'resource://raw/ic_launcher',
-  //     [
-  //       NotificationChannel(
-  //         channelGroupKey: 'basic_channel_group',
-  //         channelKey: 'basic_channel',
-  //         channelName: 'stocknews',
-  //         channelDescription: 'Stock News',
-  //         playSound: true,
-  //         onlyAlertOnce: true,
-  //         groupAlertBehavior: GroupAlertBehavior.Children,
-  //         importance: NotificationImportance.Max,
-  //         defaultPrivacy: NotificationPrivacy.Public,
-  //         defaultColor: AppColors.btnColor,
-  //         channelShowBadge: true,
-  //         defaultRingtoneType: DefaultRingtoneType.Notification,
-  //       ),
-  //     ],
-  //     debug: false,
-  //   );
-  // }
-
 //this can be removed later //no need
   static Future<void> showNotification(
       String title, String description, String? image, String url) async {

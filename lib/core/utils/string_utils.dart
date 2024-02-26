@@ -535,3 +535,13 @@ class SubsString {
       'Insufficient balance. Please add funds to your account.';
   static const subsNotSelected = 'Please select a subscription package';
 }
+
+class UserHeaderStrings {
+  static const errorOccured = 'Error Occured';
+  static const doubleTapToView = 'Double tap to viewchart';
+  static const dummyIndex = '1979.02 -1.33%';
+  static const emptyPortfolio = 'Empty Portfolio';
+  static const emptyPortfolioSub = 'My Portfolio';
+  static const marketClosed = 'Market Open';
+  static const marketToday = 'Market Today';
+}

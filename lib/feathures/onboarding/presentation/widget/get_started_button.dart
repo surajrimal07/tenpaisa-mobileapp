@@ -31,9 +31,6 @@ class _GetStartBtnState extends State<GetStartBtn> {
     });
 
     await userSharedPrefs.setOnBoarded();
-
-    // final hasSeenOnboarding = await userSharedPrefs.getOnBoarded();
-
     await Future.delayed(const Duration(seconds: 2));
 
     setState(() {
@@ -41,7 +38,6 @@ class _GetStartBtnState extends State<GetStartBtn> {
     });
 
     navigationService.routeToAndReplace(AppRoute.authRoute);
-    //print('User has seen onboarding: $hasSeenOnboarding');
   }
 
   @override
@@ -122,7 +118,6 @@ class SkipBtn extends StatelessWidget {
                 fontSize: 14,
                 color: AppColors.primaryColor,
                 fontFamily: 'Poppins',
-                //fontWeight: FontWeight.bold,
               )),
         ),
       ),

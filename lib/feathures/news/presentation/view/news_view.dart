@@ -1,6 +1,7 @@
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:paisa/config/constants/headers_constants.dart';
 import 'package:paisa/config/themes/app_text_styles.dart';
 import 'package:paisa/config/themes/app_themes.dart';
 import 'package:paisa/core/network/detector_network.dart';
@@ -21,13 +22,6 @@ class NewsView extends ConsumerWidget {
     final notificationViewModel = ref.read(notificationViewModelProvider);
     notificationViewModel.clearUnreadNews();
     final connectivity = ref.watch(connectivityStatusProvider);
-
-    final Map<String, String> headers = {
-      'Content-Type': 'application/json',
-      'Accept': 'application/json',
-      'User-Agent':
-          'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
-    };
 
     return NotificationListener(
         onNotification: (notification) {

@@ -11,6 +11,7 @@ import 'package:paisa/core/utils/string_utils.dart';
 import 'package:paisa/feathures/home/presentation/view/home_view.dart';
 import 'package:paisa/feathures/home/presentation/viewmodel/index_view_model.dart';
 import 'package:paisa/feathures/home/presentation/widget/text_widget.dart';
+import 'package:paisa/feathures/home/presentation/widget/view_all.dart';
 import 'package:paisa/feathures/portfolio/presentation/view_model/portfolio_view_model.dart';
 import 'package:paisa/feathures/portfolio/presentation/widget/empty_portfolio.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -62,16 +63,7 @@ class PortfolioContainer extends ConsumerWidget {
                   onPressed: () {
                     ref.read(selectedIndexProvider.notifier).state = 2;
                   },
-                  child: Text(
-                    PortfolioStrings.viewAll,
-                    style: GoogleFonts.poppins(
-                      color: AppTheme.isDarkMode(context)
-                          ? AppColors.darktextColor
-                          : AppColors.whitetextColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+                  child: const BuildViewAll(),
                 ),
               ],
             ),

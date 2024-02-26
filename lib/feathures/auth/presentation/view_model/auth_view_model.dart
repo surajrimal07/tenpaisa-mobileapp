@@ -230,7 +230,7 @@ class AuthViewModel extends StateNotifier<LoginState> {
         CustomToast.showToast(failure.error.toString(), customType: Type.error);
         state = state.copyWith(isLoading: false, error: failure.error);
       },
-      (success) {
+      (success) { //put it in state not entity
         ref.read(authEntityProvider.notifier).state = success;
         state = state.copyWith(isLoading: false, error: null);
       },

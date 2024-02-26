@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paisa/config/constants/appsize_constants.dart';
-import 'package:paisa/feathures/common/loading_indicator.dart';
 import 'package:paisa/feathures/home/domain/entity/currency_entity.dart';
 import 'package:paisa/feathures/home/presentation/viewmodel/nrbdata_viewmodel.dart';
 import 'package:paisa/feathures/home/presentation/widget/nrb_dialog.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ForexDataView extends ConsumerWidget {
   const ForexDataView({super.key});
@@ -34,36 +34,39 @@ class ForexDataView extends ConsumerWidget {
           ),
         ],
       ),
-      body: state.isLoading
-          ? const Center(
-              child: LoadingIndicatorWidget(
-                size: 50,
-                showText: true,
-                text: "Loading Forex Data",
+      body:
+          // state.isLoading
+          //     ? const Center(
+          //         child: LoadingIndicatorWidget(
+          //           size: 50,
+          //           showText: true,
+          //           text: "Loading Forex Data",
+          //         ),
+          //       )
+          //     :
+          Skeletonizer(
+        enabled: state.isLoading,
+        child: RefreshIndicator(
+          onRefresh: () async {
+            await ref.read(nrbDataViewModelProvider.notifier).getNrbData(true);
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: GridView.builder(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                crossAxisSpacing: 5,
+                mainAxisSpacing: 5,
               ),
-            )
-          : RefreshIndicator(
-              onRefresh: () async {
-                await ref
-                    .read(nrbDataViewModelProvider.notifier)
-                    .getNrbData(true);
+              itemCount: nrbForexData.currencyData.length,
+              itemBuilder: (context, index) {
+                final currency = nrbForexData.currencyData[index];
+                return _buildCurrencyCard(currency);
               },
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 5,
-                    mainAxisSpacing: 5,
-                  ),
-                  itemCount: nrbForexData.currencyData.length,
-                  itemBuilder: (context, index) {
-                    final currency = nrbForexData.currencyData[index];
-                    return _buildCurrencyCard(currency);
-                  },
-                ),
-              ),
             ),
+          ),
+        ),
+      ),
     );
   }
 

@@ -1,14 +1,13 @@
-// ignore_for_file: invalid_use_of_protected_member, invalid_use_of_visible_for_testing_member
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:paisa/config/constants/index_skeleton.dart';
 import 'package:paisa/config/themes/app_text_styles.dart';
 import 'package:paisa/config/themes/app_themes.dart';
 import 'package:paisa/config/themes/colored_text.dart';
 import 'package:paisa/core/common/toast/app_toast.dart';
 import 'package:paisa/core/utils/string_utils.dart';
 import 'package:paisa/feathures/common/animated_page_transition.dart';
-import 'package:paisa/feathures/common/loading_indicator.dart';
 import 'package:paisa/feathures/home/domain/entity/index_entity.dart';
 import 'package:paisa/feathures/home/presentation/state/index_state.dart';
 import 'package:paisa/feathures/home/presentation/view/home_view.dart';
@@ -30,7 +29,9 @@ class PortfolioCard extends ConsumerWidget {
     final totalPortfolioReturns =
         state.portfolioDataEntity.totalPortfolioReturns.toDouble();
 
-    bool marketStatus = indexState.index[0].marketStatus == 'Market Open';
+    //bool marketStatus = indexState.index[0].marketStatus == 'Market Open';
+    bool marketStatus =
+        indexState.index[0].marketStatus == UserHeaderStrings.marketClosed;
     final portfolioIconDetails = _buildIcon(totalPortfolioReturns);
 
     return Container(
@@ -59,10 +60,7 @@ class PortfolioCard extends ConsumerWidget {
             flex: 4,
             child: SizedBox(
               height: 90,
-              child: indexState.isLoading
-                  ? const LoadingIndicatorWidget(
-                      color: Colors.white, showText: false)
-                  : _buildLineChart(indexState.index, context),
+              child: _buildLineChart(indexState.index, context, indexState),
             ),
           ),
         ],
@@ -96,12 +94,12 @@ class PortfolioCard extends ConsumerWidget {
     return GestureDetector(
       onTap: () {
         CustomToast.showToast(
-            indexState.index[0].marketStatus ?? "Market Closed");
+            indexState.index[0].marketStatus ?? UserHeaderStrings.marketClosed);
       },
       child: Row(
         children: [
           Text(
-            'Market Today',
+            UserHeaderStrings.marketToday,
             style: AppTextStyles.text16w400White,
             textAlign: TextAlign.left,
           ),
@@ -143,7 +141,7 @@ class PortfolioCard extends ConsumerWidget {
                       onTap: () {
                         CustomToast.showToast(
                             indexState.index[0].marketStatus ??
-                                "Market Closed");
+                                UserHeaderStrings.marketClosed);
                       },
                       child: Row(
                         children: [
@@ -172,7 +170,7 @@ class PortfolioCard extends ConsumerWidget {
                 ],
         ),
         Text(
-          'My Portfolio',
+          UserHeaderStrings.emptyPortfolioSub,
           style: AppTextStyles.text17w400White,
           textAlign: TextAlign.left,
         ),
@@ -183,7 +181,7 @@ class PortfolioCard extends ConsumerWidget {
             enabled: state.isLoading,
             child: totalPortfolioReturns == 0.0
                 ? Text(
-                    'Empty Portfolio',
+                    UserHeaderStrings.emptyPortfolio,
                     style: AppTextStyles.text16w400White,
                   )
                 : RichText(
@@ -224,31 +222,44 @@ class PortfolioCard extends ConsumerWidget {
         if (snapshot.hasData) {
           final indexData = snapshot.data!;
 
+          return Row(
+            children: [
+              BuildColoredText(
+                      text: indexData.index.toString(),
+                      value: indexData.percentageChange,
+                      textStyle: AppTextStyles.text15w500)
+                  .build(),
+              BuildColoredText(
+                      text: ' ${indexData.percentageChange.toString()}%',
+                      value: indexData.percentageChange,
+                      textStyle: AppTextStyles.text15w500)
+                  .build(),
+              Icon(
+                _buildIcon(indexData.percentageChange)['icon'],
+                color: _buildIcon(indexData.percentageChange)['color'],
+                size: _buildIcon(indexData.percentageChange)['size'],
+              ),
+            ],
+          );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
           return Skeletonizer(
-            enabled: snapshot.connectionState == ConnectionState.waiting,
             child: Row(
               children: [
-                BuildColoredText(
-                        text: indexData.index.toString(),
-                        value: indexData.percentageChange,
-                        textStyle: AppTextStyles.text15w500)
-                    .build(),
-                BuildColoredText(
-                        text: ' ${indexData.percentageChange.toString()}%',
-                        value: indexData.percentageChange,
-                        textStyle: AppTextStyles.text15w500)
-                    .build(),
-                Icon(
-                  _buildIcon(indexData.percentageChange)['icon'],
-                  color: _buildIcon(indexData.percentageChange)['color'],
-                  size: _buildIcon(indexData.percentageChange)['size'],
+                Text(
+                  UserHeaderStrings.dummyIndex,
+                  style: AppTextStyles.text15w500White,
+                  textAlign: TextAlign.left,
+                ),
+                const Icon(
+                  Icons.arrow_upward,
+                  color: AppColors.greenColor,
                 ),
               ],
             ),
           );
         } else if (snapshot.hasError) {
           return Text(
-            'Error Fetching Live Data',
+            UserHeaderStrings.errorOccured,
             style: AppTextStyles.text15w500White,
             textAlign: TextAlign.left,
           );
@@ -259,7 +270,7 @@ class PortfolioCard extends ConsumerWidget {
     );
   }
 
-  Widget _buildLineChart(List<IndexEntity> index, context) {
+  Widget _buildLineChart(List<IndexEntity> index, context, state) {
     return GestureDetector(
       onDoubleTap: () => {
         animatednavigateTo(
@@ -269,9 +280,6 @@ class PortfolioCard extends ConsumerWidget {
               name: 'Nepse Chart',
             ))
       },
-      onTap: () => {
-        CustomToast.showToast("Double Tap to view chart", customType: Type.info)
-      },
       child: LineChart(
         LineChartData(
           gridData: FlGridData(show: false),
@@ -279,10 +287,17 @@ class PortfolioCard extends ConsumerWidget {
           borderData: FlBorderData(show: false),
           lineBarsData: [
             LineChartBarData(
-              spots: [
-                for (var i = 0; i < 14; i++)
-                  FlSpot(i.toDouble(), index[14 - i].index.toDouble()),
-              ],
+              spots: state.isLoading
+                  ? List.generate(
+                      15,
+                      (i) => FlSpot(i.toDouble(),
+                          dummyData["data"][i]["index"].toDouble()))
+                  : List.generate(index.length,
+                      (i) => FlSpot(i.toDouble(), index[i].index.toDouble())),
+              // spots: [
+              //   for (var i = 0; i < 14; i++)
+              //     FlSpot(i.toDouble(), index[14 - i].index.toDouble()),
+              // ],
               isCurved: true,
               colors: [Colors.white],
               barWidth: 1,

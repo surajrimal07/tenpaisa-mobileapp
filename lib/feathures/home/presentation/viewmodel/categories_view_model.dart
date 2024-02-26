@@ -22,7 +22,8 @@ class CategoriesViewModel extends StateNotifier<CategoriesState> {
     if (!(refresh ?? false)) {
       state = state.copyWith(isLoading: true);
     } //this is to minimize lag effect in later refreshes,
-    //but set it true for initial refresh 
+    //but set it true for initial refresh
+    //state = state.copyWith(isLoading: true);
 
     //state = state.copyWith(isLoading: true);
     var data = await categoriesUseCase.getCategories(refresh ?? false);

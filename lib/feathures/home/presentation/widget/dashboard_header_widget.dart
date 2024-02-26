@@ -101,29 +101,6 @@ class Header extends ConsumerWidget {
                   highlightColor: Colors.transparent,
                   onPressed: () {
                     animatednavigateTo(context, const NewsView());
-                    // Navigator.push(
-                    //   context,
-                    //   PageRouteBuilder(
-                    //     pageBuilder: (context, animation, secondaryAnimation) =>
-                    //         const NewsView(),
-                    //     transitionsBuilder:
-                    //         (context, animation, secondaryAnimation, child) {
-                    //       return SlideTransition(
-                    //         position: Tween<Offset>(
-                    //           begin: const Offset(1.0, 0.0),
-                    //           end: Offset.zero,
-                    //         ).animate(
-                    //           CurvedAnimation(
-                    //             parent: animation,
-                    //             curve: Curves.easeInOut,
-                    //           ),
-                    //         ),
-                    //         child: child,
-                    //       );
-                    //     },
-                    //     transitionDuration: const Duration(milliseconds: 300),
-                    //   ),
-                    // );
                   },
                   padding: const EdgeInsets.all(0),
                   minWidth: 0,
@@ -148,24 +125,6 @@ class Header extends ConsumerWidget {
                             ),
                           ),
                         ),
-                      // Positioned(
-                      //   left: 13,
-                      //   top: -2,
-                      //   child: Container(
-                      //       padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
-                      //       decoration: const BoxDecoration(
-                      //         color: Colors.red,
-                      //         shape: BoxShape.circle,
-                      //       ),
-                      //       child: const Text(
-                      //         " ",
-                      //         style: TextStyle(
-                      //           color: Colors.white,
-                      //           fontSize: 8,
-                      //           fontWeight: FontWeight.bold,
-                      //         ),
-                      //       )),
-                      // ),
                     ],
                   )),
               MaterialButton(
@@ -173,35 +132,7 @@ class Header extends ConsumerWidget {
                   highlightColor: Colors.transparent,
                   onPressed: () {
                     animatednavigateTo(context, const NotificationView());
-
-                    // Navigator.push(
-                    //   context,
-                    //   PageRouteBuilder(
-                    //     pageBuilder: (context, animation, secondaryAnimation) =>
-                    //         const NotificationView(),
-                    //     transitionsBuilder:
-                    //         (context, animation, secondaryAnimation, child) {
-                    //       return SlideTransition(
-                    //         position: Tween<Offset>(
-                    //           begin: const Offset(1.0, 0.0),
-                    //           end: Offset.zero,
-                    //         ).animate(
-                    //           CurvedAnimation(
-                    //             parent: animation,
-                    //             curve: Curves.easeInOut,
-                    //           ),
-                    //         ),
-                    //         child: child,
-                    //       );
-                    //     },
-                    //     transitionDuration: const Duration(milliseconds: 300),
-                    //   ),
-                    // );
                   },
-                  // onPressed: () {
-
-                  //   Navigator.pushNamed(context, AppRoute.notificationRoute);
-                  // },
                   padding: const EdgeInsets.all(0),
                   minWidth: 0,
                   child: Stack(
@@ -225,25 +156,6 @@ class Header extends ConsumerWidget {
                             ),
                           ),
                         ),
-                      // Positioned(
-                      //   left: 15,
-                      //   top: -2,
-                      //   child: Container(
-                      //     padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
-                      //     decoration: const BoxDecoration(
-                      //       color: Colors.red,
-                      //       shape: BoxShape.circle,
-                      //     ),
-                      //     child: const Text(
-                      //       " ",
-                      //       style: TextStyle(
-                      //         color: Colors.white,
-                      //         fontSize: 8,
-                      //         fontWeight: FontWeight.bold,
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                     ],
                   )),
               MaterialButton(
@@ -251,33 +163,7 @@ class Header extends ConsumerWidget {
                 highlightColor: Colors.transparent,
                 onPressed: () {
                   animatednavigateTo(context, const SearchView());
-                  // Navigator.push(
-                  //   context,
-                  //   PageRouteBuilder(
-                  //     pageBuilder: (context, animation, secondaryAnimation) =>
-                  //         const SearchView(),
-                  //     transitionsBuilder:
-                  //         (context, animation, secondaryAnimation, child) {
-                  //       return SlideTransition(
-                  //         position: Tween<Offset>(
-                  //           begin: const Offset(1.0, 0.0),
-                  //           end: Offset.zero,
-                  //         ).animate(
-                  //           CurvedAnimation(
-                  //             parent: animation,
-                  //             curve: Curves.easeInOut,
-                  //           ),
-                  //         ),
-                  //         child: child,
-                  //       );
-                  //     },
-                  //     transitionDuration: const Duration(milliseconds: 300),
-                  //   ),
-                  // );
                 },
-                // onPressed: () {
-                //   Navigator.pushNamed(context, AppRoute.searchRoute);
-                // },
                 padding: const EdgeInsets.all(0),
                 minWidth: 0,
                 child: const Icon(

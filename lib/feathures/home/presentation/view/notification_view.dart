@@ -1,5 +1,3 @@
-// ignore_for_file: library_private_types_in_public_api
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paisa/feathures/splash/presentation/viewmodel/notification_view_model.dart';
@@ -10,11 +8,19 @@ class NotificationView extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final notificationViewModel = ref.read(notificationViewModelProvider);
-    notificationViewModel.clearUnreadNotifications();
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('Notification'),
+        actions: [
+          IconButton(
+            tooltip: 'Clear all notifications',
+            onPressed: () {
+              notificationViewModel.clearUnreadNotifications();
+            },
+            icon: const Icon(Icons.clear_all_outlined),
+          ),
+        ],
       ),
       body: Center(
         child: Container(

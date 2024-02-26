@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paisa/config/constants/appsize_constants.dart';
 import 'package:paisa/config/themes/app_themes.dart';
-import 'package:paisa/core/utils/components_utils.dart';
 import 'package:paisa/core/utils/string_utils.dart';
 import 'package:paisa/feathures/onboarding/presentation/view/onboarding_view.dart';
+import 'package:paisa/feathures/onboarding/presentation/widget/get_started_button.dart';
 import 'package:paisa/feathures/splash/presentation/widget/loading_widget.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

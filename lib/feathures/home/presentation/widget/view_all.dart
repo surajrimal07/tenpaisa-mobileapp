@@ -14,7 +14,7 @@ class BuildViewAll extends StatelessWidget {
       style: GoogleFonts.poppins(
         color: AppTheme.isDarkMode(context)
             ? AppColors.darktextColor
-            : AppColors.primaryColor,
+            : AppColors.whitetextColor,
         fontSize: 14,
         fontWeight: FontWeight.w400,
       ),

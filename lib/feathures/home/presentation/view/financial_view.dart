@@ -45,82 +45,79 @@ class FinancialDataView extends ConsumerWidget {
                     .read(nrbDataViewModelProvider.notifier)
                     .getNrbData(true);
               },
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
+              child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
                     _buildShortTermInterestCard(
                         nrbBankingData.shortTermInterestRates.values),
-                    SingleChildScrollView(
-                      child: DataTable(
-                        columnSpacing: 20,
-                        dataRowMaxHeight: 60,
-                        dividerThickness: 0.4,
-                        columns: [
-                          const DataColumn(
-                            label: Text(
-                              'Indicator',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
+                    DataTable(
+                      columnSpacing: 20,
+                      dataRowMaxHeight: 60,
+                      dividerThickness: 0.4,
+                      columns: [
+                        const DataColumn(
+                          label: Text(
+                            'Indicator',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
                           ),
-                          DataColumn(
-                            label: Text(
-                              nrbBankingData.totalDeposits.keys.elementAt(0),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            nrbBankingData.totalDeposits.keys.elementAt(0),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
                           ),
-                          DataColumn(
-                            label: Text(
-                              nrbBankingData.totalDeposits.keys.elementAt(1),
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16,
-                              ),
+                        ),
+                        DataColumn(
+                          label: Text(
+                            nrbBankingData.totalDeposits.keys.elementAt(1),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16,
                             ),
                           ),
-                        ],
-                        rows: [
-                          buildDataRow(
-                            'Total Deposits',
-                            nrbBankingData.totalDeposits,
-                          ),
-                          buildDataRow(
-                            'Commercial Banks Total Deposits',
-                            nrbBankingData.commercialBanksTotalDeposits,
-                          ),
-                          buildDataRow(
-                            'Other BFIs Total Deposits',
-                            nrbBankingData.otherBfIsTotalDeposits,
-                          ),
-                          buildDataRow(
-                            'Total Lending',
-                            nrbBankingData.commercialBanksTotalLending,
-                          ),
-                          buildDataRow(
-                            'Commercial Banks Total Lending',
-                            nrbBankingData.commercialBanksTotalLending,
-                          ),
-                          buildDataRow(
-                            'Other BFIs Total Lending',
-                            nrbBankingData.otherBfIsTotalLending,
-                          ),
-                          buildDataRow(
-                            'CD Ratio',
-                            nrbBankingData.cdRatio,
-                          ),
-                          buildDataRow(
-                            'Interbank Interest',
-                            nrbBankingData.interbankInterestRateLcyWeightedAvg,
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
+                      rows: [
+                        buildDataRow(
+                          'Total Deposits',
+                          nrbBankingData.totalDeposits,
+                        ),
+                        buildDataRow(
+                          'Commercial Banks Total Deposits',
+                          nrbBankingData.commercialBanksTotalDeposits,
+                        ),
+                        buildDataRow(
+                          'Other BFIs Total Deposits',
+                          nrbBankingData.otherBfIsTotalDeposits,
+                        ),
+                        buildDataRow(
+                          'Total Lending',
+                          nrbBankingData.commercialBanksTotalLending,
+                        ),
+                        buildDataRow(
+                          'Commercial Banks Total Lending',
+                          nrbBankingData.commercialBanksTotalLending,
+                        ),
+                        buildDataRow(
+                          'Other BFIs Total Lending',
+                          nrbBankingData.otherBfIsTotalLending,
+                        ),
+                        buildDataRow(
+                          'CD Ratio',
+                          nrbBankingData.cdRatio,
+                        ),
+                        buildDataRow(
+                          'Interbank Interest',
+                          nrbBankingData.interbankInterestRateLcyWeightedAvg,
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -133,7 +130,7 @@ class FinancialDataView extends ConsumerWidget {
       Map<String, String> shortTermInterestRates) {
     return Card(
       elevation: 4,
-      margin: const EdgeInsets.symmetric(vertical: 10),
+      margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
       child: Column(
         children: [
           const Padding(
@@ -147,7 +144,7 @@ class FinancialDataView extends ConsumerWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(5, 0, 5, 5),
+            padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: shortTermInterestRates.entries.map((entry) {
@@ -170,7 +167,7 @@ class FinancialDataView extends ConsumerWidget {
             textAlign: TextAlign.center,
             style: const TextStyle(
               fontWeight: FontWeight.bold,
-              fontSize: 16,
+              fontSize: 14,
             ),
           ),
           const SizedBox(height: 10),
