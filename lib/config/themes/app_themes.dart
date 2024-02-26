@@ -82,6 +82,9 @@ class AppColors {
   static const Color errorColor = Color(0xFFCA6862);
   static const Color backgroundColor = Colors.white;
   static const Color outlineColor = Color(0xFFA29EA5);
+  static const Color redColor = Color.fromARGB(255, 248, 144, 144);
+  static const Color greenColor = Color.fromARGB(255, 123, 228, 126);
+  static const Color greyPrimaryColor = Color.fromRGBO(28, 27, 32, 1.0);
 
   //for dark mode
   static const Color darkPrimaryColor = Color(0xFF6750A4);
@@ -178,6 +181,11 @@ class AppTheme {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.0))),
     ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: AppColors.primaryColor,
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white.withOpacity(.50),
+    ),
 
     colorScheme: const ColorScheme.light(primary: AppColors.primaryColor),
     textTheme: TextTheme(
@@ -203,17 +211,14 @@ class AppTheme {
       toolbarHeight: Sizes.dynamicHeight(6),
       backgroundColor: AppColors.primaryColor,
       foregroundColor: Colors.white,
-
-      // titleTextStyle: TextStyle(
-      //   color: Colors.white,
-      //   fontSize: 30,
-      // )
     ),
   );
 
+  ///dark mode
   static final darkTheme = ThemeData.dark().copyWith(
     primaryColor: Colors.white,
-    scaffoldBackgroundColor: Colors.black,
+    scaffoldBackgroundColor: //rgba(28,27,32,255)
+        const Color.fromRGBO(28, 27, 32, 1.0),
     dialogTheme: const DialogTheme(
       backgroundColor: Colors.black,
       titleTextStyle: TextStyle(
@@ -226,10 +231,10 @@ class AppTheme {
     brightness: Brightness.dark,
     dividerColor: Colors.white,
     colorScheme: const ColorScheme.dark(primary: Colors.white),
-    appBarTheme: const AppBarTheme(
+    appBarTheme: AppBarTheme(
       centerTitle: true,
-      color: Colors.black,
-      toolbarHeight: 40,
+      backgroundColor: Colors.transparent,
+      toolbarHeight: Sizes.dynamicHeight(6),
     ),
     canvasColor: Colors.black,
     floatingActionButtonTheme: FloatingActionButtonThemeData(
@@ -248,11 +253,13 @@ class AppTheme {
     iconTheme: const IconThemeData(
       color: Colors.white,
     ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: const Color.fromRGBO(39, 42, 51, 1.0),
+      selectedItemColor: Colors.white,
+      unselectedItemColor: Colors.white.withOpacity(.50),
+    ),
     inputDecorationTheme: InputDecorationTheme(
         contentPadding: const EdgeInsets.fromLTRB(12, 14, 14, 12),
-        //contentPadding: const EdgeInsets.symmetric(vertical: 14),
-        // filled: true,
-        // fillColor: const Color(0xFF2B2B2B),
         hintStyle: const TextStyle(color: Colors.grey),
         errorStyle: const TextStyle(fontSize: 12),
         enabledBorder: OutlineInputBorder(
@@ -268,13 +275,7 @@ class AppTheme {
             width: 1.0,
           ),
           borderRadius: BorderRadius.circular(8.0),
-        )
-
-        // border: OutlineInputBorder(
-        //   borderSide: BorderSide.none,
-        //   borderRadius: BorderRadius.circular(8.0),
-        // ),
-        ),
+        )),
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
           foregroundColor: Colors.white,

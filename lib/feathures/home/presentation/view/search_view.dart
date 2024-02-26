@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:paisa/config/constants/appsize_constants.dart';
 import 'package:paisa/config/router/navigation_service.dart';
 import 'package:paisa/config/themes/app_themes.dart';
 import 'package:paisa/core/utils/string_utils.dart';
@@ -25,6 +26,7 @@ class SearchView extends ConsumerStatefulWidget {
 class SearchScreenState extends ConsumerState<SearchView>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+  bool _isSearching = false;
 
   @override
   void initState() {
@@ -41,34 +43,46 @@ class SearchScreenState extends ConsumerState<SearchView>
   @override
   Widget build(BuildContext context) {
     final searchController = ref.watch(searchControllerProvider);
+    final color = AppTheme.isDarkMode(context)
+        ? AppColors.greyPrimaryColor
+        : AppColors.darktextColor;
     return Scaffold(
       appBar: AppBar(
-        title: Container(
-          width: double.infinity,
-          height: 42,
-          decoration: BoxDecoration(
-              color: Colors.white, borderRadius: BorderRadius.circular(10)),
-          child: Center(
-            child: TextField(
-              controller: searchController,
-              decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.search),
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.clear),
-                    onPressed: () {
-                      searchController.clear();
-                      setState(() {});
-                    },
-                  ),
-                  hintText: SearchStrings.search,
-                  hintStyle: const TextStyle(fontSize: 14),
-                  border: InputBorder.none),
-              onChanged: (value) {
-                setState(() {});
-              },
-            ),
+        title: _isSearching
+            ? Container(
+                width: double.infinity,
+                height: 39,
+                decoration: BoxDecoration(
+                    color: color, borderRadius: BorderRadius.circular(10)),
+                child: TextField(
+                  controller: searchController,
+                  decoration: const InputDecoration(
+                      prefixIcon: Icon(Icons.search),
+                      hintText: SearchStrings.search,
+                      hintStyle: TextStyle(fontSize: 14),
+                      border: InputBorder.none),
+                  onChanged: (value) {
+                    setState(() {});
+                  },
+                ),
+              )
+            : Row(
+                children: [
+                  SizedBox(width: Sizes.dynamicWidth(35)),
+                  const Text('Assets'),
+                ],
+              ),
+        actions: [
+          IconButton(
+            icon: Icon(_isSearching ? Icons.close : Icons.search),
+            onPressed: () {
+              setState(() {
+                searchController.clear();
+                _isSearching = !_isSearching;
+              });
+            },
           ),
-        ),
+        ],
         bottom: _buildTabBar(),
       ),
       body: _buildTabBarView(searchController),

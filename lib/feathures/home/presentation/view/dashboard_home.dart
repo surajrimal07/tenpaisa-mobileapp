@@ -49,9 +49,7 @@ class DashboardView extends ConsumerWidget {
         if (didPop) {
           return;
         }
-        //found new solution
-        //https://github.com/flutter/flutter/issues/138614
-        //https://docs.flutter.dev/release/breaking-changes/android-predictive-back#migrating-a-back-confirmation-dialog
+
         final bool shouldClose = await showExitDialog(context);
         if (shouldClose) {
           SystemNavigator.pop();

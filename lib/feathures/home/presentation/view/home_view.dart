@@ -1,5 +1,3 @@
-// ignore_for_file: unused_field
-
 import 'package:animations/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -29,8 +27,8 @@ class HomeView extends ConsumerStatefulWidget {
 }
 
 class _HomeViewState extends ConsumerState<HomeView> {
-  bool _hasNavigatedDisconnected = false;
-  bool _hasNavigatedConnected = false;
+  // bool _hasNavigatedDisconnected = false;
+  // bool _hasNavigatedConnected = false;
   ConnectivityStatus _lastConnectivityStatus = ConnectivityStatus.isConnected;
 
   List<Widget> lstScreen = [
@@ -51,12 +49,12 @@ class _HomeViewState extends ConsumerState<HomeView> {
       if (connectivityStatus != _lastConnectivityStatus) {
         _lastConnectivityStatus = connectivityStatus;
         if (connectivityStatus == ConnectivityStatus.isDisconnected) {
-          _hasNavigatedDisconnected = true;
-          _hasNavigatedConnected = false;
+          //_hasNavigatedDisconnected = true;
+          //  _hasNavigatedConnected = false;
           animatednavigateTo(context, const NoConnection());
         } else if (connectivityStatus == ConnectivityStatus.isConnected) {
-          _hasNavigatedConnected = true;
-          _hasNavigatedDisconnected = false;
+          //_hasNavigatedConnected = true;
+          // _hasNavigatedDisconnected = false;
           animatednavigateTo(context, const Connected());
         }
       }
@@ -81,13 +79,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         enableFeedback: true,
-        backgroundColor: AppTheme.isDarkMode(context)
-            ? Colors.grey[900]
-            : AppColors.primaryColor,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white.withOpacity(.50),
         selectedFontSize: 15,
-        unselectedFontSize: 14,
+        unselectedFontSize: 13,
         onTap: (index) {
           ref.read(selectedIndexProvider.notifier).state = index;
         },
@@ -97,18 +90,9 @@ class _HomeViewState extends ConsumerState<HomeView> {
           BottomNavigationBarItem(
               icon: Icon(size: 25, Iconsax.global_search), label: "Search"),
           BottomNavigationBarItem(
-              icon: Icon(size: 25, Iconsax.document), label: "Portfolio"),
+              icon: Icon(size: 25, Iconsax.document4), label: "Portfolio"),
           BottomNavigationBarItem(
-              icon: Icon(size: 25, Iconsax.wallet_1), label: "Watchlist"),
-          // BottomNavigationBarItem(
-          //   icon: CircleAvatar(
-          //       radius: 12.2,
-          //       backgroundImage: NetworkImage(
-          //         ref.watch(authEntityProvider.select((it) => it.picture))!,
-          //       )),
-          //   label: "Profile",
-          // ),
-
+              icon: Icon(size: 25, Iconsax.wallet_14), label: "Watchlist"),
           BottomNavigationBarItem(
               icon: Icon(size: 25, Iconsax.profile_circle), label: "Profile"),
         ],

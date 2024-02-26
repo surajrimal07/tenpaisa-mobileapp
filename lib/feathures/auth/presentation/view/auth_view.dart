@@ -10,16 +10,11 @@ final authScreenProvider = StateProvider<AuthScreen>((ref) {
   return AuthScreen.login;
 });
 
-class AuthView extends ConsumerStatefulWidget {
+class AuthView extends ConsumerWidget {
   const AuthView({super.key});
 
   @override
-  ConsumerState<AuthView> createState() => SignInState();
-}
-
-class SignInState extends ConsumerState<AuthView> {
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: const AuthAppBar(),

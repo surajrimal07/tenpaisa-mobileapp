@@ -41,7 +41,7 @@ class AssetViewState extends ConsumerState<AssetView> {
     final bool connected = connectivityStatus == ConnectivityStatus.isConnected;
 
     return Scaffold(
-        backgroundColor: Colors.black,
+        backgroundColor: AppColors.greyPrimaryColor,
         appBar: AppBar(
           title: Hero(
             tag: 'Info',
@@ -53,11 +53,6 @@ class AssetViewState extends ConsumerState<AssetView> {
                   color: Colors.white,
                 )),
           ),
-          centerTitle: true,
-          toolbarHeight: 36,
-          automaticallyImplyLeading: true,
-          backgroundColor: AppColors.primaryColor,
-          iconTheme: const IconThemeData(color: Colors.black),
           elevation: 0,
           leading: IconButton(
             icon: const Icon(

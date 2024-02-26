@@ -512,7 +512,7 @@ class UrlStrings {
   static const nepseUrl = 'https://www.nepsealpha.com/trading/chart';
   static const stockChart = 'https://www.nepsealpha.com/trading/chart?symbol=';
   static const nrbSite1 = 'https://www.nrb.org.np';
-  static const tenpaisaurl = 'https://paisafrontend.vercel.app/';
+  static const tenpaisaurl = 'https://tenpaisa.tech/';
   static const authorGithub = 'https://github.com/surajrimal07';
   static const backendUrl = 'https://paisabackend.el.r.appspot.com/';
   static const authorEmail = 'davidparkedme@gmail.com';

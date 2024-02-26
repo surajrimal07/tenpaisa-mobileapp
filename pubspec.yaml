@@ -64,7 +64,7 @@ dependencies:
   #dart_ping: ^9.0.1
   #internet_connection_checker: ^1.0.0+1
   social_login_buttons: ^1.0.7
-  google_sign_in: ^6.2.1
+  #google_sign_in: ^6.2.1
   permission_handler: ^11.2.0
   #sensors_plus: ^4.0.2
   local_auth: ^2.1.8
@@ -76,6 +76,8 @@ dependencies:
   #shimmer: ^3.0.0
   animations: ^2.0.11 #for page transition animation
   mockito: ^5.4.4 # for testing
+  skeletonizer: ^1.0.1 #for skeleton loading
+  awesome_flutter_extensions: ^1.2.0
 
 dev_dependencies:
   flutter_test:

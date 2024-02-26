@@ -20,6 +20,9 @@ class CommonDrawer extends ConsumerWidget {
     final auth = ref.watch(authEntityProvider);
     final connectivityStatus = ref.watch(connectivityStatusProvider);
     final nav = ref.watch(navigationServiceProvider);
+    final color = AppTheme.isDarkMode(context)
+        ? AppColors.greyPrimaryColor
+        : AppColors.primaryColor;
 
     Color dotColor = Colors.red;
 
@@ -32,9 +35,7 @@ class CommonDrawer extends ConsumerWidget {
         child: Stack(children: [
           Container(
             height: MediaQuery.of(context).padding.top + kToolbarHeight,
-            color: AppTheme.isDarkMode(context)
-                ? AppColors.darkbackgroundColor
-                : AppColors.primaryColor,
+            color: color,
           ),
           ListView(
             children: [
@@ -47,11 +48,7 @@ class CommonDrawer extends ConsumerWidget {
                   },
                   child: UserAccountsDrawerHeader(
                     margin: const EdgeInsets.all(0),
-                    decoration: BoxDecoration(
-                      color: AppTheme.isDarkMode(context)
-                          ? AppColors.darkbackgroundColor
-                          : AppColors.primaryColor,
-                    ),
+                    decoration: BoxDecoration(color: color),
                     accountName: Row(
                       children: [
                         Text(auth.name),

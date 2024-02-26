@@ -31,7 +31,6 @@ class DashboardList extends ConsumerWidget {
     final metal = ref.watch(metalsViewModelProvider);
 
     final commodity = ref.watch(commodityViewModelProvider.notifier).state;
-    final categories = ref.watch(categoriesViewModelProvider.notifier).state;
 
     late List<dynamic> items;
     late String firstField = "";
@@ -48,7 +47,7 @@ class DashboardList extends ConsumerWidget {
         thirdField = "ltp";
         fourthField = "percentchange";
         assetType = 0;
-        items = categories.categories.topGainers;
+        items = state.categories.topGainers;
         showArrow = true;
 
       case "Top Loosers":
@@ -57,7 +56,7 @@ class DashboardList extends ConsumerWidget {
         thirdField = "ltp";
         assetType = 0;
         fourthField = "percentchange";
-        items = categories.categories.topLoosers;
+        items = state.categories.topLoosers;
         showArrow = true;
 
       case "Top Turnover":
@@ -66,7 +65,7 @@ class DashboardList extends ConsumerWidget {
         thirdField = "ltp";
         assetType = 0;
         fourthField = "turnover";
-        items = categories.categories.topTurnover;
+        items = state.categories.topTurnover;
         showArrow = false;
 
       case "Top Volume":
@@ -75,7 +74,7 @@ class DashboardList extends ConsumerWidget {
         thirdField = "ltp";
         assetType = 0;
         fourthField = "volume";
-        items = categories.categories.topVolume;
+        items = state.categories.topVolume;
         showArrow = false;
 
       case "Top Transaction":
@@ -84,7 +83,7 @@ class DashboardList extends ConsumerWidget {
         thirdField = "ltp";
         assetType = 0;
         fourthField = "transactions";
-        items = categories.categories.topTrans;
+        items = state.categories.topTrans;
         showArrow = false;
 
       case "Commodity":

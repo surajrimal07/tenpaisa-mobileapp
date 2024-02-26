@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:paisa/config/constants/appsize_constants.dart';
 import 'package:paisa/config/router/navigation_service.dart';
+import 'package:paisa/config/themes/app_text_styles.dart';
 import 'package:paisa/core/utils/string_utils.dart';
 import 'package:paisa/feathures/portfolio/domain/entity/portfolio_entity.dart';
 import 'package:paisa/feathures/portfolio/domain/entity/userportfoliostock_entity.dart';
@@ -10,9 +11,6 @@ import 'package:paisa/feathures/portfolio/presentation/widget/color_widget.dart'
 import 'package:paisa/feathures/portfolio/presentation/widget/empty_stocks.dart';
 import 'package:paisa/feathures/portfolio/presentation/widget/find_stockentity.dart';
 import 'package:paisa/feathures/portfolio/presentation/widget/popmenubutton_widget.dart';
-
-// final sortAscendingProvider = StateProvider<bool>((ref) => true);
-// final sortColumnIndexProvider = StateProvider<int>((ref) => 0);
 
 class PortfolioListContainer extends ConsumerWidget {
   final PortfolioEntity portfolio;
@@ -23,9 +21,7 @@ class PortfolioListContainer extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final lastRecord = portfolio.portfoliovalue! - portfolio.portfoliocost!;
-    // final sortAscending = ref.watch(sortAscendingProvider);
-    // final sortColumnIndex = ref.watch(sortColumnIndexProvider);
+    final lastRecord = portfolio.gainLossRecords![0].portgainloss;
 
     return GestureDetector(
       onTap: () {
@@ -61,26 +57,19 @@ class PortfolioListContainer extends ConsumerWidget {
                   Row(
                     children: [
                       Text(
-                        portfolio.name.length <= 12
-                            ? portfolio.name
-                            : '${portfolio.name.substring(0, 12)}...',
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        portfolio.name,
+                        style: AppTextStyles.text17w600,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 1,
                       ),
                       SizedBox(width: Sizes.dynamicWidth(3)),
-                      Text(
-                        lastRecord != 0
-                            ? lastRecord > 0
-                                ? 'Profit: Rs ${((lastRecord * 100).round() / 100)}'
-                                : 'Loss: Rs ${((lastRecord * 100).round() / 100)}'
-                            : '',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.normal,
-                        ),
-                      )
+                      lastRecord != 0
+                          ? Text(
+                              //remove .abs() and add -ve sign in backend json
+                              '${lastRecord > 0 ? 'Profit' : 'Loss'}: Rs ${lastRecord.abs().toStringAsFixed(0)}',
+                              style: AppTextStyles.normalTextStyle,
+                            )
+                          : const SizedBox.shrink(),
                     ],
                   ),
                 if (fromPortfolio)
@@ -89,105 +78,66 @@ class PortfolioListContainer extends ConsumerWidget {
             ),
             if (portfolio.stocks?.isNotEmpty ?? false)
               Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   if (fromPortfolio)
                     Text(
                       '${PortfolioStrings.recommendation} ${portfolio.recommendation}',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: AppTextStyles.itemtext4,
                     ),
                   if (fromPortfolio)
                     Text(
+                      //add stock count in backend json
                       ' You have ${portfolio.stocks!.length} Stocks with ${portfolio.totalunits} units',
-                      style: const TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: AppTextStyles.itemtext4,
                     ),
                   DataTable(
                     dividerThickness: 0,
                     horizontalMargin: 0,
                     columnSpacing: 10,
-                    // sortAscending: sortAscending,
-                    // sortColumnIndex: sortColumnIndex,
                     columns: [
                       DataColumn(
                         label: SizedBox(
                           width: Sizes.dynamicHeight(9),
-                          child: const Text(
+                          child: Text(
                             PortfolioStrings.symbolText,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: AppTextStyles.normal600,
                           ),
                         ),
                       ),
                       DataColumn(
-                        //something is wrong with sorting
-                        // onSort: (columnIndex, ascending) {
-                        //   ref.read(sortAscendingProvider.notifier).state =
-                        //       ascending;
-                        //   ref.read(sortColumnIndexProvider.notifier).state =
-                        //       columnIndex;
-                        //   portfolio.stocks!.sort((a, b) =>
-                        //       a.wacc.compareTo(b.wacc) * (ascending ? -1 : 1));
-                        //   // portfolio.stocks!.sort((a, b) {
-                        //   //   switch (columnIndex) {
-                        //   //     case 1:
-                        //   //       return a.wacc.compareTo(b.wacc) *
-                        //   //           (ascending ? -1 : 1);
-                        //   //     default:
-                        //   //       return 0;
-                        //   //   }
-                        //   // });
-                        // },
                         label: SizedBox(
                           width: Sizes.dynamicHeight(7),
-                          child: const Text(
+                          child: Text(
                             PortfolioStrings.waccText,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: AppTextStyles.normal600,
                           ),
                         ),
                       ),
-                      const DataColumn(
+                      DataColumn(
                         label: SizedBox(
                           width: 50,
                           child: Text(
                             PortfolioStrings.ltpText,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: AppTextStyles.normal600,
                           ),
                         ),
                       ),
                       DataColumn(
                         label: SizedBox(
                           width: Sizes.dynamicHeight(7),
-                          child: const Text(
+                          child: Text(
                             PortfolioStrings.valueTxt,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: AppTextStyles.normal600,
                           ),
                         ),
                       ),
                       DataColumn(
                         label: SizedBox(
                           width: Sizes.dynamicHeight(10),
-                          child: const Text(
+                          child: Text(
                             PortfolioStrings.quantityText,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w600,
-                            ),
+                            style: AppTextStyles.normal600,
                           ),
                         ),
                       ),
@@ -205,42 +155,33 @@ class PortfolioListContainer extends ConsumerWidget {
                                     arguments: {'stockEntity': stockEntity});
                               },
                               Text(
+                                //optimize this
                                 stock.symbol,
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                ),
+                                style: AppTextStyles.normal15,
                               ),
                             ),
                             DataCell(
                               Text(
                                 '${stock.wacc}',
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                ),
+                                style: AppTextStyles.normal15,
                               ),
                             ),
                             DataCell(
                               Text(
                                 '${stock.ltp}',
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                ),
+                                style: AppTextStyles.normal15,
                               ),
                             ),
                             DataCell(
                               Text(
                                 '${stock.currentPrice}',
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                ),
+                                style: AppTextStyles.normal15,
                               ),
                             ),
                             DataCell(
                               Text(
                                 '${stock.quantity}',
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                ),
+                                style: AppTextStyles.normal15,
                               ),
                             ),
                           ],
@@ -253,6 +194,15 @@ class PortfolioListContainer extends ConsumerWidget {
               const EmptyAssetsWidget(),
           ],
         ),
+      ),
+    );
+  }
+
+  DataCell buildDataCell(String text) {
+    return DataCell(
+      Text(
+        text,
+        style: AppTextStyles.normal15,
       ),
     );
   }

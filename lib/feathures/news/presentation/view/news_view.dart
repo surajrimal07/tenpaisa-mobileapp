@@ -1,13 +1,15 @@
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:paisa/config/themes/app_text_styles.dart';
 import 'package:paisa/config/themes/app_themes.dart';
 import 'package:paisa/core/network/detector_network.dart';
 import 'package:paisa/core/utils/string_utils.dart';
 import 'package:paisa/feathures/auth/presentation/widget/input_controllers.dart';
+import 'package:paisa/feathures/common/animated_page_transition.dart';
+import 'package:paisa/feathures/home/presentation/view/webview_view.dart';
 import 'package:paisa/feathures/news/presentation/viewmodel/news_viewmodel.dart';
 import 'package:paisa/feathures/splash/presentation/viewmodel/notification_view_model.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class NewsView extends ConsumerWidget {
   const NewsView({super.key});
@@ -38,22 +40,18 @@ class NewsView extends ConsumerWidget {
         },
         child: Scaffold(
           appBar: AppBar(
-              centerTitle: false,
-              title: const Text(
-                'Financial News',
-                style: TextStyle(color: Colors.white),
+            title: const Text(
+              'Financial News',
+            ),
+            actions: [
+              IconButton(
+                onPressed: () {
+                  ref.read(newsViewModelProvider.notifier).resetState();
+                },
+                icon: const Icon(Icons.refresh),
               ),
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    ref.read(newsViewModelProvider.notifier).resetState();
-                  },
-                  icon: const Icon(Icons.refresh),
-                  color: Colors.white,
-                ),
-              ],
-              backgroundColor: Theme.of(context).primaryColor,
-              iconTheme: const IconThemeData(color: Colors.white)),
+            ],
+          ),
           body: connectivity == ConnectivityStatus.isDisconnected
               ? const Scaffold(
                   body: Center(
@@ -64,7 +62,6 @@ class NewsView extends ConsumerWidget {
                   ),
                 )
               : RefreshIndicator(
-                  color: AppColors.primaryColor,
                   onRefresh: () async {
                     await ref.read(newsViewModelProvider.notifier).resetState();
                   },
@@ -82,7 +79,19 @@ class NewsView extends ConsumerWidget {
                             return Column(
                               children: [
                                 AnyLinkPreview(
-                                  removeElevation: true,
+                                  onTap: () {
+                                    animatednavigateTo(
+                                        context,
+                                        WebViewPage(
+                                          url: news,
+                                          name: "Financial News",
+                                        ));
+                                  },
+                                  titleStyle: AppTextStyles.itemtext1,
+                                  backgroundColor: AppTheme.isDarkMode(context)
+                                      ? AppColors.greyPrimaryColor
+                                      : AppColors.darktextColor,
+                                  removeElevation: false,
                                   errorBody:
                                       "We are unable to fetch the news body",
                                   headers: headers,
@@ -90,7 +99,7 @@ class NewsView extends ConsumerWidget {
                                   errorImage: NewsStrings.defaultImage,
                                   cache: const Duration(days: 7),
                                   bodyMaxLines: 3,
-                                  urlLaunchMode: LaunchMode.inAppBrowserView,
+                                  // urlLaunchMode: LaunchMode.inAppBrowserView,
                                   displayDirection:
                                       UIDirection.uiDirectionHorizontal,
                                   link: news,
@@ -101,8 +110,7 @@ class NewsView extends ConsumerWidget {
                         ),
                       ),
                       if (newsViewModel.isLoading)
-                        const CircularProgressIndicator(
-                            color: AppColors.primaryColor),
+                        const CircularProgressIndicator(),
                       const SizedBox(height: 10),
                     ],
                   ),

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:page_view_indicators/circle_page_indicator.dart';
 import 'package:paisa/config/constants/appsize_constants.dart';
+import 'package:paisa/config/themes/app_text_styles.dart';
 import 'package:paisa/config/themes/app_themes.dart';
 import 'package:paisa/core/utils/string_utils.dart';
 import 'package:paisa/feathures/home/presentation/view/dashboard_home.dart';
 import 'package:paisa/feathures/home/presentation/viewmodel/index_view_model.dart';
+import 'package:paisa/feathures/home/presentation/widget/circle_indicator.dart';
 import 'package:paisa/feathures/home/presentation/widget/dashboard_list.dart';
 
 class CommoditiesContainer extends ConsumerStatefulWidget {
@@ -45,10 +46,7 @@ class CommoditiesContainerState extends ConsumerState<CommoditiesContainer> {
                     text: currentPageNotifiers[2].value == 0
                         ? 'Commodities'
                         : 'Metals',
-                    style: GoogleFonts.poppins(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: AppTextStyles.titleTextStyle,
                     children: state.isLoading
                         ? []
                         : [
@@ -81,17 +79,7 @@ class CommoditiesContainerState extends ConsumerState<CommoditiesContainer> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
-            child: CirclePageIndicator(
-              dotColor: const Color.fromARGB(255, 187, 187, 187),
-              selectedDotColor: AppColors.whitetextColor,
-              itemCount: 2,
-              currentPageNotifier: currentPageNotifiers[2],
-              size: 4.0,
-              selectedSize: 5.0,
-            ),
-          ),
+          const CircleIndicator(itemCount: 2, pageIndex: 2),
         ],
       ),
     );

@@ -13,10 +13,10 @@ class LoadingIndicatorWidget extends StatelessWidget {
 
   const LoadingIndicatorWidget({
     super.key,
-    required this.size,
+    this.size = 40,
     this.color = AppColors.primaryColor,
     required this.showText,
-    required this.text,
+    this.text = '',
     this.fontSize = 14,
   });
 

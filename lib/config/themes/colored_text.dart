@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:paisa/config/themes/app_themes.dart';
 
 class BuildColoredText {
   final String text;
@@ -13,7 +14,7 @@ class BuildColoredText {
   });
 
   Color _getTextColor() {
-    return value < 0 ? Colors.red : Colors.green;
+    return value < 0 ? AppColors.redColor : AppColors.greenColor;
   }
 
   TextStyle _getTextStyle() {

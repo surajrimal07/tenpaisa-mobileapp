@@ -5,13 +5,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:paisa/config/constants/appsize_constants.dart';
 import 'package:paisa/config/router/navigation_service.dart';
+import 'package:paisa/config/themes/app_text_styles.dart';
 import 'package:paisa/config/themes/app_themes.dart';
 import 'package:paisa/core/utils/string_utils.dart';
-import 'package:paisa/feathures/common/loading_indicator.dart';
 import 'package:paisa/feathures/home/presentation/view/home_view.dart';
 import 'package:paisa/feathures/home/presentation/viewmodel/index_view_model.dart';
+import 'package:paisa/feathures/home/presentation/widget/text_widget.dart';
 import 'package:paisa/feathures/portfolio/presentation/view_model/portfolio_view_model.dart';
 import 'package:paisa/feathures/portfolio/presentation/widget/empty_portfolio.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class PortfolioContainer extends ConsumerWidget {
   const PortfolioContainer({super.key});
@@ -44,15 +46,16 @@ class PortfolioContainer extends ConsumerWidget {
                       fontSize: 20,
                       fontWeight: FontWeight.w600,
                     ),
-                    children: [
-                      TextSpan(
-                        text: state.isLoading
-                            ? ''
-                            : '(${PortfolioStrings.asOf}${index.index[0].date.toString()})',
-                        style: GoogleFonts.poppins(
-                            fontSize: 8, fontWeight: FontWeight.normal),
-                      ),
-                    ],
+                    children: state.isLoading
+                        ? []
+                        : [
+                            TextSpan(
+                              text:
+                                  '(${PortfolioStrings.asOf}${index.index[0].date.toString()})',
+                              style: GoogleFonts.poppins(
+                                  fontSize: 8, fontWeight: FontWeight.normal),
+                            ),
+                          ],
                   ),
                 ),
                 MaterialButton(
@@ -75,198 +78,153 @@ class PortfolioContainer extends ConsumerWidget {
           ),
           Container(
             margin: const EdgeInsets.only(top: 8),
-            child: state.isLoading
-                ? Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: Sizes.dynamicHeight(22.6),
-                        child: const Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              LoadingIndicatorWidget(
-                                size: 40,
-                                showText: true,
-                                text: PortfolioStrings.loadingPortfolios,
-                              ),
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  )
-                : portfolios.isEmpty
-                    ? const EmptyPortfolioWidget()
-                    : SizedBox(
-                        height: Sizes.dynamicHeight(22.6),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemExtent: 160,
-                          itemCount: portfolios.length,
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (context, index) {
-                            final portfolio = portfolios[index];
-                            final int portfolioIndex = ref
-                                .watch(portfolioViewModelProvider)
-                                .portfoliosEntity
-                                .indexOf(portfolio);
+            child: Skeletonizer(
+              enabled: state.isLoading,
+              child: portfolios.isEmpty
+                  ? const EmptyPortfolioWidget()
+                  : SizedBox(
+                      height: Sizes.dynamicHeight(22.6),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        itemExtent: 160,
+                        itemCount: portfolios.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          final portfolio = portfolios[index];
 
-                            return InkWell(
-                              onTap: () {
-                                ref.read(navigationServiceProvider).routeTo(
-                                  '/portfolioDetailView',
-                                  arguments: {
-                                    'portfolioIndex': portfolioIndex,
-                                  },
-                                );
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(10),
-                                margin: const EdgeInsets.only(right: 10),
-                                decoration: BoxDecoration(
-                                  color: AppTheme.isDarkMode(context)
-                                      ? AppColors.darktextColor
-                                          .withOpacity(0.12)
-                                      : AppColors.primaryColor
-                                          .withOpacity(0.12),
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                                child: portfolio.stocks!
-                                        .isNotEmpty //portfolio.stocks != null &&
-                                    ? Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(portfolio.name,
-                                              maxLines: 1,
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w600,
-                                              )),
-                                          SizedBox(
-                                              height: Sizes.dynamicHeight(1.3)),
-                                          Text(
-                                            '${PortfolioStrings.valueText} ${portfolio.portfoliovalue}',
+                          return InkWell(
+                            onTap: () {
+                              ref.read(navigationServiceProvider).routeTo(
+                                '/portfolioDetailView',
+                                arguments: {
+                                  'portfolioIndex': ref
+                                      .watch(portfolioViewModelProvider)
+                                      .portfoliosEntity
+                                      .indexOf(portfolio),
+                                },
+                              );
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.only(right: 10),
+                              decoration: BoxDecoration(
+                                color: AppTheme.isDarkMode(context)
+                                    ? AppColors.darktextColor.withOpacity(0.12)
+                                    : AppColors.primaryColor.withOpacity(0.12),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              child: portfolio.stocks!.isNotEmpty
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(portfolio.name,
+                                            maxLines: 1,
                                             style: GoogleFonts.poppins(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
-                                            ),
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w600,
+                                            )),
+                                        SizedBox(
+                                            height: Sizes.dynamicHeight(1.3)),
+                                        Text(
+                                          '${PortfolioStrings.valueText} ${portfolio.portfoliovalue}',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
                                           ),
-                                          SizedBox(
-                                              height: Sizes.dynamicHeight(1.1)),
-                                          Text(
-                                            '${PortfolioStrings.costText} ${portfolio.portfoliocost}',
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 12,
-                                              fontWeight: FontWeight.w400,
-                                            ),
+                                        ),
+                                        SizedBox(
+                                            height: Sizes.dynamicHeight(1.1)),
+                                        Text(
+                                          '${PortfolioStrings.costText} ${portfolio.portfoliocost}',
+                                          style: GoogleFonts.poppins(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w400,
                                           ),
-                                          SizedBox(
-                                              height: Sizes.dynamicHeight(1.1)),
-                                          RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: PortfolioStrings
-                                                      .returnsText,
-                                                  style: GoogleFonts.poppins(
-                                                      fontSize: 12,
-                                                      color: AppTheme
-                                                              .isDarkMode(
-                                                                  context)
-                                                          ? AppColors
-                                                              .darktextColor
-                                                          : AppColors
-                                                              .whitetextColor,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                                TextSpan(
-                                                  text:
-                                                      'Rs ${(portfolio.portfoliovalue! - portfolio.portfoliocost!).toStringAsFixed(0)}',
-                                                  style: GoogleFonts.poppins(
+                                        ),
+                                        SizedBox(
+                                            height: Sizes.dynamicHeight(1.1)),
+                                        RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: PortfolioStrings
+                                                    .returnsText,
+                                                style: GoogleFonts.poppins(
                                                     fontSize: 12,
-                                                    fontWeight: FontWeight.w400,
-                                                    color: (portfolio
-                                                                    .portfoliovalue! -
-                                                                portfolio
-                                                                    .portfoliocost!) <
-                                                            0
-                                                        ? Colors.red
-                                                        : Colors.green,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                                    color: AppTheme.isDarkMode(
+                                                            context)
+                                                        ? AppColors
+                                                            .darktextColor
+                                                        : AppColors
+                                                            .whitetextColor,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                              buildTextSpan(
+                                                  text:
+                                                      'Rs ${portfolio.gainLossRecords![0].portgainloss.toStringAsFixed(0)}',
+                                                  fontSize: 12,
+                                                  value: portfolio
+                                                      .gainLossRecords![0]
+                                                      .portgainloss),
+                                            ],
                                           ),
-                                          SizedBox(
-                                              height: Sizes.dynamicHeight(1.1)),
-                                          RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text: PortfolioStrings.pnl,
-                                                  style: GoogleFonts.poppins(
-                                                      fontSize: 12,
-                                                      color: AppTheme
-                                                              .isDarkMode(
-                                                                  context)
-                                                          ? AppColors
-                                                              .darktextColor
-                                                          : AppColors
-                                                              .whitetextColor,
-                                                      fontWeight:
-                                                          FontWeight.w400),
-                                                ),
-                                                TextSpan(
+                                        ),
+                                        SizedBox(
+                                            height: Sizes.dynamicHeight(1.1)),
+                                        RichText(
+                                          text: TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: PortfolioStrings.pnl,
+                                                style: GoogleFonts.poppins(
+                                                    fontSize: 12,
+                                                    color: AppTheme.isDarkMode(
+                                                            context)
+                                                        ? AppColors
+                                                            .darktextColor
+                                                        : AppColors
+                                                            .whitetextColor,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                              buildTextSpan(
                                                   text:
                                                       '${portfolio.percentage!}% ${portfolio.percentage! < 0 ? 'Loss' : 'Profit'}',
-                                                  style: GoogleFonts.poppins(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w400,
-                                                    color:
-                                                        portfolio.percentage! <
-                                                                0
-                                                            ? Colors.red
-                                                            : Colors.green,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
+                                                  fontSize: 12,
+                                                  value: portfolio.percentage!),
+                                            ],
                                           ),
-                                        ],
-                                      )
-                                    : Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(portfolio.name,
-                                              maxLines: 1,
-                                              style: GoogleFonts.poppins(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w600)),
-                                          Image.asset(
-                                            PortfolioStrings.emptyPortfolioUrl,
-                                            height: Sizes.dynamicHeight(12),
-                                            width: Sizes.dynamicWidth(30),
-                                          ),
-                                          SizedBox(
-                                              height: Sizes.dynamicHeight(1)),
-                                          Text(PortfolioStrings.noStocks,
-                                              style: GoogleFonts.poppins(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400,
-                                              )),
-                                        ],
-                                      ),
-                              ),
-                            );
-                          },
-                        ),
+                                        ),
+                                      ],
+                                    )
+                                  : Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Text(portfolio.name,
+                                            maxLines: 1,
+                                            style: AppTextStyles.itemtext1),
+                                        Image.asset(
+                                          PortfolioStrings.emptyPortfolioUrl,
+                                          height: Sizes.dynamicHeight(12),
+                                          width: Sizes.dynamicWidth(30),
+                                        ),
+                                        SizedBox(
+                                            height: Sizes.dynamicHeight(1)),
+                                        Text(PortfolioStrings.noStocks,
+                                            style: AppTextStyles.text14w400),
+                                      ],
+                                    ),
+                            ),
+                          );
+                        },
                       ),
+                    ),
+            ),
           ),
         ],
       ),

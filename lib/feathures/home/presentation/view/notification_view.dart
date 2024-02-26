@@ -18,11 +18,10 @@ class NotificationView extends ConsumerWidget {
       ),
       body: Center(
         child: Container(
-          color: Colors.white,
           padding: const EdgeInsets.all(16),
           child: const Text(
             'No Notification found',
-            style: TextStyle(fontSize: 18, color: Colors.black),
+            style: TextStyle(fontSize: 18),
           ),
         ),
       ),

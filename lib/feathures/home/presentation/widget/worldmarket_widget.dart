@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:page_view_indicators/circle_page_indicator.dart';
 import 'package:paisa/config/constants/appsize_constants.dart';
 import 'package:paisa/config/router/navigation_service.dart';
 import 'package:paisa/config/themes/app_text_styles.dart';
@@ -9,6 +7,8 @@ import 'package:paisa/config/themes/app_themes.dart';
 import 'package:paisa/core/utils/string_utils.dart';
 import 'package:paisa/feathures/home/presentation/view/dashboard_home.dart';
 import 'package:paisa/feathures/home/presentation/viewmodel/index_view_model.dart';
+import 'package:paisa/feathures/home/presentation/widget/circle_indicator.dart';
+import 'package:paisa/feathures/home/presentation/widget/view_all.dart';
 import 'package:paisa/feathures/home/presentation/widget/worldmarket_list.dart';
 
 class WorldMarketContainer extends ConsumerStatefulWidget {
@@ -78,16 +78,7 @@ class WorldMarketContainerState extends ConsumerState<WorldMarketContainer> {
                       },
                     );
                   },
-                  child: Text(
-                    'View All',
-                    style: GoogleFonts.poppins(
-                      color: AppTheme.isDarkMode(context)
-                          ? AppColors.darktextColor
-                          : AppColors.primaryColor,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
+                  child: const BuildViewAll(),
                 ),
               ],
             ),
@@ -113,17 +104,7 @@ class WorldMarketContainerState extends ConsumerState<WorldMarketContainer> {
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(0, 3, 0, 0),
-            child: CirclePageIndicator(
-              dotColor: const Color.fromARGB(255, 187, 187, 187),
-              selectedDotColor: AppColors.whitetextColor,
-              itemCount: 5,
-              currentPageNotifier: currentPageNotifiers[3],
-              size: 4.0,
-              selectedSize: 5.0,
-            ),
-          ),
+          const CircleIndicator(itemCount: 5, pageIndex: 3),
         ],
       ),
     );

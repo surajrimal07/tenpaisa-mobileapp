@@ -6,6 +6,7 @@ import 'package:paisa/config/router/approutes.dart';
 import 'package:paisa/config/themes/app_themes.dart';
 import 'package:paisa/core/utils/string_utils.dart';
 import 'package:paisa/feathures/auth/domain/entity/auth_entity.dart';
+import 'package:paisa/feathures/common/animated_page_transition.dart';
 import 'package:paisa/feathures/common/image_loader.dart';
 import 'package:paisa/feathures/home/presentation/view/home_view.dart';
 import 'package:paisa/feathures/home/presentation/view/notification_view.dart';
@@ -26,7 +27,7 @@ class Header extends ConsumerWidget {
       padding: const EdgeInsets.all(0),
       decoration: BoxDecoration(
         color: AppTheme.isDarkMode(context)
-            ? AppColors.darkbackgroundColor
+            ? AppColors.greyPrimaryColor
             : AppColors.primaryColor,
       ),
       child: Row(
@@ -99,29 +100,30 @@ class Header extends ConsumerWidget {
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation, secondaryAnimation) =>
-                            const NewsView(),
-                        transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) {
-                          return SlideTransition(
-                            position: Tween<Offset>(
-                              begin: const Offset(1.0, 0.0),
-                              end: Offset.zero,
-                            ).animate(
-                              CurvedAnimation(
-                                parent: animation,
-                                curve: Curves.easeInOut,
-                              ),
-                            ),
-                            child: child,
-                          );
-                        },
-                        transitionDuration: const Duration(milliseconds: 300),
-                      ),
-                    );
+                    animatednavigateTo(context, const NewsView());
+                    // Navigator.push(
+                    //   context,
+                    //   PageRouteBuilder(
+                    //     pageBuilder: (context, animation, secondaryAnimation) =>
+                    //         const NewsView(),
+                    //     transitionsBuilder:
+                    //         (context, animation, secondaryAnimation, child) {
+                    //       return SlideTransition(
+                    //         position: Tween<Offset>(
+                    //           begin: const Offset(1.0, 0.0),
+                    //           end: Offset.zero,
+                    //         ).animate(
+                    //           CurvedAnimation(
+                    //             parent: animation,
+                    //             curve: Curves.easeInOut,
+                    //           ),
+                    //         ),
+                    //         child: child,
+                    //       );
+                    //     },
+                    //     transitionDuration: const Duration(milliseconds: 300),
+                    //   ),
+                    // );
                   },
                   padding: const EdgeInsets.all(0),
                   minWidth: 0,
@@ -170,29 +172,31 @@ class Header extends ConsumerWidget {
                   splashColor: Colors.transparent,
                   highlightColor: Colors.transparent,
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (context, animation, secondaryAnimation) =>
-                            const NotificationView(),
-                        transitionsBuilder:
-                            (context, animation, secondaryAnimation, child) {
-                          return SlideTransition(
-                            position: Tween<Offset>(
-                              begin: const Offset(1.0, 0.0),
-                              end: Offset.zero,
-                            ).animate(
-                              CurvedAnimation(
-                                parent: animation,
-                                curve: Curves.easeInOut,
-                              ),
-                            ),
-                            child: child,
-                          );
-                        },
-                        transitionDuration: const Duration(milliseconds: 300),
-                      ),
-                    );
+                    animatednavigateTo(context, const NotificationView());
+
+                    // Navigator.push(
+                    //   context,
+                    //   PageRouteBuilder(
+                    //     pageBuilder: (context, animation, secondaryAnimation) =>
+                    //         const NotificationView(),
+                    //     transitionsBuilder:
+                    //         (context, animation, secondaryAnimation, child) {
+                    //       return SlideTransition(
+                    //         position: Tween<Offset>(
+                    //           begin: const Offset(1.0, 0.0),
+                    //           end: Offset.zero,
+                    //         ).animate(
+                    //           CurvedAnimation(
+                    //             parent: animation,
+                    //             curve: Curves.easeInOut,
+                    //           ),
+                    //         ),
+                    //         child: child,
+                    //       );
+                    //     },
+                    //     transitionDuration: const Duration(milliseconds: 300),
+                    //   ),
+                    // );
                   },
                   // onPressed: () {
 
@@ -246,29 +250,30 @@ class Header extends ConsumerWidget {
                 splashColor: Colors.transparent,
                 highlightColor: Colors.transparent,
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          const SearchView(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        return SlideTransition(
-                          position: Tween<Offset>(
-                            begin: const Offset(1.0, 0.0),
-                            end: Offset.zero,
-                          ).animate(
-                            CurvedAnimation(
-                              parent: animation,
-                              curve: Curves.easeInOut,
-                            ),
-                          ),
-                          child: child,
-                        );
-                      },
-                      transitionDuration: const Duration(milliseconds: 300),
-                    ),
-                  );
+                  animatednavigateTo(context, const SearchView());
+                  // Navigator.push(
+                  //   context,
+                  //   PageRouteBuilder(
+                  //     pageBuilder: (context, animation, secondaryAnimation) =>
+                  //         const SearchView(),
+                  //     transitionsBuilder:
+                  //         (context, animation, secondaryAnimation, child) {
+                  //       return SlideTransition(
+                  //         position: Tween<Offset>(
+                  //           begin: const Offset(1.0, 0.0),
+                  //           end: Offset.zero,
+                  //         ).animate(
+                  //           CurvedAnimation(
+                  //             parent: animation,
+                  //             curve: Curves.easeInOut,
+                  //           ),
+                  //         ),
+                  //         child: child,
+                  //       );
+                  //     },
+                  //     transitionDuration: const Duration(milliseconds: 300),
+                  //   ),
+                  // );
                 },
                 // onPressed: () {
                 //   Navigator.pushNamed(context, AppRoute.searchRoute);

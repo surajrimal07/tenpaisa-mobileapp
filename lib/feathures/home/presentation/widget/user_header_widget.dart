@@ -2,9 +2,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:paisa/config/constants/appsize_constants.dart';
+import 'package:paisa/config/themes/app_text_styles.dart';
 import 'package:paisa/config/themes/app_themes.dart';
+import 'package:paisa/config/themes/colored_text.dart';
 import 'package:paisa/core/common/toast/app_toast.dart';
 import 'package:paisa/core/utils/string_utils.dart';
 import 'package:paisa/feathures/common/animated_page_transition.dart';
@@ -14,8 +14,10 @@ import 'package:paisa/feathures/home/presentation/state/index_state.dart';
 import 'package:paisa/feathures/home/presentation/view/home_view.dart';
 import 'package:paisa/feathures/home/presentation/view/webview_view.dart';
 import 'package:paisa/feathures/home/presentation/viewmodel/index_view_model.dart';
+import 'package:paisa/feathures/home/presentation/widget/text_widget.dart';
 import 'package:paisa/feathures/portfolio/presentation/state/portfolio_state.dart';
 import 'package:paisa/feathures/portfolio/presentation/view_model/portfolio_view_model.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class PortfolioCard extends ConsumerWidget {
   const PortfolioCard({super.key});
@@ -24,22 +26,18 @@ class PortfolioCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final indexState = ref.watch(indexViewModelProvider);
     final state = ref.watch(portfolioViewModelProvider);
-    final index = indexState.index;
-    final totalPortfolioReturns = ref
-        .watch(portfolioViewModelProvider.notifier)
-        .state
-        .portfolioDataEntity
-        .totalPortfolioReturns
-        .toDouble();
 
-    bool marketStatus = index[0].marketStatus == 'Market Open';
+    final totalPortfolioReturns =
+        state.portfolioDataEntity.totalPortfolioReturns.toDouble();
+
+    bool marketStatus = indexState.index[0].marketStatus == 'Market Open';
     final portfolioIconDetails = _buildIcon(totalPortfolioReturns);
 
     return Container(
       padding: const EdgeInsets.fromLTRB(5, 2, 3, 4),
       decoration: BoxDecoration(
         color: AppTheme.isDarkMode(context)
-            ? AppColors.darkbackgroundColor
+            ? AppColors.greyPrimaryColor
             : AppColors.primaryColor,
       ),
       child: Row(
@@ -50,7 +48,7 @@ class PortfolioCard extends ConsumerWidget {
             child: _buildPortfolioDetails(
               indexState,
               state,
-              index,
+              indexState.index,
               totalPortfolioReturns,
               marketStatus,
               portfolioIconDetails,
@@ -60,15 +58,11 @@ class PortfolioCard extends ConsumerWidget {
           Expanded(
             flex: 4,
             child: SizedBox(
-              height: Sizes.dynamicHeight(14),
+              height: 90,
               child: indexState.isLoading
                   ? const LoadingIndicatorWidget(
-                      color: Colors.white,
-                      size: 40,
-                      showText: false,
-                      text: PortfolioStrings.loadingPortfolios,
-                    )
-                  : _buildLineChart(index, context),
+                      color: Colors.white, showText: false)
+                  : _buildLineChart(indexState.index, context),
             ),
           ),
         ],
@@ -90,29 +84,25 @@ class PortfolioCard extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _buildMarketTodayRow(index, indexState, marketStatus),
+          _buildMarketTodayRow(indexState, marketStatus),
           _buildMyPortfolioRow(state, totalPortfolioReturns,
-              portfolioIconDetails, indexState, ref, marketStatus, index),
+              portfolioIconDetails, indexState, ref, marketStatus),
         ],
       ),
     );
   }
 
-  Widget _buildMarketTodayRow(
-      List<IndexEntity> index, indexState, bool marketStatus) {
+  Widget _buildMarketTodayRow(indexState, marketStatus) {
     return GestureDetector(
       onTap: () {
-        CustomToast.showToast(index[0].marketStatus ?? "Market Closed");
+        CustomToast.showToast(
+            indexState.index[0].marketStatus ?? "Market Closed");
       },
       child: Row(
         children: [
           Text(
             'Market Today',
-            style: GoogleFonts.poppins(
-              fontSize: 16,
-              fontWeight: FontWeight.w400,
-              color: Colors.white,
-            ),
+            style: AppTextStyles.text16w400White,
             textAlign: TextAlign.left,
           ),
           if (!indexState.isLoading)
@@ -122,11 +112,10 @@ class PortfolioCard extends ConsumerWidget {
                 width: 8,
                 height: 8,
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: marketStatus
-                      ? Colors.green
-                      : const Color.fromARGB(255, 235, 117, 109),
-                ),
+                    shape: BoxShape.circle,
+                    color: marketStatus
+                        ? AppColors.greenColor
+                        : AppColors.redColor),
               ),
             ),
         ],
@@ -138,10 +127,9 @@ class PortfolioCard extends ConsumerWidget {
       PortfolioState state,
       double totalPortfolioReturns,
       Map<String, dynamic> portfolioIconDetails,
-      indexState,
+      IndexState indexState,
       WidgetRef ref,
-      marketStatus,
-      index) {
+      marketStatus) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -149,109 +137,79 @@ class PortfolioCard extends ConsumerWidget {
           children: marketStatus
               ? [_buildLiveText(ref)]
               : [
-                  if (indexState.isLoading)
-                    Text(
-                      'Loading...',
-                      style: GoogleFonts.poppins(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.white,
-                      ),
-                      textAlign: TextAlign.left,
-                    )
-                  else
-                    GestureDetector(
+                  Skeletonizer(
+                    enabled: indexState.isLoading,
+                    child: GestureDetector(
                       onTap: () {
                         CustomToast.showToast(
-                            index[0].marketStatus ?? "Market Closed");
+                            indexState.index[0].marketStatus ??
+                                "Market Closed");
                       },
                       child: Row(
                         children: [
-                          Text(
-                            index[0].index.toString(),
-                            style: GoogleFonts.poppins(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color:
-                                  _buildArrowColor(index[0].percentageChange),
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                          Text(
-                            ' ${index[0].pointChange}', //when market if off we always have pointchangeS
-
-                            // index[0].pointChange != null
-                            //     ? ' ${index[0].pointChange}'
-                            //     : ' ${index[0].index - index[1].index}',
-                            style: GoogleFonts.poppins(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                              color:
-                                  _buildArrowColor(index[0].percentageChange),
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
+                          BuildColoredText(
+                            text: indexState.index[0].index.toString(),
+                            value: indexState.index[0].percentageChange,
+                            textStyle: AppTextStyles.text15w500,
+                          ).build(),
+                          BuildColoredText(
+                            text: ' ${indexState.index[0].pointChange}',
+                            value: indexState.index[0].percentageChange,
+                            textStyle: AppTextStyles.text15w500,
+                          ).build(),
                           Icon(
-                            _buildIcon(index[0].percentageChange)['icon'],
-                            color:
-                                _buildIcon(index[0].percentageChange)['color'],
-                            size: _buildIcon(index[0].percentageChange)['size'],
+                            _buildIcon(
+                                indexState.index[0].percentageChange)['icon'],
+                            color: _buildIcon(
+                                indexState.index[0].percentageChange)['color'],
+                            size: _buildIcon(
+                                indexState.index[0].percentageChange)['size'],
                           ),
                         ],
                       ),
                     ),
+                  ),
                 ],
         ),
         Text(
           'My Portfolio',
-          style: GoogleFonts.poppins(
-            fontSize: 17,
-            fontWeight: FontWeight.w400,
-            color: Colors.white,
-          ),
+          style: AppTextStyles.text17w400White,
           textAlign: TextAlign.left,
         ),
         const SizedBox(height: 1),
         GestureDetector(
           onTap: () => ref.read(selectedIndexProvider.notifier).state = 2,
-          child: totalPortfolioReturns == 0.0
-              ? const Text(
-                  'Empty Portfolio',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                )
-              : RichText(
-                  text: TextSpan(
-                    children: [
-                      TextSpan(
-                        text: state.isLoading
-                            ? 'Loading...'
-                            : 'Rs ${totalPortfolioReturns.toStringAsFixed(1)} ',
-                        style: GoogleFonts.poppins(
-                          color: state.isLoading
-                              ? Colors.white
-                              : _buildArrowColor(totalPortfolioReturns),
+          child: Skeletonizer(
+            enabled: state.isLoading,
+            child: totalPortfolioReturns == 0.0
+                ? Text(
+                    'Empty Portfolio',
+                    style: AppTextStyles.text16w400White,
+                  )
+                : RichText(
+                    text: TextSpan(
+                      children: [
+                        buildTextSpan(
+                          text:
+                              'Rs ${totalPortfolioReturns.toStringAsFixed(0)}',
+                          value: totalPortfolioReturns,
                           fontSize: 16,
-                          fontWeight: FontWeight.w400,
                         ),
-                      ),
-                      if (!state.isLoading)
-                        WidgetSpan(
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 4),
-                            child: Icon(
-                              portfolioIconDetails['icon'],
-                              color: portfolioIconDetails['color'],
-                              size: portfolioIconDetails['size'],
+                        if (!state.isLoading)
+                          WidgetSpan(
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 4),
+                              child: Icon(
+                                portfolioIconDetails['icon'],
+                                color: portfolioIconDetails['color'],
+                                size: portfolioIconDetails['size'],
+                              ),
                             ),
                           ),
-                        ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
+          ),
         ),
       ],
     );
@@ -266,55 +224,36 @@ class PortfolioCard extends ConsumerWidget {
         if (snapshot.hasData) {
           final indexData = snapshot.data!;
 
-          return Row(
-            children: [
-              Text(
-                indexData.index.toString(),
-                style: GoogleFonts.poppins(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: _buildArrowColor(indexData.percentageChange),
+          return Skeletonizer(
+            enabled: snapshot.connectionState == ConnectionState.waiting,
+            child: Row(
+              children: [
+                BuildColoredText(
+                        text: indexData.index.toString(),
+                        value: indexData.percentageChange,
+                        textStyle: AppTextStyles.text15w500)
+                    .build(),
+                BuildColoredText(
+                        text: ' ${indexData.percentageChange.toString()}%',
+                        value: indexData.percentageChange,
+                        textStyle: AppTextStyles.text15w500)
+                    .build(),
+                Icon(
+                  _buildIcon(indexData.percentageChange)['icon'],
+                  color: _buildIcon(indexData.percentageChange)['color'],
+                  size: _buildIcon(indexData.percentageChange)['size'],
                 ),
-                textAlign: TextAlign.left,
-              ),
-              Text(
-                ' ${indexData.percentageChange.toString()}%',
-                style: GoogleFonts.poppins(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
-                  color: _buildArrowColor(indexData.percentageChange),
-                ),
-                textAlign: TextAlign.left,
-              ),
-              Icon(
-                _buildIcon(indexData.percentageChange)['icon'],
-                color: _buildIcon(indexData.percentageChange)['color'],
-                size: _buildIcon(indexData.percentageChange)['size'],
-              ),
-            ],
-          );
-        } else if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text(
-            'Loading Live Data',
-            style: GoogleFonts.poppins(
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
+              ],
             ),
-            textAlign: TextAlign.left,
           );
         } else if (snapshot.hasError) {
           return Text(
             'Error Fetching Live Data',
-            style: GoogleFonts.poppins(
-              fontSize: 15,
-              fontWeight: FontWeight.w500,
-              color: Colors.white,
-            ),
+            style: AppTextStyles.text15w500White,
             textAlign: TextAlign.left,
           );
         } else {
-          return Container();
+          return const SizedBox.shrink();
         }
       },
     );
@@ -379,10 +318,10 @@ class PortfolioCard extends ConsumerWidget {
 
     if (numericData > 0) {
       iconData = Icons.arrow_upward;
-      iconColor = const Color.fromARGB(255, 123, 228, 126);
+      iconColor = AppColors.greenColor;
     } else {
       iconData = Icons.arrow_downward;
-      iconColor = const Color.fromARGB(255, 248, 144, 144);
+      iconColor = AppColors.redColor;
     }
 
     return {
@@ -390,11 +329,5 @@ class PortfolioCard extends ConsumerWidget {
       'color': iconColor,
       'size': 16.0,
     };
-  }
-
-  Color _buildArrowColor(data) {
-    return data > 0
-        ? const Color.fromARGB(255, 123, 228, 126)
-        : const Color.fromARGB(255, 248, 144, 144);
   }
 }

@@ -20,7 +20,7 @@ class WebViewPageState extends State<WebViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.isDarkMode(context)
-          ? AppColors.darkbackgroundColor
+          ? AppColors.greyPrimaryColor
           : AppColors.backgroundColor,
       appBar: AppBar(
         toolbarHeight: 32,
@@ -57,7 +57,7 @@ class WebViewPageState extends State<WebViewPage> {
             const Center(
                 child: LoadingIndicatorWidget(
               size: 50,
-              showText: true,
+              showText: false,
               text: 'Loading...',
             )),
         ],
