@@ -1,0 +1,1065 @@
+ [
+            {
+                "id": "65bcb936796dc41d3b2a2ad5",
+                "name": "Sample Portfolio",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "CBBL",
+                        "quantity": 9,
+                        "wacc": 750,
+                        "id": "65bcb936796dc41d3b2a2ad6",
+                        "currentPrice": 7524,
+                        "stockName": "Chhimek Laghubitta Bittiya Sanstha Limited",
+                        "ltp": 836,
+                        "costPrice": 6750,
+                        "netGainLoss": 774
+                    },
+                    {
+                        "symbol": "KKHC",
+                        "quantity": 10,
+                        "wacc": 10,
+                        "costPrice": 100,
+                        "currentPrice": 2560,
+                        "netGainLoss": 2460,
+                        "id": "65c4efc423244062ef2fb9e3",
+                        "stockName": "Khani Khola Hydropower Company Limited",
+                        "ltp": 256
+                    },
+                    {
+                        "symbol": "NGPL",
+                        "quantity": 100,
+                        "wacc": 100,
+                        "costPrice": 10000,
+                        "currentPrice": 31700,
+                        "netGainLoss": 21700,
+                        "id": "65c5e16a0245d51b74e5b72a",
+                        "stockName": "Ngadi Group Power Limited",
+                        "ltp": 317
+                    },
+                    {
+                        "symbol": "NRIC",
+                        "quantity": 800,
+                        "wacc": 1200,
+                        "costPrice": 960000,
+                        "currentPrice": 605600,
+                        "netGainLoss": -354400,
+                        "id": "65c63de8de24855951c96c57",
+                        "stockName": "Nepal Reinsurance Company Limited",
+                        "ltp": 757
+                    },
+                    {
+                        "symbol": "ACLBSL",
+                        "quantity": 290,
+                        "wacc": 165.86,
+                        "costPrice": 48099.4,
+                        "currentPrice": 178930,
+                        "netGainLoss": 130830.6,
+                        "id": "65ca0cd636c2c7a77c000166",
+                        "stockName": "Aarambha Chautari Laghubitta Bittiya Sanstha Limited",
+                        "ltp": 617
+                    },
+                    {
+                        "symbol": "AHL",
+                        "quantity": 109,
+                        "wacc": 111,
+                        "costPrice": 12099,
+                        "currentPrice": 49595,
+                        "netGainLoss": 37496,
+                        "id": "65ca16d636c2c7a77c003a3c",
+                        "stockName": "Asian Hydropower Limited",
+                        "ltp": 455
+                    },
+                    {
+                        "symbol": "CFCL",
+                        "quantity": 111,
+                        "wacc": 111,
+                        "costPrice": 12321,
+                        "currentPrice": 37407,
+                        "netGainLoss": 25086,
+                        "id": "65d15e0bd3222442f2c426a9",
+                        "stockName": "Central Finance Limited",
+                        "ltp": 337
+                    },
+                    {
+                        "symbol": "API",
+                        "quantity": 11,
+                        "wacc": 11,
+                        "costPrice": 121,
+                        "currentPrice": 2046,
+                        "netGainLoss": 1925,
+                        "id": "65d161f5d3222442f2c43817",
+                        "stockName": "Api Power Company Limited",
+                        "ltp": 186
+                    },
+                    {
+                        "symbol": "UPPER",
+                        "quantity": 90,
+                        "wacc": 90,
+                        "costPrice": 8100,
+                        "currentPrice": 18270,
+                        "netGainLoss": 10170,
+                        "id": "65d9eb4b302e1c1b18d62c33",
+                        "stockName": "Upper Tamakoshi Hydropower Limited",
+                        "ltp": 203
+                    }
+                ],
+                "totalunits": 1530,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-24T13:12:43.347Z",
+                        "value": 933632,
+                        "portgainloss": -123958.4,
+                        "id": "65d9eb4b302e1c1b18d62c4f"
+                    }
+                ],
+                "portfoliocost": 1057590.4,
+                "portfoliovalue": 933632,
+                "recommendation": "Hold and Average",
+                "percentage": -11.7
+            },
+            {
+                "id": "65c0ef30afafb366e96d4f5c",
+                "name": "okks",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "KKHC",
+                        "quantity": 1769,
+                        "wacc": 900,
+                        "costPrice": 1592100,
+                        "currentPrice": 433405,
+                        "netGainLoss": -1158695,
+                        "id": "65c38afaced2773171d9e4b8",
+                        "stockName": "Khani Khola Hydropower Company Limited",
+                        "ltp": 245
+                    },
+                    {
+                        "symbol": "HPPL",
+                        "quantity": 900,
+                        "wacc": 900.1,
+                        "costPrice": 810090,
+                        "currentPrice": 282600,
+                        "netGainLoss": -527490,
+                        "id": "65c38b412d6f29e781497cc2",
+                        "stockName": "Himalayan Power Partner Limited",
+                        "ltp": 314
+                    },
+                    {
+                        "symbol": "NGPL",
+                        "quantity": 900,
+                        "wacc": 900,
+                        "costPrice": 810000,
+                        "currentPrice": 304200,
+                        "netGainLoss": -505800,
+                        "id": "65c6376cde24855951c93b98",
+                        "stockName": "Ngadi Group Power Limited",
+                        "ltp": 338
+                    },
+                    {
+                        "symbol": "MLBL",
+                        "quantity": 900,
+                        "wacc": 900,
+                        "costPrice": 810000,
+                        "currentPrice": 308700,
+                        "netGainLoss": -501300,
+                        "id": "65c63846de24855951c940ae",
+                        "stockName": "Mahalaxmi Bikas Bank Limited",
+                        "ltp": 343
+                    },
+                    {
+                        "symbol": "AVYAN",
+                        "quantity": 900,
+                        "wacc": 900,
+                        "costPrice": 810000,
+                        "currentPrice": 543600,
+                        "netGainLoss": -266400,
+                        "id": "65c63861de24855951c94111",
+                        "stockName": "Aviyan Laghubitta Bittiya Sanstha Limited",
+                        "ltp": 604
+                    },
+                    {
+                        "symbol": "AKJCL",
+                        "quantity": 900,
+                        "wacc": 900,
+                        "costPrice": 810000,
+                        "currentPrice": 206100,
+                        "netGainLoss": -603900,
+                        "id": "65c6388dde24855951c942ba",
+                        "stockName": "Ankhukhola Hydropower Company Limited",
+                        "ltp": 229
+                    },
+                    {
+                        "symbol": "MKHC",
+                        "quantity": 900,
+                        "wacc": 900,
+                        "costPrice": 810000,
+                        "currentPrice": 293400,
+                        "netGainLoss": -516600,
+                        "id": "65c638ddde24855951c94842",
+                        "stockName": "Maya Khola Hydropower Company Limited",
+                        "ltp": 326
+                    },
+                    {
+                        "symbol": "MNBBL",
+                        "quantity": 800,
+                        "wacc": 800,
+                        "costPrice": 640000,
+                        "currentPrice": 294400,
+                        "netGainLoss": -345600,
+                        "id": "65c63abede24855951c953f8",
+                        "stockName": "Muktinath Bikas Bank Limited",
+                        "ltp": 368
+                    },
+                    {
+                        "symbol": "CHDC",
+                        "quantity": 800,
+                        "wacc": 800,
+                        "costPrice": 640000,
+                        "currentPrice": 780800,
+                        "netGainLoss": 140800,
+                        "id": "65cd923c56ebbe335bbd9348",
+                        "stockName": "CEDB Hydropower Development Company Limited",
+                        "ltp": 976
+                    }
+                ],
+                "totalunits": 8770,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-16T09:17:18.550Z",
+                        "value": 3447205,
+                        "portgainloss": -4284985,
+                        "id": "65cf281e51b285a7d2c8e1b6"
+                    }
+                ],
+                "portfoliocost": 7732190,
+                "portfoliovalue": 3447205,
+                "recommendation": "Hold and Average",
+                "percentage": -55.4
+            },
+            {
+                "id": "65c0f0e989b09c752fde4782",
+                "name": "testmssss",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "KKHC",
+                        "quantity": 80,
+                        "wacc": 100,
+                        "costPrice": 8000,
+                        "currentPrice": 20400,
+                        "netGainLoss": 12400,
+                        "id": "65c38e4f2d6f29e78149915e",
+                        "stockName": "Khani Khola Hydropower Company Limited",
+                        "ltp": 255
+                    },
+                    {
+                        "symbol": "KPCL",
+                        "quantity": 80,
+                        "wacc": 80,
+                        "costPrice": 6400,
+                        "currentPrice": 34400,
+                        "netGainLoss": 28000,
+                        "id": "65cd4c82d1019e409ff7dc98",
+                        "stockName": "Kalika Power Company Limited",
+                        "ltp": 430
+                    },
+                    {
+                        "symbol": "DORDI",
+                        "quantity": 600,
+                        "wacc": 60,
+                        "costPrice": 36000,
+                        "currentPrice": 302400,
+                        "netGainLoss": 266400,
+                        "id": "65cf49a55e850ee4bc25f951",
+                        "stockName": "Dordi Khola Hydropower Company Limited",
+                        "ltp": 504
+                    }
+                ],
+                "totalunits": 760,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-16T11:40:21.845Z",
+                        "value": 357200,
+                        "portgainloss": 306800,
+                        "id": "65cf49a55e850ee4bc25f96b"
+                    }
+                ],
+                "portfoliocost": 50400,
+                "portfoliovalue": 357200,
+                "recommendation": "Look for booking your profits",
+                "percentage": 608.7
+            },
+            {
+                "id": "65c0f10983ba3ff8a355fc08",
+                "name": "sssss",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "UNHPL",
+                        "quantity": 1000,
+                        "wacc": 100,
+                        "costPrice": 100000,
+                        "currentPrice": 259000,
+                        "netGainLoss": 159000,
+                        "id": "65c38e622d6f29e781499218",
+                        "stockName": "Union Hydropower Limited",
+                        "ltp": 259
+                    },
+                    {
+                        "symbol": "HRL",
+                        "quantity": 890,
+                        "wacc": 900,
+                        "costPrice": 801000,
+                        "currentPrice": 594520,
+                        "netGainLoss": -206480,
+                        "id": "65c641dade24855951c9858b",
+                        "stockName": "Himalayan Reinsurance Limited",
+                        "ltp": 668
+                    },
+                    {
+                        "symbol": "HLBSL",
+                        "quantity": 900,
+                        "wacc": 100,
+                        "costPrice": 90000,
+                        "currentPrice": 544500,
+                        "netGainLoss": 454500,
+                        "id": "65c64201de24855951c986cd",
+                        "stockName": "Himalayan Laghubitta Bittiya Sanstha Limited (Former Civil Laghubitta)",
+                        "ltp": 605
+                    },
+                    {
+                        "symbol": "AHL",
+                        "quantity": 2,
+                        "wacc": 10,
+                        "costPrice": 20,
+                        "currentPrice": 930,
+                        "netGainLoss": 910,
+                        "id": "65c71e0a12790f96cf70849b",
+                        "stockName": "Asian Hydropower Limited",
+                        "ltp": 465
+                    }
+                ],
+                "totalunits": 2810,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-16T15:30:07.609Z",
+                        "value": 1398950,
+                        "portgainloss": 407930,
+                        "id": "65cf7f7fa2f2ce2fed362a1c"
+                    }
+                ],
+                "portfoliocost": 991020,
+                "portfoliovalue": 1398950,
+                "recommendation": "Strong hold and ride the trend",
+                "percentage": 41.2
+            },
+            {
+                "id": "65c0f35b3e6716e12a42edb3",
+                "name": "testssmssess",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "UHEWA",
+                        "quantity": 200,
+                        "wacc": 200,
+                        "costPrice": 40000,
+                        "currentPrice": 75600,
+                        "netGainLoss": 35600,
+                        "id": "65c398cd2d6f29e78149d031",
+                        "stockName": "Upper Hewakhola Hydropower Company Limited",
+                        "ltp": 378
+                    },
+                    {
+                        "symbol": "GUFL",
+                        "quantity": 800,
+                        "wacc": 800,
+                        "costPrice": 640000,
+                        "currentPrice": 467200,
+                        "netGainLoss": -172800,
+                        "id": "65cab85e81cedd65ab0f2cec",
+                        "stockName": "Gurkhas Finance Limited",
+                        "ltp": 584
+                    },
+                    {
+                        "symbol": "AHL",
+                        "quantity": 800,
+                        "wacc": 800,
+                        "costPrice": 640000,
+                        "currentPrice": 373600,
+                        "netGainLoss": -266400,
+                        "id": "65ce404e4a99c006d6884d99",
+                        "stockName": "Asian Hydropower Limited",
+                        "ltp": 467
+                    }
+                ],
+                "totalunits": 1800,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-15T16:48:14.462Z",
+                        "value": 916400,
+                        "portgainloss": -403600,
+                        "id": "65ce404e4a99c006d6884da5"
+                    }
+                ],
+                "portfoliocost": 1320000,
+                "portfoliovalue": 916400,
+                "recommendation": "Hold and Average",
+                "percentage": -30.6
+            },
+            {
+                "id": "65c0f9766fe176833613ede2",
+                "name": "dd",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "SPC",
+                        "quantity": 800,
+                        "wacc": 800,
+                        "costPrice": 640000,
+                        "currentPrice": 568000,
+                        "netGainLoss": -72000,
+                        "id": "65cea0b868a688feac9b837f",
+                        "stockName": "Samling Power Company Limited",
+                        "ltp": 710
+                    }
+                ],
+                "totalunits": 800,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-15T23:39:36.795Z",
+                        "value": 568000,
+                        "portgainloss": -72000,
+                        "id": "65cea0b868a688feac9b8384"
+                    }
+                ],
+                "portfoliocost": 640000,
+                "portfoliovalue": 568000,
+                "recommendation": "Hold and Average",
+                "percentage": -11.3
+            },
+            {
+                "id": "65c0fa7202dddfb9a9e5d9a4",
+                "name": "ddssdd",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "SMH",
+                        "quantity": 900,
+                        "wacc": 900,
+                        "costPrice": 810000,
+                        "currentPrice": 553500,
+                        "netGainLoss": -256500,
+                        "id": "65c3ab72b88ee3e1614cb422",
+                        "stockName": "Supermai Hydropower  Limited",
+                        "ltp": 615
+                    }
+                ],
+                "totalunits": 900,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-07T16:10:27.016Z",
+                        "value": 553500,
+                        "portgainloss": -256500,
+                        "id": "65c3ab73b88ee3e1614cb427"
+                    }
+                ],
+                "portfoliocost": 810000,
+                "portfoliovalue": 553500,
+                "recommendation": "Hold and Average",
+                "percentage": -31.7
+            },
+            {
+                "id": "65c0ffad02dddfb9a9e5fdd8",
+                "name": "olk",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "HPPL",
+                        "quantity": 900,
+                        "wacc": 900,
+                        "costPrice": 810000,
+                        "currentPrice": 251100,
+                        "netGainLoss": -558900,
+                        "id": "65c5b1490245d51b74e53244",
+                        "stockName": "Himalayan Power Partner Limited",
+                        "ltp": 279
+                    }
+                ],
+                "totalunits": 900,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-09T04:59:53.231Z",
+                        "value": 251100,
+                        "portgainloss": -558900,
+                        "id": "65c5b1490245d51b74e5324c"
+                    }
+                ],
+                "portfoliocost": 810000,
+                "portfoliovalue": 251100,
+                "recommendation": "Hold and Average",
+                "percentage": -69
+            },
+            {
+                "id": "65c1ee84bc5fe988a09ab606",
+                "name": "monkeypox",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [],
+                "totalunits": 0,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-06T08:32:04.761Z",
+                        "value": 0,
+                        "portgainloss": 0,
+                        "id": "65c1ee84bc5fe988a09ab607"
+                    }
+                ],
+                "portfoliocost": 0,
+                "portfoliovalue": 0,
+                "recommendation": "Please add stocks to get recommendation",
+                "percentage": 0
+            },
+            {
+                "id": "65c1f449bc5fe988a09ade59",
+                "name": "honeypox",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "ACLBSL",
+                        "quantity": 11,
+                        "wacc": 11,
+                        "costPrice": 121,
+                        "currentPrice": 6886,
+                        "netGainLoss": 6765,
+                        "id": "65ca192b36c2c7a77c004ab5",
+                        "stockName": "Aarambha Chautari Laghubitta Bittiya Sanstha Limited",
+                        "ltp": 626
+                    }
+                ],
+                "totalunits": 11,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-12T13:12:11.770Z",
+                        "value": 6886,
+                        "portgainloss": 6765,
+                        "id": "65ca192b36c2c7a77c004abc"
+                    }
+                ],
+                "portfoliocost": 121,
+                "portfoliovalue": 6886,
+                "recommendation": "Look for booking your profits",
+                "percentage": 5590.9
+            },
+            {
+                "id": "65c2508d609933c19101f786",
+                "name": "upcl",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "AHL",
+                        "quantity": 22,
+                        "wacc": 22,
+                        "costPrice": 484,
+                        "currentPrice": 10582,
+                        "netGainLoss": 10098,
+                        "id": "65ca193d36c2c7a77c004ba2",
+                        "stockName": "Asian Hydropower Limited",
+                        "ltp": 481
+                    }
+                ],
+                "totalunits": 22,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-12T13:12:30.077Z",
+                        "value": 10582,
+                        "portgainloss": 10098,
+                        "id": "65ca193e36c2c7a77c004ba9"
+                    }
+                ],
+                "portfoliocost": 484,
+                "portfoliovalue": 10582,
+                "recommendation": "Look for booking your profits",
+                "percentage": 2086.4
+            },
+            {
+                "id": "65c250fc609933c19101fab4",
+                "name": "kkol",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "ALICL",
+                        "quantity": 100,
+                        "wacc": 500,
+                        "costPrice": 50000,
+                        "currentPrice": 66700,
+                        "netGainLoss": 16700,
+                        "id": "65d16a69d3222442f2c45a83",
+                        "stockName": "Asian Life Insurance Company Limited",
+                        "ltp": 667
+                    }
+                ],
+                "totalunits": 100,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-18T02:24:41.752Z",
+                        "value": 66700,
+                        "portgainloss": 16700,
+                        "id": "65d16a69d3222442f2c45a88"
+                    }
+                ],
+                "portfoliocost": 50000,
+                "portfoliovalue": 66700,
+                "recommendation": "Strong hold and ride the trend",
+                "percentage": 33.4
+            },
+            {
+                "id": "65c2510d609933c19101faf2",
+                "name": "torpl",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "KPCL",
+                        "quantity": 490,
+                        "wacc": 820,
+                        "costPrice": 401800,
+                        "currentPrice": 213150,
+                        "netGainLoss": -188650,
+                        "id": "65c603b8b77cfd26ec35e7ce",
+                        "stockName": "Kalika Power Company Limited",
+                        "ltp": 435
+                    }
+                ],
+                "totalunits": 1000,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-09T11:00:50.678Z",
+                        "value": 213150,
+                        "portgainloss": -188650,
+                        "id": "65c605e2b77cfd26ec35f63d"
+                    }
+                ],
+                "portfoliocost": 401800,
+                "portfoliovalue": 213150,
+                "recommendation": "Hold and Average",
+                "percentage": -47
+            },
+            {
+                "id": "65c2dbc78d259dae484ca0c1",
+                "name": "test1234",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "NABIL",
+                        "quantity": 200,
+                        "wacc": 1120,
+                        "costPrice": 224000,
+                        "currentPrice": 92400,
+                        "netGainLoss": -131600,
+                        "id": "65cfa71801b0202dce2cf9d9",
+                        "stockName": "Nabil Bank Limited",
+                        "ltp": 462
+                    }
+                ],
+                "totalunits": 200,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-16T18:19:04.396Z",
+                        "value": 92400,
+                        "portgainloss": -131600,
+                        "id": "65cfa71801b0202dce2cf9e3"
+                    }
+                ],
+                "portfoliocost": 224000,
+                "portfoliovalue": 92400,
+                "recommendation": "Hold and Average",
+                "percentage": -58.8
+            },
+            {
+                "id": "65c62392de24855951c8b450",
+                "name": "we rocks 22",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "NRIC",
+                        "quantity": 900,
+                        "wacc": 900,
+                        "costPrice": 810000,
+                        "currentPrice": 694800,
+                        "netGainLoss": -115200,
+                        "id": "65c62c8ade24855951c8f0e3",
+                        "stockName": "Nepal Reinsurance Company Limited",
+                        "ltp": 772
+                    },
+                    {
+                        "symbol": "KKHC",
+                        "quantity": 900,
+                        "wacc": 800,
+                        "costPrice": 720000,
+                        "currentPrice": 229500,
+                        "netGainLoss": -490500,
+                        "id": "65c638f9de24855951c948c0",
+                        "stockName": "Khani Khola Hydropower Company Limited",
+                        "ltp": 255
+                    },
+                    {
+                        "symbol": "BBC",
+                        "quantity": 90,
+                        "wacc": 900,
+                        "costPrice": 81000,
+                        "currentPrice": 327150,
+                        "netGainLoss": 246150,
+                        "id": "65c6391fde24855951c94abc",
+                        "stockName": "Bishal Bazar Company Limited",
+                        "ltp": 3635
+                    },
+                    {
+                        "symbol": "AKJCL",
+                        "quantity": 800,
+                        "wacc": 800,
+                        "costPrice": 640000,
+                        "currentPrice": 187200,
+                        "netGainLoss": -452800,
+                        "id": "65c6392ade24855951c94b64",
+                        "stockName": "Ankhukhola Hydropower Company Limited",
+                        "ltp": 234
+                    }
+                ],
+                "totalunits": 4389,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-15T16:48:02.377Z",
+                        "value": 1438650,
+                        "portgainloss": -812350,
+                        "id": "65ce40424a99c006d6884c99"
+                    }
+                ],
+                "portfoliocost": 2251000,
+                "portfoliovalue": 1438650,
+                "portfolioGoal": "Not Set",
+                "recommendation": "Hold and Average",
+                "percentage": -36.1
+            },
+            {
+                "id": "65c623aede24855951c8b592",
+                "name": "we rockss",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "UNHPL",
+                        "quantity": 900,
+                        "wacc": 900,
+                        "costPrice": 810000,
+                        "currentPrice": 236700,
+                        "netGainLoss": -573300,
+                        "id": "65c625e3de24855951c8c542",
+                        "stockName": "Union Hydropower Limited",
+                        "ltp": 263
+                    },
+                    {
+                        "symbol": "PPCL",
+                        "quantity": 900,
+                        "wacc": 900,
+                        "costPrice": 810000,
+                        "currentPrice": 271800,
+                        "netGainLoss": -538200,
+                        "id": "65d14c4a7a6a4728dfd485a7",
+                        "stockName": "Panchthar Power Company Limited",
+                        "ltp": 302
+                    }
+                ],
+                "totalunits": 1800,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-18T00:16:10.260Z",
+                        "value": 508500,
+                        "portgainloss": -1111500,
+                        "id": "65d14c4a7a6a4728dfd485af"
+                    }
+                ],
+                "portfoliocost": 1620000,
+                "portfoliovalue": 508500,
+                "portfolioGoal": "Financial Speculation",
+                "recommendation": "Hold and Average",
+                "percentage": -68.6
+            },
+            {
+                "id": "65c62fcede24855951c90874",
+                "name": "xoxo",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "AHPC",
+                        "quantity": 799,
+                        "wacc": 800,
+                        "costPrice": 639200,
+                        "currentPrice": 159800,
+                        "netGainLoss": -479400,
+                        "id": "65c62fdfde24855951c90975",
+                        "stockName": "Arun Valley Hydropower Development Company Limited",
+                        "ltp": 200
+                    }
+                ],
+                "totalunits": 800,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-16T09:23:30.595Z",
+                        "value": 159800,
+                        "portgainloss": -479400,
+                        "id": "65cf299251b285a7d2c8e9ed"
+                    }
+                ],
+                "portfoliocost": 639200,
+                "portfoliovalue": 159800,
+                "portfolioGoal": "random",
+                "recommendation": "Hold and Average",
+                "percentage": -75
+            },
+            {
+                "id": "65c7231012790f96cf70a2a7",
+                "name": "okk",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "SAMAJ",
+                        "quantity": 877,
+                        "wacc": 900,
+                        "costPrice": 789300,
+                        "currentPrice": 979609,
+                        "netGainLoss": 190309,
+                        "id": "65c8fe7581cedd65ab0230e0",
+                        "stockName": "Samaj Laghubitta Bittiya Sanstha Limited",
+                        "ltp": 1117
+                    }
+                ],
+                "totalunits": 900,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-12T13:21:56.813Z",
+                        "value": 979609,
+                        "portgainloss": 190309,
+                        "id": "65ca1b7436c2c7a77c0057ea"
+                    }
+                ],
+                "portfoliocost": 789300,
+                "portfoliovalue": 979609,
+                "portfolioGoal": "test",
+                "recommendation": "Strong hold and ride the trend",
+                "percentage": 24.1
+            },
+            {
+                "id": "65c8ff5481cedd65ab0237db",
+                "name": "ohjvj",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "ACLBSL",
+                        "quantity": 11,
+                        "wacc": 11,
+                        "costPrice": 121,
+                        "currentPrice": 6886,
+                        "netGainLoss": 6765,
+                        "id": "65ca197236c2c7a77c004ce2",
+                        "stockName": "Aarambha Chautari Laghubitta Bittiya Sanstha Limited",
+                        "ltp": 626
+                    }
+                ],
+                "totalunits": 11,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-12T13:13:22.357Z",
+                        "value": 6886,
+                        "portgainloss": 6765,
+                        "id": "65ca197236c2c7a77c004cea"
+                    }
+                ],
+                "portfoliocost": 121,
+                "portfoliovalue": 6886,
+                "portfolioGoal": "testai",
+                "recommendation": "Look for booking your profits",
+                "percentage": 5590.9
+            },
+            {
+                "id": "65cf079751b285a7d2c80049",
+                "name": "test portfolio 2",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "ACLBSL",
+                        "quantity": 32,
+                        "wacc": 10.69,
+                        "costPrice": 342.08,
+                        "currentPrice": 20032,
+                        "netGainLoss": 19689.92,
+                        "id": "65cf0f8551b285a7d2c82bde",
+                        "stockName": "Aarambha Chautari Laghubitta Bittiya Sanstha Limited",
+                        "ltp": 626
+                    },
+                    {
+                        "symbol": "AHL",
+                        "quantity": 133,
+                        "wacc": 112.82,
+                        "costPrice": 15005.06,
+                        "currentPrice": 62111,
+                        "netGainLoss": 47105.94,
+                        "id": "65cf0fd151b285a7d2c82dcf",
+                        "stockName": "Asian Hydropower Limited",
+                        "ltp": 467
+                    },
+                    {
+                        "symbol": "ADBL",
+                        "quantity": 122,
+                        "wacc": 103.97,
+                        "costPrice": 12684.34,
+                        "currentPrice": 28792,
+                        "netGainLoss": 16107.66,
+                        "id": "65cf108851b285a7d2c830e4",
+                        "stockName": "Agricultural Development Bank Limited",
+                        "ltp": 236
+                    },
+                    {
+                        "symbol": "SADBL",
+                        "quantity": 11,
+                        "wacc": 22,
+                        "costPrice": 242,
+                        "currentPrice": 3399,
+                        "netGainLoss": 3157,
+                        "id": "65cf109751b285a7d2c8313a",
+                        "stockName": "Shangrila Development Bank Limited",
+                        "ltp": 309
+                    }
+                ],
+                "totalunits": 298,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-18T01:26:22.906Z",
+                        "value": 114334,
+                        "portgainloss": 86060.52,
+                        "id": "65d15cbed3222442f2c41c06"
+                    }
+                ],
+                "portfoliocost": 28273.48,
+                "portfoliovalue": 114334,
+                "portfolioGoal": "ss",
+                "recommendation": "Look for booking your profits",
+                "percentage": 304.4
+            },
+            {
+                "id": "65d1578bd3222442f2c402e2",
+                "name": "test for balance",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "UNHPL",
+                        "quantity": 200,
+                        "wacc": 500,
+                        "costPrice": 100000,
+                        "currentPrice": 52600,
+                        "netGainLoss": -47400,
+                        "id": "65d158d0d3222442f2c40a86",
+                        "stockName": "Union Hydropower Limited",
+                        "ltp": 263
+                    },
+                    {
+                        "symbol": "ADBL",
+                        "quantity": 111,
+                        "wacc": 91.18,
+                        "costPrice": 10120.980000000001,
+                        "currentPrice": 26196,
+                        "netGainLoss": 16075.019999999999,
+                        "id": "65d15a76d3222442f2c41224",
+                        "stockName": "Agricultural Development Bank Limited",
+                        "ltp": 236
+                    },
+                    {
+                        "symbol": "AKJCL",
+                        "quantity": 1,
+                        "wacc": 1,
+                        "costPrice": 1,
+                        "currentPrice": 234,
+                        "netGainLoss": 233,
+                        "id": "65d15d16d3222442f2c4215e",
+                        "stockName": "Ankhukhola Hydropower Company Limited",
+                        "ltp": 234
+                    },
+                    {
+                        "symbol": "BBC",
+                        "quantity": 1,
+                        "wacc": 1,
+                        "costPrice": 1,
+                        "currentPrice": 3635,
+                        "netGainLoss": 3634,
+                        "id": "65d15d25d3222442f2c42232",
+                        "stockName": "Bishal Bazar Company Limited",
+                        "ltp": 3635
+                    },
+                    {
+                        "symbol": "NABBC",
+                        "quantity": 11,
+                        "wacc": 11,
+                        "costPrice": 121,
+                        "currentPrice": 4730,
+                        "netGainLoss": 4609,
+                        "id": "65d15d48d3222442f2c422b8",
+                        "stockName": "Narayani Development Bank Limited",
+                        "ltp": 430
+                    },
+                    {
+                        "symbol": "SPDL",
+                        "quantity": 100,
+                        "wacc": 100,
+                        "costPrice": 10000,
+                        "currentPrice": 27300,
+                        "netGainLoss": 17300,
+                        "id": "65d16e0f71476409aac0e89d",
+                        "stockName": "Synergy Power Development Limited",
+                        "ltp": 273
+                    }
+                ],
+                "totalunits": 524,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-18T03:01:55.894Z",
+                        "value": 114695,
+                        "portgainloss": -5548.980000000003,
+                        "id": "65d1732371476409aac10291"
+                    }
+                ],
+                "portfoliocost": 120243.98,
+                "portfoliovalue": 114695,
+                "portfolioGoal": "testaiho",
+                "recommendation": "Look for stoploss",
+                "percentage": -4.6
+            },
+            {
+                "id": "65d966bfd9c90af4c989b91d",
+                "name": "demo portfolio",
+                "userEmail": "suraj@rimal.com",
+                "stocks": [
+                    {
+                        "symbol": "NIMB",
+                        "quantity": 100,
+                        "wacc": 160,
+                        "costPrice": 16000,
+                        "currentPrice": 16600,
+                        "netGainLoss": 600,
+                        "id": "65dc8650fd8f00d7ce0a361c",
+                        "stockName": "Nepal Investment Mega Bank Limited",
+                        "ltp": 166
+                    }
+                ],
+                "totalunits": 100,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-26T12:38:40.971Z",
+                        "value": 16600,
+                        "portgainloss": 600,
+                        "id": "65dc8650fd8f00d7ce0a3623"
+                    }
+                ],
+                "portfoliocost": 16000,
+                "portfoliovalue": 16600,
+                "portfolioGoal": "Not Set",
+                "recommendation": "Unable to provide recommendation",
+                "percentage": 3.8
+            }
+        ]

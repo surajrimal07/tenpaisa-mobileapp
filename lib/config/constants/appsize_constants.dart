@@ -1,9 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-final responsiveSizesProvider = Provider<ResponsiveSizes>((ref) {
-  return ResponsiveSizes();
-});
 
 class ResponsiveSizes {
   static double _screenWidth = 0.0;
@@ -14,12 +9,10 @@ class ResponsiveSizes {
     _screenHeight = MediaQuery.of(context).size.height;
   }
 
-  // Calculate responsive width based on the screen size
   static double responsiveWidth(double percentage) {
     return _screenWidth * (percentage / 100);
   }
 
-  // Calculate responsive height based on the screen size
   static double responsiveHeight(double percentage) {
     return _screenHeight * (percentage / 100);
   }

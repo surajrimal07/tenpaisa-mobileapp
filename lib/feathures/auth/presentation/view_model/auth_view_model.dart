@@ -134,8 +134,10 @@ class AuthViewModel extends StateNotifier<LoginState> {
     var data = await signUpUseCase.addUser(user, remember);
     data.fold(
       (failure) {
-        CustomToast.showToast(failure.error.toString());
-        CustomToast.showToast(failure.error.toString(), customType: Type.error);
+        state = state.copyWith(isLoading: false, error: failure.error);
+        // CustomToast.showToast(failure.error.toString());
+        CustomToast.showToast(failure.error.toString(),
+            customType: Type.error); //don't write flutter code here
       },
       (success) {
         state = state.copyWith(isLoading: false, error: null);
@@ -230,7 +232,8 @@ class AuthViewModel extends StateNotifier<LoginState> {
         CustomToast.showToast(failure.error.toString(), customType: Type.error);
         state = state.copyWith(isLoading: false, error: failure.error);
       },
-      (success) { //put it in state not entity
+      (success) {
+        //put it in state not entity
         ref.read(authEntityProvider.notifier).state = success;
         state = state.copyWith(isLoading: false, error: null);
       },

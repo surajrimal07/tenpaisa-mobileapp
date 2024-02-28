@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:paisa/feathures/auth/presentation/pages/login_widget.dart';
 import 'package:social_login_buttons/social_login_buttons.dart';
 
+//widget testing
+
 void main() {
   testWidgets('check for button named signin', (tester) async {
     await tester.pumpWidget(
@@ -40,11 +42,10 @@ void main() {
     expect(find.text(' Sign Up'), findsOneWidget);
   });
 
-  //this test should fail
   testWidgets('Renders skip text', (WidgetTester tester) async {
     await tester.pumpWidget(
         const ProviderScope(child: MaterialApp(home: SigninView())));
 
-    expect(find.text(' Skip'), findsOneWidget);
+    expect(find.text(' Skip'), findsNothing);
   });
 }

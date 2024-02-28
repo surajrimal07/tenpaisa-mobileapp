@@ -77,12 +77,12 @@ dependencies:
   animations: ^2.0.11 #for page transition animation
   mockito: ^5.4.4 # for testing
   skeletonizer: ^1.0.1 #for skeleton loading
-  awesome_flutter_extensions: ^1.2.0
+  #awesome_flutter_extensions: ^1.2.0
+  test_cov_console: ^0.2.2
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
   integration_test:
     sdk: flutter
 
@@ -117,3 +117,11 @@ flutter:
     - assets/images/on_boarding_images/
     - assets/images/paymentgateways/khalti.png
     - assets/images/paymentgateways/esewa.png
+    - test_data/index_test.json
+    - test_data/auth_test_data.json
+    - test_data/watchlist_test_data.json
+    - test_data/portfolio_test.json
+    - test_data/portfolio_data_test.json
+    - test_data/stock_test_data.json
+    - test_data/commodity_test_data.json
+    - test_data/news_test_data.json

@@ -1,0 +1,67 @@
+[
+        {
+            "id": "65afebfdcec96bb98a9f27d6",
+            "user": "suraj@rimal.com",
+            "name": "lgdrrrt",
+            "stocks": [
+                "AHPC",
+                "ALICL",
+                "NGPL",
+                "BBC",
+                "BEDC",
+                "BHPL",
+                "API",
+                "ACLBSL"
+            ],
+            "__v": 20
+        },
+        {
+            "id": "65afec1acec96bb98a9f28b2",
+            "user": "suraj@rimal.com",
+            "name": "asasas",
+            "stocks": [
+                "AHL",
+                "ADBL",
+                "MKHC",
+                "BNL"
+            ],
+            "__v": 8
+        },
+        {
+            "id": "65c8c750020e9b1b7c08cf25",
+            "user": "suraj@rimal.com",
+            "name": "oplk",
+            "stocks": [
+                "AHL",
+                "AHPC",
+                "ACLBSL",
+                "JOSHI"
+            ],
+            "__v": 12
+        },
+        {
+            "id": "65cd5ca7494c711695ad1e3e",
+            "user": "suraj@rimal.com",
+            "name": "okkh",
+            "stocks": [
+                "AKPL"
+            ],
+            "__v": 1
+        },
+        {
+            "id": "65cd5cae494c711695ad1ec4",
+            "user": "suraj@rimal.com",
+            "name": "pokh",
+            "stocks": [
+                "ACLBSL"
+            ],
+            "__v": 3
+        },
+        {
+            "id": "65d97142d9c90af4c98a52b2",
+            "user": "suraj@rimal.com",
+            "name": "sdssd",
+            "stocks": [],
+            "__v": 0
+        }
+    ]

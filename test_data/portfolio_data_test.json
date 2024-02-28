@@ -1,0 +1,16 @@
+ {
+        "portfolioData": {
+            "totalPortfolioCost": 19551743.86,
+            "totalPortfolioValue": 12154779,
+            "totalPortfolioReturns": -7396964.859999999,
+            "totalPortfolioReturnsPercentage": -37.83,
+            "portfolioCount": 22,
+            "averagePortfolioReturns": -336225.68,
+            "averagePortfolioReturnsPercentage": -1.72,
+            "profitablePortfolios": 9,
+            "unprofitablePortfolios": 12,
+            "recommendation": "Look for booking your profits",
+            "totalStocks": 56,
+            "totalUnits": 28425
+        }
+    }

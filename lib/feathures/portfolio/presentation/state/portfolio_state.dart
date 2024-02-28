@@ -35,12 +35,6 @@ class PortfolioState {
             totalUnits: 0),
       );
 
-  // bool isEqualTo(PortfolioState other) {
-  //   return isLoading == other.isLoading &&
-  //       error == other.error &&
-  //       showMessage == other.showMessage;
-  // }
-
   PortfolioState copyWith(
       {bool? isLoading,
       String? error,

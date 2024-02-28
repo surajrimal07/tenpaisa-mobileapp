@@ -45,7 +45,6 @@ class WatchlistViewModel extends StateNotifier<WatchlistState> {
       (failure) {
         state = state.copyWith(
             isLoading: false, error: failure.error, showMessage: true);
-        //CustomToast.showToast(failure.error.toString());
       },
       (success) {
         state = state.copyWith(

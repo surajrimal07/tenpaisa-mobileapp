@@ -1,0 +1,751 @@
+ [
+        {
+            "symbol": "Tomato Big(Nepali)",
+            "name": "Tomato Big(Nepali)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 55
+        },
+        {
+            "symbol": "Tomato Big(Indian)",
+            "name": "Tomato Big(Indian)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 65
+        },
+        {
+            "symbol": "Tomato Small(Local)",
+            "name": "Tomato Small(Local)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 23
+        },
+        {
+            "symbol": "Tomato Small(Tunnel)",
+            "name": "Tomato Small(Tunnel)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 28
+        },
+        {
+            "symbol": "Tomato Small(Terai)",
+            "name": "Tomato Small(Terai)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 25
+        },
+        {
+            "symbol": "Potato Red",
+            "name": "Potato Red",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 33
+        },
+        {
+            "symbol": "Potato Red(Indian)",
+            "name": "Potato Red(Indian)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 35
+        },
+        {
+            "symbol": "Potato White",
+            "name": "Potato White",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 29
+        },
+        {
+            "symbol": "Onion Dry (Indian)",
+            "name": "Onion Dry (Indian)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 80
+        },
+        {
+            "symbol": "Carrot(Local)",
+            "name": "Carrot(Local)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 33
+        },
+        {
+            "symbol": "Carrot(Terai)",
+            "name": "Carrot(Terai)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 28
+        },
+        {
+            "symbol": "Cabbage(Local)",
+            "name": "Cabbage(Local)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 30
+        },
+        {
+            "symbol": "Cabbage(Terai)",
+            "name": "Cabbage(Terai)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 25
+        },
+        {
+            "symbol": "Cauli Local",
+            "name": "Cauli Local",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 30
+        },
+        {
+            "symbol": "Cauli Local(Jyapu)",
+            "name": "Cauli Local(Jyapu)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 40
+        },
+        {
+            "symbol": "Cauli Terai",
+            "name": "Cauli Terai",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 25
+        },
+        {
+            "symbol": "Raddish Red",
+            "name": "Raddish Red",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 55
+        },
+        {
+            "symbol": "Raddish White(Local)",
+            "name": "Raddish White(Local)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 28
+        },
+        {
+            "symbol": "Raddish White(Hybrid)",
+            "name": "Raddish White(Hybrid)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 28
+        },
+        {
+            "symbol": "Brinjal Long",
+            "name": "Brinjal Long",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 45
+        },
+        {
+            "symbol": "Brinjal Round",
+            "name": "Brinjal Round",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 45
+        },
+        {
+            "symbol": "Green Peas",
+            "name": "Green Peas",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 105
+        },
+        {
+            "symbol": "French Bean(Local)",
+            "name": "French Bean(Local)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 155
+        },
+        {
+            "symbol": "French Bean(Hybrid)",
+            "name": "French Bean(Hybrid)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 155
+        },
+        {
+            "symbol": "French Bean(Rajma)",
+            "name": "French Bean(Rajma)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 105
+        },
+        {
+            "symbol": "Sword Bean",
+            "name": "Sword Bean",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 75
+        },
+        {
+            "symbol": "Bitter Gourd",
+            "name": "Bitter Gourd",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 125
+        },
+        {
+            "symbol": "Bottle Gourd",
+            "name": "Bottle Gourd",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 77
+        },
+        {
+            "symbol": "Pointed Gourd(Terai)",
+            "name": "Pointed Gourd(Terai)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 290
+        },
+        {
+            "symbol": "Smooth Gourd",
+            "name": "Smooth Gourd",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 145
+        },
+        {
+            "symbol": "Pumpkin",
+            "name": "Pumpkin",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 48
+        },
+        {
+            "symbol": "Squash(Long)",
+            "name": "Squash(Long)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 57
+        },
+        {
+            "symbol": "Squash(Round)",
+            "name": "Squash(Round)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 55
+        },
+        {
+            "symbol": "Turnip",
+            "name": "Turnip",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 75
+        },
+        {
+            "symbol": "Okara",
+            "name": "Okara",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 110
+        },
+        {
+            "symbol": "Sweet Potato",
+            "name": "Sweet Potato",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 75
+        },
+        {
+            "symbol": "Barela",
+            "name": "Barela",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 55
+        },
+        {
+            "symbol": "Arum",
+            "name": "Arum",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 75
+        },
+        {
+            "symbol": "Christophine",
+            "name": "Christophine",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 42
+        },
+        {
+            "symbol": "Brd Leaf Mustard",
+            "name": "Brd Leaf Mustard",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 37
+        },
+        {
+            "symbol": "Spinach Leaf",
+            "name": "Spinach Leaf",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 47
+        },
+        {
+            "symbol": "Cress Leaf",
+            "name": "Cress Leaf",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 47
+        },
+        {
+            "symbol": "Mustard Leaf",
+            "name": "Mustard Leaf",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 25
+        },
+        {
+            "symbol": "Fenugreek Leaf",
+            "name": "Fenugreek Leaf",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 47
+        },
+        {
+            "symbol": "Onion Green",
+            "name": "Onion Green",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 67
+        },
+        {
+            "symbol": "Bakula",
+            "name": "Bakula",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 77
+        },
+        {
+            "symbol": "Yam",
+            "name": "Yam",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 65
+        },
+        {
+            "symbol": "Mushroom(Kanya)",
+            "name": "Mushroom(Kanya)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 154
+        },
+        {
+            "symbol": "Mushroom(Button)",
+            "name": "Mushroom(Button)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 346
+        },
+        {
+            "symbol": "Asparagus",
+            "name": "Asparagus",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 1
+        },
+        {
+            "symbol": "Neuro",
+            "name": "Neuro",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 87
+        },
+        {
+            "symbol": "Brocauli",
+            "name": "Brocauli",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 47
+        },
+        {
+            "symbol": "Sugarbeet",
+            "name": "Sugarbeet",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 67
+        },
+        {
+            "symbol": "Drumstick",
+            "name": "Drumstick",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 145
+        },
+        {
+            "symbol": "Red Cabbbage",
+            "name": "Red Cabbbage",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 55
+        },
+        {
+            "symbol": "Lettuce",
+            "name": "Lettuce",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 57
+        },
+        {
+            "symbol": "Knolkhol",
+            "name": "Knolkhol",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 65
+        },
+        {
+            "symbol": "Celery",
+            "name": "Celery",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 87
+        },
+        {
+            "symbol": "Parseley",
+            "name": "Parseley",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 175
+        },
+        {
+            "symbol": "Fennel Leaf",
+            "name": "Fennel Leaf",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 47
+        },
+        {
+            "symbol": "Mint",
+            "name": "Mint",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 235
+        },
+        {
+            "symbol": "Tamarind",
+            "name": "Tamarind",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 147
+        },
+        {
+            "symbol": "Bamboo Shoot",
+            "name": "Bamboo Shoot",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 97
+        },
+        {
+            "symbol": "Tofu",
+            "name": "Tofu",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 160
+        },
+        {
+            "symbol": "Gundruk",
+            "name": "Gundruk",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 275
+        },
+        {
+            "symbol": "Apple(Fuji)",
+            "name": "Apple(Fuji)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 325
+        },
+        {
+            "symbol": "Banana",
+            "name": "Banana",
+            "category": "Vegetables",
+            "unit": "Doz",
+            "ltp": 125
+        },
+        {
+            "symbol": "Lime",
+            "name": "Lime",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 275
+        },
+        {
+            "symbol": "Pomegranate",
+            "name": "Pomegranate",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 275
+        },
+        {
+            "symbol": "Grapes(Green)",
+            "name": "Grapes(Green)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 130
+        },
+        {
+            "symbol": "Grapes(Black)",
+            "name": "Grapes(Black)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 190
+        },
+        {
+            "symbol": "Orange(Nepali)",
+            "name": "Orange(Nepali)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 153
+        },
+        {
+            "symbol": "Orange(Indian)",
+            "name": "Orange(Indian)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 97
+        },
+        {
+            "symbol": "Water Melon(Green)",
+            "name": "Water Melon(Green)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 67
+        },
+        {
+            "symbol": "Sweet Orange",
+            "name": "Sweet Orange",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 135
+        },
+        {
+            "symbol": "Mandarin",
+            "name": "Mandarin",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 235
+        },
+        {
+            "symbol": "Pineapple",
+            "name": "Pineapple",
+            "category": "Vegetables",
+            "unit": "1 Pc",
+            "ltp": 165
+        },
+        {
+            "symbol": "Cucumber(Local)",
+            "name": "Cucumber(Local)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 130
+        },
+        {
+            "symbol": "Cucumber(Hybrid)",
+            "name": "Cucumber(Hybrid)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 57
+        },
+        {
+            "symbol": "Jack Fruit",
+            "name": "Jack Fruit",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 117
+        },
+        {
+            "symbol": "Lemon",
+            "name": "Lemon",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 55
+        },
+        {
+            "symbol": "Pear(Chinese)",
+            "name": "Pear(Chinese)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 235
+        },
+        {
+            "symbol": "Papaya(Nepali)",
+            "name": "Papaya(Nepali)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 77
+        },
+        {
+            "symbol": "Papaya(Indian)",
+            "name": "Papaya(Indian)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 77
+        },
+        {
+            "symbol": "Guava",
+            "name": "Guava",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 155
+        },
+        {
+            "symbol": "Mombin",
+            "name": "Mombin",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 117
+        },
+        {
+            "symbol": "Kinnow",
+            "name": "Kinnow",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 97
+        },
+        {
+            "symbol": "Strawberry",
+            "name": "Strawberry",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 250
+        },
+        {
+            "symbol": "Amla",
+            "name": "Amla",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 77
+        },
+        {
+            "symbol": "Ginger",
+            "name": "Ginger",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 210
+        },
+        {
+            "symbol": "Chilli Dry",
+            "name": "Chilli Dry",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 425
+        },
+        {
+            "symbol": "Chilli Green",
+            "name": "Chilli Green",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 127
+        },
+        {
+            "symbol": "Chilli Green(Bullet)",
+            "name": "Chilli Green(Bullet)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 127
+        },
+        {
+            "symbol": "Chilli Green(Machhe)",
+            "name": "Chilli Green(Machhe)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 97
+        },
+        {
+            "symbol": "Chilli Green(Akbare)",
+            "name": "Chilli Green(Akbare)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 265
+        },
+        {
+            "symbol": "Capsicum",
+            "name": "Capsicum",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 95
+        },
+        {
+            "symbol": "Garlic Green",
+            "name": "Garlic Green",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 130
+        },
+        {
+            "symbol": "Coriander Green",
+            "name": "Coriander Green",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 47
+        },
+        {
+            "symbol": "Garlic Dry Chinese",
+            "name": "Garlic Dry Chinese",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 250
+        },
+        {
+            "symbol": "Clive Green",
+            "name": "Clive Green",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 110
+        },
+        {
+            "symbol": "Fish Fresh(Rahu)",
+            "name": "Fish Fresh(Rahu)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 350
+        },
+        {
+            "symbol": "Fish Fresh(Bachuwa)",
+            "name": "Fish Fresh(Bachuwa)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 265
+        },
+        {
+            "symbol": "Fish Fresh(Chhadi)",
+            "name": "Fish Fresh(Chhadi)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 260
+        },
+        {
+            "symbol": "Fish Fresh(Mungari)",
+            "name": "Fish Fresh(Mungari)",
+            "category": "Vegetables",
+            "unit": "Kg",
+            "ltp": 360
+        },
+        {
+            "name": "Petrol",
+            "symbol": "Petrol",
+            "category": "Oil & Gas",
+            "unit": "litre",
+            "ltp": 172
+        },
+        {
+            "name": "Diesel",
+            "symbol": "Diesel",
+            "category": "Oil & Gas",
+            "unit": "litre",
+            "ltp": 160
+        },
+        {
+            "name": "Kerosene",
+            "symbol": "Kerosene",
+            "category": "Oil & Gas",
+            "unit": "litre",
+            "ltp": 160
+        }
+    ]

@@ -24,7 +24,6 @@ class LoginState {
   }
 
   LoginState copyWith({bool? isLoading, String? error, bool? showMessage
-      // ,AuthEntity? authEntity,
       }) {
     return LoginState(
         isLoading: isLoading ?? this.isLoading,

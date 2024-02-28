@@ -1,0 +1,136 @@
+ {
+        "_id": "65bcb937796dc41d3b2a2ade",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1cmFqQHJpbWFsLmNvbSIsImlzQWRtaW4iOnRydWUsImlhdCI6MTcwOTA0MTI1MSwiZXhwIjoxNzA5NjQ2MDUxfQ.H_X9IzG7J1q_ajwOyDlQ3gXdo3nKLZayiL6NAROXG28",
+        "name": "Suraj Rimal",
+        "email": "suraj@rimal.com",
+        "pass": "$2b$10$cP.20XS.bZYg2LtbI4YQxO.yeLXES.ecTeL8Foak7djviMkXuOLYW",
+        "phone": 9840220292,
+        "premium": true,
+        "style": 2,
+        "isAdmin": true,
+        "dpImage": "https://res.cloudinary.com/dio3qwd9q/image/upload/v1708932157/UserDP/qy8ny3npchd3mjo3pqfe.jpg",
+        "userAmount": 183815,
+        "defaultport": 1,
+        "portfolio": [
+            {
+                "_id": "65bcb936796dc41d3b2a2ad5",
+                "id": 30,
+                "userEmail": "suraj@rimal.com",
+                "name": "Sample Portfolio",
+                "stocks": [
+                    {
+                        "symbol": "CBBL",
+                        "quantity": 9,
+                        "wacc": 750,
+                        "_id": "65bcb936796dc41d3b2a2ad6",
+                        "currentprice": 7524,
+                        "name": "Chhimek Laghubitta Bittiya Sanstha Limited",
+                        "ltp": 836,
+                        "costprice": 6750,
+                        "netgainloss": 774
+                    },
+                    {
+                        "symbol": "KKHC",
+                        "quantity": 10,
+                        "wacc": 10,
+                        "costprice": 100,
+                        "currentprice": 2560,
+                        "netgainloss": 2460,
+                        "_id": "65c4efc423244062ef2fb9e3",
+                        "name": "Khani Khola Hydropower Company Limited",
+                        "ltp": 256
+                    },
+                    {
+                        "symbol": "NGPL",
+                        "quantity": 100,
+                        "wacc": 100,
+                        "costprice": 10000,
+                        "currentprice": 31700,
+                        "netgainloss": 21700,
+                        "_id": "65c5e16a0245d51b74e5b72a",
+                        "name": "Ngadi Group Power Limited",
+                        "ltp": 317
+                    },
+                    {
+                        "symbol": "NRIC",
+                        "quantity": 800,
+                        "wacc": 1200,
+                        "costprice": 960000,
+                        "currentprice": 605600,
+                        "netgainloss": -354400,
+                        "_id": "65c63de8de24855951c96c57",
+                        "name": "Nepal Reinsurance Company Limited",
+                        "ltp": 757
+                    },
+                    {
+                        "symbol": "ACLBSL",
+                        "quantity": 290,
+                        "wacc": 165.86,
+                        "costprice": 48099.4,
+                        "currentprice": 178930,
+                        "netgainloss": 130830.6,
+                        "_id": "65ca0cd636c2c7a77c000166",
+                        "name": "Aarambha Chautari Laghubitta Bittiya Sanstha Limited",
+                        "ltp": 617
+                    },
+                    {
+                        "symbol": "AHL",
+                        "quantity": 109,
+                        "wacc": 111,
+                        "costprice": 12099,
+                        "currentprice": 49595,
+                        "netgainloss": 37496,
+                        "_id": "65ca16d636c2c7a77c003a3c",
+                        "name": "Asian Hydropower Limited",
+                        "ltp": 455
+                    },
+                    {
+                        "symbol": "CFCL",
+                        "quantity": 111,
+                        "wacc": 111,
+                        "costprice": 12321,
+                        "currentprice": 37407,
+                        "netgainloss": 25086,
+                        "_id": "65d15e0bd3222442f2c426a9",
+                        "name": "Central Finance Limited",
+                        "ltp": 337
+                    },
+                    {
+                        "symbol": "API",
+                        "quantity": 11,
+                        "wacc": 11,
+                        "costprice": 121,
+                        "currentprice": 2046,
+                        "netgainloss": 1925,
+                        "_id": "65d161f5d3222442f2c43817",
+                        "name": "Api Power Company Limited",
+                        "ltp": 186
+                    },
+                    {
+                        "symbol": "UPPER",
+                        "quantity": 90,
+                        "wacc": 90,
+                        "costprice": 8100,
+                        "currentprice": 18270,
+                        "netgainloss": 10170,
+                        "_id": "65d9eb4b302e1c1b18d62c33",
+                        "name": "Upper Tamakoshi Hydropower Limited",
+                        "ltp": 203
+                    }
+                ],
+                "totalunits": 1530,
+                "gainLossRecords": [
+                    {
+                        "date": "2024-02-24T13:12:43.347Z",
+                        "value": 933632,
+                        "portgainloss": -123958.4,
+                        "_id": "65d9eb4b302e1c1b18d62c4f"
+                    }
+                ],
+                "portfoliocost": 1057590.4,
+                "portfoliovalue": 933632,
+                "__v": 12
+            }
+        ],
+        "wallets": 1
+    }
