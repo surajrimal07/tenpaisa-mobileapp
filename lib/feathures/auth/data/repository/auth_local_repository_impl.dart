@@ -8,7 +8,6 @@ import 'package:paisa/feathures/auth/domain/entity/auth_entity.dart';
 import 'package:paisa/feathures/auth/domain/repository/auth_repository.dart';
 
 final authLocalRepositoryProvider = Provider<IAuthRepository>((ref) {
-  print("Going to local repository");
   return AuthLocalRepositoryImpl(
     authLocalDataSource: ref.read(authLocalDataSourceProvider),
   );

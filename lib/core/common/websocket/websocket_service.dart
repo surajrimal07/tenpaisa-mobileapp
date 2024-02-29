@@ -155,10 +155,8 @@ class WebSocketServices {
     void handleSocketError(dynamic error) {
       Future.delayed(const Duration(seconds: 10), () {
         if (isConnected) {
-          print("*************Reconnecting WebSocket***********");
           startWebSocket(onData);
         }
-        // startWebSocket(onData);
       });
     }
 

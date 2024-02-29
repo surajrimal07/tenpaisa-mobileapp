@@ -6,7 +6,6 @@ import 'package:paisa/feathures/portfolio/data/dto/get_portfolio_dto.dart';
 import 'package:paisa/feathures/portfolio/domain/repository/portfolio_repository.dart';
 
 final portfolioLocalRepositoryProvider = Provider<IPortfolioRepository>((ref) {
-  print("Going to local portfolio repository");
   return PortfolioLocalRepository(
       portfolioDataSource: ref.read(portfolioLocalDataSource));
 });

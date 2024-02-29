@@ -166,24 +166,24 @@ class AboutUsView extends StatelessWidget {
         ));
   }
 
-  Widget _buildText(BuildContext context,
-      {required IconData icon, required String label, required String text}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Row(
-        children: [
-          Icon(
-            icon,
-            size: 20,
-            color: Theme.of(context).primaryColor,
-          ),
-          const SizedBox(width: 5),
-          Text(
-            '$label $text',
-            style: const TextStyle(fontSize: 15),
-          ),
-        ],
-      ),
-    );
-  }
+  // Widget _buildText(BuildContext context,
+  //     {required IconData icon, required String label, required String text}) {
+  //   return Padding(
+  //     padding: const EdgeInsets.symmetric(vertical: 4.0),
+  //     child: Row(
+  //       children: [
+  //         Icon(
+  //           icon,
+  //           size: 20,
+  //           color: Theme.of(context).primaryColor,
+  //         ),
+  //         const SizedBox(width: 5),
+  //         Text(
+  //           '$label $text',
+  //           style: const TextStyle(fontSize: 15),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 }

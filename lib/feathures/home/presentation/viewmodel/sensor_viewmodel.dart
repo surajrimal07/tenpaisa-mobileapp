@@ -171,7 +171,6 @@ class ShakeDetectionViewModel extends ChangeNotifier {
         double accelerationMagnitude = _calculateAccelerationMagnitude(event);
 
         if (accelerationMagnitude > 20.0 && !_isDialogShowing) {
-          print("Shake detected");
 
           _isDialogShowing = true;
 

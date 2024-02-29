@@ -52,7 +52,6 @@ class AuthRemoteDataSource {
         );
       }
     } on DioException catch (e) {
-      print("Dio Exception: Occured"); //why this is not working?
       return Left(
         Failure(
             error: "Internet connection not available",
@@ -226,8 +225,6 @@ class AuthRemoteDataSource {
       );
 
       if (response.statusCode == 200) {
-        //final Map<String, dynamic> responseData = response.data;
-        //CustomToast.showToast(responseData['message']);
         return right(true);
       } else {
         CustomToast.showToast(response.data["message"]);
@@ -260,9 +257,6 @@ class AuthRemoteDataSource {
       );
 
       if (response.statusCode == 200) {
-        // final Map<String, dynamic> responseData = response.data;
-        // CustomToast.showToast(responseData['message']);
-        // return right(true);
 
         AuthDTO authDTO = AuthDTO.fromJson(response.data);
         AuthRemoteModel user = authDTO.data;
@@ -291,7 +285,7 @@ class AuthRemoteDataSource {
       if (response.statusCode == 200) {
         return right(true);
       } else {
-        final Map<String, dynamic> responseData = response.data; //fixed //last
+        final Map<String, dynamic> responseData = response.data;
         CustomToast.showToast(responseData['message']);
         return left(
             Failure(error: responseData['message'], showToast: showtoast));
@@ -325,35 +319,6 @@ class AuthRemoteDataSource {
     }
   }
 
-// //used in forget password
-//   Future<Either<Failure, String>> getToken(String email) async {
-//     await userSharedPrefs.saveTempEmail(email);
-//     try {
-//       var response = await dio.post(
-//         EndPoints.otpLogin,
-//         data: {
-//           'email': email,
-//         },
-//       );
-
-//       if (response.statusCode == 200) {
-//         Map<String, dynamic> parsedResponse = json.decode(response.data);
-//         String dataValue = parsedResponse['data']; //might be issue here
-//         // await userSharedPrefs.setUserToken(dataValue);
-//         return right(dataValue);
-//       } else {
-//         final Map<String, dynamic> responseData = json.decode(response.data);
-//         CustomToast.showToast(responseData['message']);
-//         return left(
-//             Failure(error: responseData['message'], showToast: showtoast));
-//       }
-//     } catch (e) {
-//       // CustomToast.showToast(e.toString());
-//       return left(Failure(error: e.toString(), showToast: showtoast));
-//     }
-//   }
-
-//testing
   Future<Either<Failure, bool>> forget(String email) async {
     try {
       var response = await dio.post(
