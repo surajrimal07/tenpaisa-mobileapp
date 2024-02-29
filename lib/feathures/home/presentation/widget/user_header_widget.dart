@@ -292,12 +292,11 @@ class PortfolioCard extends ConsumerWidget {
                       15,
                       (i) => FlSpot(i.toDouble(),
                           dummyData["data"][i]["index"].toDouble()))
-                  : List.generate(index.length,
-                      (i) => FlSpot(i.toDouble(), index[i].index.toDouble())),
-              // spots: [
-              //   for (var i = 0; i < 14; i++)
-              //     FlSpot(i.toDouble(), index[14 - i].index.toDouble()),
-              // ],
+                  : List.generate(
+                      index.length,
+                      (i) => FlSpot(i.toDouble(),
+                          index[index.length - 1 - i].index.toDouble()),
+                    ),
               isCurved: true,
               colors: [Colors.white],
               barWidth: 1,

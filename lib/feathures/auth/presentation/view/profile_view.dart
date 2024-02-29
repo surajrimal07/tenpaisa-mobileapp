@@ -39,15 +39,8 @@ class AccountView extends ConsumerStatefulWidget {
 }
 
 class ProfileViewState extends ConsumerState<AccountView> {
-  // checkCameraPermission() async {
-  //   if (await Permission.camera.request().isRestricted ||
-  //       await Permission.camera.request().isDenied) {
-  //     await Permission.camera.request();
-  //   }
-  // }
 
   File? _img;
-  //String? _fingerprintState;
   Future _browseImage(WidgetRef ref, ImageSource imageSource, email) async {
     //shift to viewmodel
     try {
@@ -66,21 +59,6 @@ class ProfileViewState extends ConsumerState<AccountView> {
       debugPrint(e.toString());
     }
   }
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   getFingerprintSate();
-  // }
-
-  // Future<void> getFingerprintSate() async {
-  //   final data = await ref.read(userSharedPrefsProvider).getUseFingerprint();
-  //   if (data) {
-  //     _fingerprintState = "Enabled";
-  //   } else {
-  //     _fingerprintState = "Disabled";
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {

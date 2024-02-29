@@ -114,7 +114,6 @@ flutter:
     - assets/images/
     - assets/logos/
     - assets/images/content/
-    - assets/images/on_boarding_images/
     - assets/images/paymentgateways/khalti.png
     - assets/images/paymentgateways/esewa.png
     - test_data/index_test.json

@@ -10,11 +10,11 @@ class ApiEndpoints {
   static const String PORT = ":5000";
 
   //localhost
-  static const String ADDRESS = "192.168.101.9";
+  static const String ADDRESS = "192.168.1.66";
   static const String SERVER_ADDRESS = "$HTTPS$ADDRESS$PORT";
 
   //google cloud
-  // static const String ADDRESS = "paisabackend.el.r.appspot.com";
+  //static const String ADDRESS = "paisabackend.el.r.appspot.com";
   //static const String SERVER_ADDRESS = "$HTTPS$ADDRESS";
 
   //for socket
