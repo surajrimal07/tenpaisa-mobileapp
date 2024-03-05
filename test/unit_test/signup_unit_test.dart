@@ -11,7 +11,6 @@ import 'package:paisa/feathures/auth/domain/usecase/add_user_usecase.dart';
 import 'package:paisa/feathures/auth/presentation/view_model/auth_view_model.dart';
 
 import 'signup_unit_test.mocks.dart';
-//unit test - 10
 
 @GenerateNiceMocks([MockSpec<AddUserUseCase>(), MockSpec<NavigationService>()])
 void main() {

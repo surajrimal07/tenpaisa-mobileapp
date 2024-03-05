@@ -51,7 +51,7 @@ class _GetStartBtnState extends State<GetStartBtn> {
           child: Container(
             margin: const EdgeInsets.only(top: 60),
             width: Sizes.dynamicHeight(38),
-            height: Sizes.dynamicHeight(8),
+            height: Sizes.dynamicHeight(6),
             decoration: BoxDecoration(
               color: AppColors.primaryColor,
               borderRadius: BorderRadius.circular(15),
@@ -70,7 +70,7 @@ class _GetStartBtnState extends State<GetStartBtn> {
                   : const Text(
                       OnBoarding.getStarted,
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 24,
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontFamily: 'Poppins',
@@ -101,7 +101,7 @@ class SkipBtn extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(top: 60),
       width: Sizes.dynamicHeight(38),
-      height: Sizes.dynamicHeight(8),
+      height: Sizes.dynamicHeight(6),
       decoration: BoxDecoration(
           border: Border.all(
             color: AppColors.primaryColor,
@@ -115,7 +115,7 @@ class SkipBtn extends StatelessWidget {
         child: const Center(
           child: Text(OnBoarding.skip,
               style: TextStyle(
-                fontSize: 14,
+                fontSize: 24,
                 color: AppColors.primaryColor,
                 fontFamily: 'Poppins',
               )),

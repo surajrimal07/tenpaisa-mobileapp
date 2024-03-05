@@ -20,6 +20,8 @@ abstract class IAuthRepository {
   Future<Either<Failure, bool>> registerUser(AuthEntity user, bool remember);
   Future<Either<Failure, AuthEntity>> loginUser(
       String username, String password, bool remember);
+  Future<Either<Failure, String>> googleLogin();
+  Future<Either<Failure, void>> googleLogout();
   Future<Either<Failure, bool>> verifyOTP(int otp, bool redirect);
   Future<Either<Failure, bool>> resendOtp();
   Future<Either<Failure, AuthEntity>> saveStyle(

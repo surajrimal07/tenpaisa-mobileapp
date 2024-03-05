@@ -1,9 +1,12 @@
+// ignore_for_file: avoid_print
+
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:paisa/config/constants/endpoint_constants.dart';
 import 'package:paisa/core/common/toast/app_toast.dart';
 import 'package:paisa/core/failure/failure.dart';
@@ -27,6 +30,11 @@ class AuthRemoteDataSource {
   final UserSharedPrefs userSharedPrefs;
 
   AuthRemoteDataSource({required this.dio, required this.userSharedPrefs});
+
+  final GoogleSignIn googleSignIn = GoogleSignIn(scopes: [
+    'email',
+    'https://www.googleapis.com/auth/contacts.readonly',
+  ]);
 
 /////login
 
@@ -58,6 +66,80 @@ class AuthRemoteDataSource {
             statusCode: e.response?.statusCode.toString() ?? '0',
             showToast: showtoast),
       );
+    }
+  }
+
+  Future<Either<Failure, String>> googleLogin() async {
+    try {
+      final GoogleSignInAccount? googleSignInAccount = googleSignIn.currentUser;
+      if (googleSignInAccount != null) {
+        return right(googleSignInAccount.email);
+      } else {
+        await googleSignIn.signIn();
+        final GoogleSignInAccount? updatedAccount = googleSignIn.currentUser;
+        if (updatedAccount != null) {
+          return right(updatedAccount.email);
+        } else {
+          return left(
+              Failure(error: "Google Sign In Failed", showToast: showtoast));
+        }
+      }
+    } catch (error) {
+      return left(
+          Failure(error: "Sign-in Error: $error", showToast: showtoast));
+    }
+  }
+
+  Future<Either<Failure, void>> googleDisconnect() async {
+    final GoogleSignInAccount? googleSignInAccount = googleSignIn.currentUser;
+    print("Google Sign Out");
+
+    try {
+      if (googleSignInAccount != null) {
+        print("Google Sign Out attempt");
+        await googleSignIn.disconnect();
+      }
+
+      return right(null);
+    } catch (error) {
+      return left(
+        Failure(error: "Disconnect Error: $error", showToast: showtoast),
+      );
+    }
+  }
+
+  Future<Either<Failure, Map<String, String>>> googleRegister() async {
+    final GoogleSignIn googleSignIn = GoogleSignIn(scopes: [
+      'email',
+      'https://www.googleapis.com/auth/contacts.readonly',
+    ]);
+    try {
+      final GoogleSignInAccount? googleSignInAccount = googleSignIn.currentUser;
+      if (googleSignInAccount != null) {
+        final Map<String, String> authData = {
+          'email': googleSignInAccount.email,
+          'name': googleSignInAccount.displayName ?? "No Name",
+          'photo': googleSignInAccount.photoUrl ?? '',
+        };
+        return right(authData);
+      } else {
+        await googleSignIn.signIn();
+        final GoogleSignInAccount? updatedAccount = googleSignIn.currentUser;
+        if (updatedAccount != null) {
+          final Map<String, String> authData = {
+            'email': updatedAccount.email,
+            'name': updatedAccount.displayName ?? "No Name",
+            'photo': updatedAccount.photoUrl ?? ''
+          };
+          return right(authData);
+        } else {
+          return left(
+              Failure(error: "Google Sign In Failed", showToast: showtoast));
+        }
+      }
+    } catch (error) {
+      return left(
+          Failure(error: "Sign-in Error: $error", showToast: showtoast));
     }
   }
 
@@ -257,7 +339,6 @@ class AuthRemoteDataSource {
       );
 
       if (response.statusCode == 200) {
-
         AuthDTO authDTO = AuthDTO.fromJson(response.data);
         AuthRemoteModel user = authDTO.data;
         AuthEntity userEntity = AuthRemoteModel.toEntity(user);

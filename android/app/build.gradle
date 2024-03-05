@@ -57,10 +57,10 @@ android {
 
     signingConfigs {
         debug {
-            storeFile file('test_key.jks')
-            storePassword '000000'
-            keyAlias 'your_key_alias'
-            keyPassword '000000'
+            storeFile file('login-key.jks')
+            storePassword 'nightiee'
+            keyAlias 'login-key'
+            keyPassword 'nightiee'
         }
     }
 

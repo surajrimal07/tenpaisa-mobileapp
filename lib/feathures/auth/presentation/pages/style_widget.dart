@@ -130,7 +130,7 @@ class StyleViewState extends ConsumerState<StyleView> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           SizedBox(
-                            height: Sizes.dynamicHeight(6.5),
+                            height: Sizes.dynamicHeight(6),
                             width: Sizes.dynamicWidth(36),
                             child: TextButton(
                               style: TextButton.styleFrom(

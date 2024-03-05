@@ -27,8 +27,6 @@ class HomeView extends ConsumerStatefulWidget {
 }
 
 class _HomeViewState extends ConsumerState<HomeView> {
-  // bool _hasNavigatedDisconnected = false;
-  // bool _hasNavigatedConnected = false;
   ConnectivityStatus _lastConnectivityStatus = ConnectivityStatus.isConnected;
 
   List<Widget> lstScreen = [
@@ -49,12 +47,8 @@ class _HomeViewState extends ConsumerState<HomeView> {
       if (connectivityStatus != _lastConnectivityStatus) {
         _lastConnectivityStatus = connectivityStatus;
         if (connectivityStatus == ConnectivityStatus.isDisconnected) {
-          //_hasNavigatedDisconnected = true;
-          //  _hasNavigatedConnected = false;
           animatednavigateTo(context, const NoConnection());
         } else if (connectivityStatus == ConnectivityStatus.isConnected) {
-          //_hasNavigatedConnected = true;
-          // _hasNavigatedDisconnected = false;
           animatednavigateTo(context, const Connected());
         }
       }

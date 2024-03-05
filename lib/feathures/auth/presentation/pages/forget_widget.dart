@@ -138,7 +138,6 @@ class ForgotState extends ConsumerState<ForgotView> with FieldValidator {
                       ),
                     ),
                   ),
-
                   Visibility(
                     visible: verificationStatus.isMailVerified,
                     child: Padding(
@@ -207,7 +206,6 @@ class ForgotState extends ConsumerState<ForgotView> with FieldValidator {
                       ),
                     ),
                   ),
-
                   Padding(
                     padding: EdgeInsets.fromLTRB(
                       Sizes.dynamicWidth(16),
@@ -216,7 +214,7 @@ class ForgotState extends ConsumerState<ForgotView> with FieldValidator {
                       0,
                     ),
                     child: SizedBox(
-                      height: Sizes.dynamicHeight(7),
+                      height: Sizes.dynamicHeight(6),
                       width: Sizes.dynamicWidth(80),
                       child: TextButton(
                         style: TextButton.styleFrom(
@@ -293,11 +291,9 @@ class ForgotState extends ConsumerState<ForgotView> with FieldValidator {
                       ),
                     ),
                   ),
-
-                  //
                   Padding(
                     padding: EdgeInsets.fromLTRB(
-                        MediaQuery.of(context).size.width * 0.35, 15, 0, 0),
+                        MediaQuery.of(context).size.width * 0.45, 15, 0, 0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,

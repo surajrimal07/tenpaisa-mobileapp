@@ -65,7 +65,7 @@ class NewsView extends ConsumerWidget {
                         child: ListView.builder(
                           controller: scrollController,
                           itemCount: newsViewModel.news.length,
-                          itemExtent: 132,
+                          itemExtent: 188, //132
                           physics: const AlwaysScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
                             final news = newsViewModel.news[index].link;
@@ -93,7 +93,6 @@ class NewsView extends ConsumerWidget {
                                   errorImage: NewsStrings.defaultImage,
                                   cache: const Duration(days: 7),
                                   bodyMaxLines: 3,
-                                  // urlLaunchMode: LaunchMode.inAppBrowserView,
                                   displayDirection:
                                       UIDirection.uiDirectionHorizontal,
                                   link: news,

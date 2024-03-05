@@ -12,6 +12,7 @@ import 'package:paisa/feathures/auth/domain/usecase/delete_user_usecase.dart';
 import 'package:paisa/feathures/auth/domain/usecase/forget_user_usecase.dart';
 import 'package:paisa/feathures/auth/domain/usecase/get_fingerprint_usecase.dart';
 import 'package:paisa/feathures/auth/domain/usecase/get_user_usecase.dart';
+import 'package:paisa/feathures/auth/domain/usecase/google_login_usecase.dart';
 import 'package:paisa/feathures/auth/domain/usecase/login_user_usecase.dart';
 import 'package:paisa/feathures/auth/domain/usecase/logout_user_usecase.dart';
 import 'package:paisa/feathures/auth/domain/usecase/resendotp_user_usecase.dart';
@@ -22,6 +23,7 @@ import 'package:paisa/feathures/auth/domain/usecase/verifyotp_user_usecase.dart'
 import 'package:paisa/feathures/auth/presentation/pages/forget_widget.dart';
 import 'package:paisa/feathures/auth/presentation/state/before_auth_state.dart';
 import 'package:paisa/feathures/auth/presentation/view/auth_view.dart';
+import 'package:paisa/feathures/home/presentation/view/home_view.dart';
 import 'package:paisa/feathures/portfolio/presentation/state/portfolio_state.dart';
 import 'package:paisa/feathures/portfolio/presentation/view_model/portfolio_view_model.dart';
 import 'package:paisa/feathures/watchlist/presentation/state/watchlist_state.dart';
@@ -30,19 +32,19 @@ import 'package:permission_handler/permission_handler.dart';
 
 final authViewModelProvider = StateNotifierProvider<AuthViewModel, LoginState>(
   (ref) => AuthViewModel(
-    loginUserUseCase: ref.watch(loginUserUseCaseProvider),
-    getUserUseCase: ref.watch(getUserUseCaseProvider),
-    signUpUseCase: ref.watch(addUserUseCaseProvider),
-    otpUseCase: ref.watch(verifyOTPUseCaseProvider),
-    resendOtpUseCase: ref.watch(resendOtpUserUseCaseProvider),
-    styleUseCase: ref.watch(saveStyleUserUseCaseProvider),
-    forgetPasswordUseCase: ref.watch(forgetUserUseCaseProvider),
-    updateProfilePictureUseCase: ref.watch(updatePictureUseCaseProvider),
-    logoutUserUseCase: ref.watch(logoutUserUseCaseProvider),
-    updateUserUseCase: ref.watch(updateUserUseCaseProvider),
-    fingerprintUserUseCase: ref.watch(fingerprintUserUseCaseProvider),
-    deleteUserUseCase: ref.watch(deleteUserUseCaseProvider),
-  ),
+      loginUserUseCase: ref.watch(loginUserUseCaseProvider),
+      getUserUseCase: ref.watch(getUserUseCaseProvider),
+      signUpUseCase: ref.watch(addUserUseCaseProvider),
+      otpUseCase: ref.watch(verifyOTPUseCaseProvider),
+      resendOtpUseCase: ref.watch(resendOtpUserUseCaseProvider),
+      styleUseCase: ref.watch(saveStyleUserUseCaseProvider),
+      forgetPasswordUseCase: ref.watch(forgetUserUseCaseProvider),
+      updateProfilePictureUseCase: ref.watch(updatePictureUseCaseProvider),
+      logoutUserUseCase: ref.watch(logoutUserUseCaseProvider),
+      updateUserUseCase: ref.watch(updateUserUseCaseProvider),
+      fingerprintUserUseCase: ref.watch(fingerprintUserUseCaseProvider),
+      deleteUserUseCase: ref.watch(deleteUserUseCaseProvider),
+      googleLoginUseCase: ref.watch(googleLoginUseCaseProvider)),
 );
 
 class AuthViewModel extends StateNotifier<LoginState> {
@@ -58,6 +60,7 @@ class AuthViewModel extends StateNotifier<LoginState> {
   final LogoutUserUseCase logoutUserUseCase;
   final FingerprintUserUseCase fingerprintUserUseCase;
   final DeleteUserUseCase deleteUserUseCase;
+  final GoogleLoginUseCase googleLoginUseCase;
 
   AuthViewModel(
       {required this.otpUseCase,
@@ -71,6 +74,7 @@ class AuthViewModel extends StateNotifier<LoginState> {
       required this.logoutUserUseCase,
       required this.updateUserUseCase,
       required this.fingerprintUserUseCase,
+      required this.googleLoginUseCase,
       required this.deleteUserUseCase})
       : super(LoginState.initialState());
 
@@ -87,6 +91,33 @@ class AuthViewModel extends StateNotifier<LoginState> {
         ref.read(authEntityProvider.notifier).state = success;
         state = state.copyWith(isLoading: false, error: null);
         nav.routeToAndReplaceAll(AppRoute.homeRoute);
+      },
+    );
+  }
+
+  //testing
+  Future<void> googleSignIn(ref) async {
+    state = state.copyWith(isLoading: true);
+
+    var data = await googleLoginUseCase.getUser();
+    data.fold(
+      (failure) {
+        state = state.copyWith(isLoading: false, error: failure.error);
+        CustomToast.showToast(failure.error.toString(), customType: Type.error);
+      },
+      (success) async {
+        CustomToast.showToast("Signing as $success", customType: Type.success);
+        final navigationService = ref.read(navigationServiceProvider);
+        final result = await googleLoginUseCase.getUserData(success);
+        result.fold(
+          (failure) {
+            navigationService.routeToAndRemoveUntil(AppRoute.authRoute);
+          },
+          (authEntity) {
+            ref.read(authEntityProvider.notifier).state = authEntity;
+            navigationService.routeToAndRemoveUntil(AppRoute.homeRoute);
+          },
+        );
       },
     );
   }
@@ -249,23 +280,37 @@ class AuthViewModel extends StateNotifier<LoginState> {
         CustomToast.showToast(failure.error.toString(), customType: Type.error);
         state = state.copyWith(isLoading: false, error: failure.error);
       },
-      (success) {
-        ref.read(authEntityProvider.notifier).state = const AuthEntity(
-          name: DefaultUserValues.defaultName,
-          email: DefaultUserValues.defaultEmail,
-          password: DefaultUserValues.defaultPassword,
-          token: DefaultUserValues.defaultToken,
-          phone: DefaultUserValues.defaultPhone,
+      (success) async {
+        var data = await googleLoginUseCase.googleLogout();
+        data.fold(
+          (failure) {
+            CustomToast.showToast(failure.error.toString(),
+                customType: Type.error);
+            state = state.copyWith(isLoading: false, error: failure.error);
+          },
+          (success) {
+            ref.read(authEntityProvider.notifier).state = const AuthEntity(
+              name: DefaultUserValues.defaultName,
+              email: DefaultUserValues.defaultEmail,
+              password: DefaultUserValues.defaultPassword,
+              token: DefaultUserValues.defaultToken,
+              phone: DefaultUserValues.defaultPhone,
+            );
+
+            ref.read(portfolioViewModelProvider.notifier).state =
+                PortfolioState.initialState();
+
+            ref.read(watchlistViewModelProvider.notifier).state =
+                WatchlistState.initial();
+
+            ref.read(selectedIndexProvider.notifier).state = 0;
+            CustomToast.showToast(ModelStrings.logoutSuccess,
+                customType: Type.success);
+
+            state = state.copyWith(isLoading: false, error: null);
+            nav.routeToAndRemoveUntil(AppRoute.authRoute);
+          },
         );
-
-        ref.read(portfolioViewModelProvider.notifier).state =
-            PortfolioState.initialState();
-
-        ref.read(watchlistViewModelProvider.notifier).state =
-            WatchlistState.initial();
-
-        state = state.copyWith(isLoading: false, error: null);
-        nav.routeToAndReplaceAll(AppRoute.authRoute);
       },
     );
   }

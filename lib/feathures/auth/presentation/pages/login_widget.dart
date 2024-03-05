@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,7 +25,6 @@ class SigninView extends ConsumerStatefulWidget {
 }
 
 class SignInState extends ConsumerState<SigninView> with FieldValidator {
-  final GlobalKey<FormState> _signInKey = GlobalKey<FormState>();
   final _node = FocusScopeNode();
 
   @override
@@ -40,11 +41,11 @@ class SignInState extends ConsumerState<SigninView> with FieldValidator {
     }
   }
 
-  void _passwordEditingComplete(pass, email, rememberMe) async {
+  void _passwordEditingComplete(pass, email, rememberMe, signInKey) async {
     final String password = pass.trim();
     final String? passwordError = validatePassword(password);
     if (passwordError == null) {
-      if (_signInKey.currentState!.validate()) {
+      if (signInKey.currentState!.validate()) {
         await ref.read(authViewModelProvider.notifier).signIn(
               ref,
               email,
@@ -59,6 +60,7 @@ class SignInState extends ConsumerState<SigninView> with FieldValidator {
 
   @override
   Widget build(BuildContext context) {
+    final signInKey = ref.watch(formKeyProvider);
     final rememberMe = ref.watch(rememberMeProvider);
     final obscureText = ref.watch(obscureTextProvider);
     final state = ref.watch(authViewModelProvider);
@@ -74,7 +76,7 @@ class SignInState extends ConsumerState<SigninView> with FieldValidator {
               child: FocusScope(
                 node: _node,
                 child: Form(
-                  key: _signInKey,
+                  key: signInKey,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -158,7 +160,8 @@ class SignInState extends ConsumerState<SigninView> with FieldValidator {
                           onEditingComplete: () => _passwordEditingComplete(
                               passwordController.text,
                               emailController.text,
-                              rememberMe),
+                              rememberMe,
+                              signInKey),
                           validator: (value) {
                             return validatePassword(value);
                           },
@@ -264,7 +267,7 @@ class SignInState extends ConsumerState<SigninView> with FieldValidator {
                                 ),
                               ),
                               onPressed: () async {
-                                if (_signInKey.currentState!.validate()) {
+                                if (signInKey.currentState!.validate()) {
                                   await ref
                                       .read(authViewModelProvider.notifier)
                                       .signIn(
@@ -326,7 +329,11 @@ class SignInState extends ConsumerState<SigninView> with FieldValidator {
                                 width: Sizes.dynamicWidth(80),
                                 borderRadius: 16.0,
                                 buttonType: SocialLoginButtonType.google,
-                                onPressed: () {},
+                                onPressed: () async {
+                                  await ref
+                                      .read(authViewModelProvider.notifier)
+                                      .googleSignIn(ref);
+                                },
                               ),
                             ),
                           ],

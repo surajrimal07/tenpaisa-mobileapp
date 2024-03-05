@@ -38,7 +38,7 @@ void main() {
     expect(stockState.error, isNull);
   });
 
-  test('get watchlist and watchlist length', () async {
+  test('get stocks and stocks length', () async {
     when(mockStockUseCase.getAllStocks(false))
         .thenAnswer((realInvocation) => Future.value(Right(stockData)));
 

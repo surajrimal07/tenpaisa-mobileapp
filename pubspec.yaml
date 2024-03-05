@@ -23,7 +23,7 @@ dependencies:
   syncfusion_flutter_charts: ^24.2.4+3
   cupertino_icons: ^1.0.2
   #flutter_svg: ^2.0.7
-  google_fonts: ^6.1.0
+  google_fonts: ^5.1.0
   shared_preferences: ^2.2.2
   fluttertoast: ^8.2.2
   pinput: ^3.0.1
@@ -64,7 +64,7 @@ dependencies:
   #dart_ping: ^9.0.1
   #internet_connection_checker: ^1.0.0+1
   social_login_buttons: ^1.0.7
-  #google_sign_in: ^6.2.1
+  google_sign_in: ^6.2.1
   permission_handler: ^11.2.0
   #sensors_plus: ^4.0.2
   local_auth: ^2.1.8

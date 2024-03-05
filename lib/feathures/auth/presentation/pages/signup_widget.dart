@@ -12,7 +12,6 @@ import 'package:paisa/feathures/auth/presentation/widget/auth_textbox_widgets.da
 import 'package:paisa/feathures/auth/presentation/widget/input_controllers.dart';
 import 'package:paisa/feathures/auth/presentation/widget/string_validators.dart';
 import 'package:paisa/feathures/common/button_circular_loading.dart';
-import 'package:social_login_buttons/social_login_buttons.dart';
 
 class SignupView extends ConsumerStatefulWidget {
   const SignupView({super.key});
@@ -242,7 +241,7 @@ class SignupState extends ConsumerState<SignupView> with FieldValidator {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(55, 0, 16, 0),
                       child: SizedBox(
-                        height: Sizes.dynamicHeight(7),
+                        height: Sizes.dynamicHeight(6),
                         width: Sizes.dynamicWidth(80),
                         child: TextButton(
                           key: const Key('signup_button'),
@@ -280,29 +279,29 @@ class SignupState extends ConsumerState<SignupView> with FieldValidator {
                         ),
                       ),
                     ),
+                    // Padding(
+                    //   padding: EdgeInsets.fromLTRB(
+                    //     Sizes.dynamicWidth(10),
+                    //     0,
+                    //     0,
+                    //     10,
+                    //   ),
+                    //   child: Column(
+                    //     children: [
+                    //       const SizedBox(height: 10),
+                    //       SocialLoginButton(
+                    //         height: Sizes.dynamicHeight(6),
+                    //         width: Sizes.dynamicWidth(80),
+                    //         borderRadius: 16.0,
+                    //         buttonType: SocialLoginButtonType.google,
+                    //         onPressed: () {},
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     Padding(
                       padding: EdgeInsets.fromLTRB(
-                        Sizes.dynamicWidth(10),
-                        0,
-                        0,
-                        10,
-                      ),
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 10),
-                          SocialLoginButton(
-                            height: Sizes.dynamicHeight(7),
-                            width: Sizes.dynamicWidth(80),
-                            borderRadius: 16.0,
-                            buttonType: SocialLoginButtonType.google,
-                            onPressed: () {},
-                          ),
-                        ],
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.fromLTRB(
-                        Sizes.dynamicWidth(22),
+                        Sizes.dynamicWidth(40),
                         15,
                         0,
                         Sizes.dynamicHeight(5),

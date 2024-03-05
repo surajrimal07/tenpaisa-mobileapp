@@ -75,4 +75,14 @@ class AuthRemoteRepositoryImpl implements IAuthRepository {
       File image, String email) {
     return authRemoteDataSource.updateProfilePicture(image, email);
   }
+
+  @override
+  Future<Either<Failure, String>> googleLogin() {
+    return authRemoteDataSource.googleLogin();
+  }
+
+  @override
+  Future<Either<Failure, void>> googleLogout() {
+    return authRemoteDataSource.googleDisconnect();
+  }
 }

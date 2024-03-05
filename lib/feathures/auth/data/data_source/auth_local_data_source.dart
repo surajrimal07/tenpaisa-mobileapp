@@ -71,6 +71,14 @@ class AuthLocalDataSource {
     return Left(Failure(error: "Internet Required", showToast: true));
   }
 
+  Future<Either<Failure, String>> googleLogin() async {
+    return Left(Failure(error: "Internet Required", showToast: true));
+  }
+
+  Future<Either<Failure, void>> googleLogout() async {
+    return Left(Failure(error: "Internet Required", showToast: true));
+  }
+
   Future<Either<Failure, AuthEntity>> updateUser(
       String email, String field, String value) async {
     return Left(Failure(error: "Internet Required", showToast: true));

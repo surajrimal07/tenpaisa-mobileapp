@@ -24,18 +24,6 @@ class _MyVerifyState extends ConsumerState<OtpView> {
   Widget build(BuildContext context) {
     final state = ref.watch(authViewModelProvider);
     final otpController = ref.watch(otpControllerProvider);
-    // final defaultPinTheme = PinTheme(
-    //   width: 56,
-    //   height: 56,
-    //   textStyle: const TextStyle(
-    //       fontSize: 20,
-    //       color: Color.fromRGBO(30, 60, 87, 1),
-    //       fontWeight: FontWeight.w600),
-    //   decoration: BoxDecoration(
-    //     border: Border.all(color: const Color.fromRGBO(234, 239, 243, 1)),
-    //     borderRadius: BorderRadius.circular(20),
-    //   ),
-    // );
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -78,7 +66,6 @@ class _MyVerifyState extends ConsumerState<OtpView> {
                   ),
                   SizedBox(
                     height: Sizes.dynamicHeight(6),
-                    // height: 30,
                   ),
                   Pinput(
                     length: 4,

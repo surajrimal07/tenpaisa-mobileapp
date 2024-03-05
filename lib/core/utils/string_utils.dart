@@ -8,7 +8,7 @@ class AppStrings {
   static const defaultIsAdmin = false;
   static const defaultToken = 'Empty';
   static const appTagline = 'Investing made easy';
-  static const appVersion = 'version : 1.8';
+  static const appVersion = 'version : 2.0';
   static const appDeveloper = 'Developed by: Suraj Rimal';
   static Duration duration = const Duration(milliseconds: 400);
 }
@@ -206,6 +206,8 @@ class ModelStrings {
   static const updateProfilePicture = 'Updating Profile Picture';
   static const pleaseWait = 'Please wait';
   static const userDeleted = 'User Deleted';
+  static const userNotFound = 'User Not Found';
+  static const logoutSuccess = 'Logout Successful';
 }
 
 class LogoutStrings {

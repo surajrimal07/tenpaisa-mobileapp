@@ -73,4 +73,14 @@ class AuthLocalRepositoryImpl implements IAuthRepository {
       File image, String email) {
     return authLocalDataSource.updateProfilePicture();
   }
+
+  @override
+  Future<Either<Failure, String>> googleLogin() {
+    return authLocalDataSource.googleLogin();
+  }
+
+  @override
+  Future<Either<Failure, void>> googleLogout() {
+    return authLocalDataSource.googleLogout();
+  }
 }
