@@ -23,21 +23,12 @@ class AppState extends ConsumerState<App> {
     super.initState();
     navigationService = ref.read(navigationServiceProvider);
     navKey = navigationService.navigatorKey;
-
-    //for web socket
-    //ref.read(webSocketServiceProvider);
-
-    //themeMode = ref.watch(appThemeStateProvider);
-    // themeService = ref.read(themeServiceProvider);
   }
 
   @override
   Widget build(BuildContext context) {
     ResponsiveSizes.init(context);
     var themeMode = ref.watch(appThemeStateProvider).themeMode;
-    //ref.watch(connectivityStatusProvider);
-    //final sharedPrefs = ref.read(userSharedPrefsProvider);
-    //final themeMode = ref.watch(themeStateProvider);
 
     return MaterialApp(
       navigatorKey: navKey,

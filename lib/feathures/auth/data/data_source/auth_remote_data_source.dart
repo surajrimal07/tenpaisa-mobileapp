@@ -108,41 +108,6 @@ class AuthRemoteDataSource {
     }
   }
 
-  Future<Either<Failure, Map<String, String>>> googleRegister() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn(scopes: [
-      'email',
-      'https://www.googleapis.com/auth/contacts.readonly',
-    ]);
-    try {
-      final GoogleSignInAccount? googleSignInAccount = googleSignIn.currentUser;
-      if (googleSignInAccount != null) {
-        final Map<String, String> authData = {
-          'email': googleSignInAccount.email,
-          'name': googleSignInAccount.displayName ?? "No Name",
-          'photo': googleSignInAccount.photoUrl ?? '',
-        };
-        return right(authData);
-      } else {
-        await googleSignIn.signIn();
-        final GoogleSignInAccount? updatedAccount = googleSignIn.currentUser;
-        if (updatedAccount != null) {
-          final Map<String, String> authData = {
-            'email': updatedAccount.email,
-            'name': updatedAccount.displayName ?? "No Name",
-            'photo': updatedAccount.photoUrl ?? ''
-          };
-          return right(authData);
-        } else {
-          return left(
-              Failure(error: "Google Sign In Failed", showToast: showtoast));
-        }
-      }
-    } catch (error) {
-      return left(
-          Failure(error: "Sign-in Error: $error", showToast: showtoast));
-    }
-  }
-
 //working //this sends otp //this function name should be otp sender
   Future<Either<Failure, bool>> sendOTP() async {
     var email = await userSharedPrefs.getTempEmail();
